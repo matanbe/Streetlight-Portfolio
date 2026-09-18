@@ -1,0 +1,36 @@
+---
+import Layout from '../layouts/Layout.astro';
+// Netlify Forms: Netlify detects this form in the built HTML at deploy time
+// (data-netlify + a hidden form-name). Submissions show up in the Netlify
+// dashboard → Forms, and can be emailed to you from there. No backend needed.
+---
+
+<Layout title="Contact — Matan Ben David">
+  <section class="hero">
+    <h1 class="hero-title">Let's talk.</h1>
+  </section>
+
+  <section class="contact">
+    <form class="contact-form" name="contact" method="POST" action="/thanks" data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="contact" />
+      <p class="form-honeypot"><label>Leave empty <input name="bot-field" /></label></p>
+
+      <label class="form-field">
+        <span class="form-label">Name</span>
+        <input class="form-input" type="text" name="name" required />
+      </label>
+
+      <label class="form-field">
+        <span class="form-label">Email</span>
+        <input class="form-input" type="email" name="email" required />
+      </label>
+
+      <label class="form-field">
+        <span class="form-label">Message</span>
+        <textarea class="form-textarea" name="message" rows="6" required></textarea>
+      </label>
+
+      <button class="form-button" type="submit">Send</button>
+    </form>
+  </section>
+</Layout>

@@ -1,0 +1,63 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { storyblokApi } from '@storyblok/astro/client';
+
+// One page per `Project` story in the Storyblok `projects` folder. The story is
+// passed through as a prop so each page doesn't re-fetch on its own.
+export async function getStaticPaths() {
+  const { data } = await storyblokApi.get('cdn/stories', {
+    version: import.meta.env.DEV ? 'draft' : 'published',
+    starts_with: 'projects/',
+    content_type: 'Project',
+    per_page: 100,
+  });
+
+  return data.stories.map((story) => ({
+    params: { slug: story.slug },
+    props: { story },
+  }));
+}
+
+const { story } = Astro.props;
+
+// NOTE: the title field is spelled `Tiele` in the Storyblok component schema.
+const title = story.content.Tiele ?? story.name;
+const description = story.content.Description;
+const thumb = story.content.Thumb?.filename
+  ? `${story.content.Thumb.filename}/m/900x0`
+  : null;
+const thumbAlt = story.content.Thumb?.alt || '';
+---
+
+<Layout title={`${title} — Matan Ben David`} description={description}>
+  <section class="hero">
+    <h1 class="hero-title">{title}</h1>
+    {description && <p class="page-text">{description}</p>}
+  </section>
+
+  {
+    thumb && (
+      <section class="project-detail">
+        <img src={thumb} alt={thumbAlt} />
+      </section>
+    )
+  }
+</Layout>
+
+<style>
+  /* Scoped to this page so the shared stylesheet stays untouched. */
+  .project-detail {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 24px 96px;
+  }
+
+  .project-detail img {
+    display: block;
+    /* Capped rather than full-bleed: the source assets are 900px wide, so a
+       full-width image would upscale and run very tall. */
+    max-width: 720px;
+    width: 100%;
+    height: auto;
+  }
+</style>

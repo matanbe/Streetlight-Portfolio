@@ -1,0 +1,53 @@
+---
+// Connection smoke test — hits the Storyblok CDN and reports what came back.
+// Not linked from the site; visit /storyblok-check directly. Safe to delete
+// once the real content integration lands.
+import { storyblokApi } from '@storyblok/astro/client';
+
+let ok = false;
+let space: { id: number; name: string } | null = null;
+let storyCount = 0;
+let error: string | null = null;
+
+try {
+  const spaceRes = await storyblokApi.get('cdn/spaces/me', {});
+  space = spaceRes.data.space;
+
+  const storiesRes = await storyblokApi.get('cdn/stories', {
+    version: 'draft',
+    per_page: 100,
+  });
+  storyCount = storiesRes.data.stories.length;
+  ok = true;
+} catch (e) {
+  error = e instanceof Error ? e.message : String(e);
+}
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Storyblok connection check</title>
+  </head>
+  <body>
+    <h1>Storyblok connection check</h1>
+    {
+      ok ? (
+        <>
+          <p><strong>Connected.</strong></p>
+          <ul>
+            <li>Space: {space?.name} (id {space?.id})</li>
+            <li>Region: eu</li>
+            <li>Stories visible: {storyCount}</li>
+          </ul>
+        </>
+      ) : (
+        <>
+          <p><strong>Not connected.</strong></p>
+          <pre>{error}</pre>
+        </>
+      )
+    }
+  </body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "name": "astro-html-starter",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@storyblok/astro": "^10.3.2",
+    "astro": "^5.17.1"
+  }
+}

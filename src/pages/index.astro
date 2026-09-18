@@ -1,0 +1,49 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { storyblokApi } from '@storyblok/astro/client';
+
+// Projects come from the `projects` folder in Storyblok (content type `Project`).
+// Draft content while developing so unpublished edits show up; published in build.
+const { data } = await storyblokApi.get('cdn/stories', {
+  version: import.meta.env.DEV ? 'draft' : 'published',
+  starts_with: 'projects/',
+  content_type: 'Project',
+  sort_by: 'position:asc',
+  per_page: 100,
+});
+
+// NOTE: the title field is spelled `Tiele` in the Storyblok component schema.
+const projects = data.stories.map((story) => ({
+  title: story.content.Tiele ?? story.name,
+  description: story.content.Description,
+  // Resize through Storyblok's image service to match the 4:3 card box.
+  thumb: story.content.Thumb?.filename
+    ? `${story.content.Thumb.filename}/m/600x450/smart`
+    : null,
+  thumbAlt: story.content.Thumb?.alt || '',
+  href: `/${story.full_slug}`,
+}));
+---
+
+<Layout>
+  <section class="hero">
+    <h1 class="hero-title">Independent designer working across brand, web and product.</h1>
+  </section>
+
+  <section class="projects" id="work">
+    <h2 class="section-title">Selected work</h2>
+    <div class="project-grid">
+      {
+        projects.map((p) => (
+          <a class="project-card" href={p.href}>
+            <div class="project-image">
+              {p.thumb && <img src={p.thumb} alt={p.thumbAlt} width="600" height="450" loading="lazy" />}
+            </div>
+            <h3 class="project-title">{p.title}</h3>
+            <p class="project-meta">{p.description}</p>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+</Layout>
