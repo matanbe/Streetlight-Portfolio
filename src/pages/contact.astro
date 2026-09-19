@@ -1,8 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
-// Netlify Forms: Netlify detects this form in the built HTML at deploy time
-// (data-netlify + a hidden form-name). Submissions show up in the Netlify
-// dashboard → Forms, and can be emailed to you from there. No backend needed.
+// Form handled by Web3Forms (works on any host, incl. Vercel). Submissions are
+// emailed to the address the access key was created with. The key is public
+// by design — it only allows sending to that inbox.
+const WEB3FORMS_KEY = 'YOUR_ACCESS_KEY';
 ---
 
 <Layout title="Contact — Matan Ben David">
@@ -11,9 +12,11 @@ import Layout from '../layouts/Layout.astro';
   </section>
 
   <section class="contact">
-    <form class="contact-form" name="contact" method="POST" action="/thanks" data-netlify="true" netlify-honeypot="bot-field">
-      <input type="hidden" name="form-name" value="contact" />
-      <p class="form-honeypot"><label>Leave empty <input name="bot-field" /></label></p>
+    <form class="contact-form" method="POST" action="https://api.web3forms.com/submit">
+      <input type="hidden" name="access_key" value={WEB3FORMS_KEY} />
+      <input type="hidden" name="subject" value="New message from the portfolio" />
+      <input type="hidden" name="redirect" value="/thanks" id="form-redirect" />
+      <input class="form-honeypot" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" />
 
       <label class="form-field">
         <span class="form-label">Name</span>
@@ -34,3 +37,9 @@ import Layout from '../layouts/Layout.astro';
     </form>
   </section>
 </Layout>
+
+<script>
+  // Web3Forms needs an absolute redirect URL; build it from the current domain.
+  const r = document.getElementById('form-redirect') as HTMLInputElement | null;
+  if (r) r.value = `${location.origin}/thanks`;
+</script>
