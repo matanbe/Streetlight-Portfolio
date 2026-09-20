@@ -71,7 +71,7 @@ const jsonLd = {
 <Layout
   title={`${title} — Matan Ben David`}
   description={description}
-  seo={c.Seo}
+  seo={c.Seo ?? c.seo}
   image={c.Thumb?.filename}
   type="article"
   jsonLd={jsonLd}

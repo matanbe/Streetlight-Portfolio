@@ -31,7 +31,8 @@ try {
   const home = await storyblokApi.get('cdn/stories/home', {
     version: isDraft ? 'draft' : 'published',
   });
-  seo = home.data.story.content.Seo ?? null;
+  const hc = home.data.story.content;
+  seo = hc.Seo ?? hc.seo ?? null;
 } catch {
   seo = null;
 }
