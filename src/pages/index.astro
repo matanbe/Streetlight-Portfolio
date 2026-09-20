@@ -3,9 +3,10 @@ import Layout from '../layouts/Layout.astro';
 import { storyblokApi } from '@storyblok/astro/client';
 
 // Projects come from the `projects` folder in Storyblok (content type `Project`).
-// Draft content while developing so unpublished edits show up; published in build.
+// Draft content in dev and on the preview deployment; published in production.
+const isDraft = import.meta.env.DEV || import.meta.env.STORYBLOK_IS_PREVIEW === 'yes';
 const { data } = await storyblokApi.get('cdn/stories', {
-  version: import.meta.env.DEV ? 'draft' : 'published',
+  version: isDraft ? 'draft' : 'published',
   starts_with: 'projects/',
   content_type: 'Project',
   sort_by: 'position:asc',

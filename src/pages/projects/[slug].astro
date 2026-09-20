@@ -1,9 +1,10 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { storyblokApi } from '@storyblok/astro/client';
+import { getPayload, storyblokEditable } from '@storyblok/astro';
 
-// One page per `Project` story in the Storyblok `projects` folder. The story is
-// passed through as a prop so each page doesn't re-fetch on its own.
+// Production (static): one page per `Project` story, generated at build time.
+// Ignored on the preview deployment, which renders pages on request instead.
 export async function getStaticPaths() {
   const { data } = await storyblokApi.get('cdn/stories', {
     version: import.meta.env.DEV ? 'draft' : 'published',
@@ -18,7 +19,21 @@ export async function getStaticPaths() {
   }));
 }
 
-const { story } = Astro.props;
+const isPreview = import.meta.env.STORYBLOK_IS_PREVIEW === 'yes';
+
+let story = Astro.props.story;
+if (isPreview) {
+  // Inside the Visual Editor, unsaved edits arrive with the request (live
+  // preview); otherwise fetch the latest draft.
+  const payload = await getPayload({ locals: Astro.locals });
+  story = payload.story;
+  if (!story) {
+    const { data } = await storyblokApi.get(`cdn/stories/projects/${Astro.params.slug}`, {
+      version: 'draft',
+    });
+    story = data.story;
+  }
+}
 
 // NOTE: the title field is spelled `Tiele` in the Storyblok component schema.
 const title = story.content.Tiele ?? story.name;
@@ -30,18 +45,20 @@ const thumbAlt = story.content.Thumb?.alt || '';
 ---
 
 <Layout title={`${title} — Matan Ben David`} description={description}>
-  <section class="hero">
-    <h1 class="hero-title">{title}</h1>
-    {description && <p class="page-text">{description}</p>}
-  </section>
+  <article {...storyblokEditable(story.content)}>
+    <section class="hero">
+      <h1 class="hero-title">{title}</h1>
+      {description && <p class="page-text">{description}</p>}
+    </section>
 
-  {
-    thumb && (
-      <section class="project-detail">
-        <img src={thumb} alt={thumbAlt} />
-      </section>
-    )
-  }
+    {
+      thumb && (
+        <section class="project-detail">
+          <img src={thumb} alt={thumbAlt} />
+        </section>
+      )
+    }
+  </article>
 </Layout>
 
 <style>
