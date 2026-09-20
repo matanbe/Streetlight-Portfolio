@@ -38,8 +38,7 @@ if (isPreview) {
 
 const c = story.content;
 
-// `Tiele` is the old misspelled field — kept as a fallback until it's removed.
-const title = c.Title || c.Tiele || story.name;
+const title = c.Title || story.name;
 const description = c.Description;
 const thumb = c.Thumb?.filename ? `${c.Thumb.filename}/m/1600x0` : null;
 const thumbAlt = c.Thumb?.alt || '';
