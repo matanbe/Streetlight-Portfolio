@@ -2,8 +2,9 @@
 import { getSettings } from '../lib/settings.js';
 
 interface Props {
-  // The `Seo` field (plugin: seo_metatags) from the current story, if any.
-  seo?: Record<string, string> | null;
+  // The `Seo` field from the current story: either a one-item Blocks array or
+  // an object, depending on how the field was set up.
+  seo?: Record<string, any> | Record<string, any>[] | null;
   // Page-level fallbacks, used when the SEO field is left empty.
   title?: string;
   description?: string;
@@ -12,7 +13,14 @@ interface Props {
   jsonLd?: Record<string, unknown> | null;
 }
 
-const { seo, title, description, image, type = 'website', jsonLd } = Astro.props;
+const props = Astro.props;
+const { title, description, image, type = 'website', jsonLd } = props;
+
+// The `Seo` field can arrive as a Blocks field (an array with one block, which
+// is how we build it on the free plan) or as a plain object (Storyblok's paid
+// SEO app). Normalise both to one object.
+const seo = Array.isArray(props.seo) ? (props.seo[0] ?? null) : (props.seo ?? null);
+
 const settings = await getSettings();
 
 const siteName = settings.SiteName || 'Matan Ben David';
@@ -24,7 +32,7 @@ const metaDescription =
   seo?.description || description || settings.DefaultDescription || '';
 
 const rawImage =
-  seo?.og_image || image || settings.DefaultOgImage?.filename || null;
+  seo?.og_image?.filename || seo?.og_image || image || settings.DefaultOgImage?.filename || null;
 // Storyblok assets get resized to the 1200x630 box social platforms expect.
 const ogImage = rawImage?.startsWith('https://a.storyblok.com')
   ? `${rawImage}/m/1200x630/smart`
