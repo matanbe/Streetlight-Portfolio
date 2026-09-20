@@ -2,16 +2,22 @@
 import '../styles/main.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Seo from '../components/Seo.astro';
 
 interface Props {
   title?: string;
   description?: string;
+  // The story's `Seo` field, when the page comes from Storyblok.
+  seo?: Record<string, string> | null;
+  image?: string | null;
+  type?: 'website' | 'article';
+  jsonLd?: Record<string, unknown> | null;
 }
 
-const {
-  title = 'Matan Ben David — Independent designer',
-  description = 'Independent designer working across brand, web and product.',
-} = Astro.props;
+const { title, description, seo, image, type, jsonLd } = Astro.props;
+
+// The preview deployment shows drafts, so keep it out of search engines.
+const isPreview = import.meta.env.STORYBLOK_IS_PREVIEW === 'yes';
 ---
 
 <!doctype html>
@@ -21,8 +27,15 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="description" content={description} />
-    <title>{title}</title>
+    {isPreview && <meta name="robots" content="noindex, nofollow" />}
+    <Seo
+      seo={seo}
+      title={title}
+      description={description}
+      image={image}
+      type={type}
+      jsonLd={jsonLd}
+    />
   </head>
   <body>
     <Header />

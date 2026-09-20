@@ -56,9 +56,26 @@ const hasBody = Boolean(
 );
 
 const gallery = (c.Gallery ?? []).filter((img) => img?.filename);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CreativeWork',
+  name: title,
+  description,
+  creator: { '@type': 'Person', name: 'Matan Ben David' },
+  ...(c.Thumb?.filename ? { image: c.Thumb.filename } : {}),
+  ...(c.Year ? { dateCreated: String(c.Year) } : {}),
+};
 ---
 
-<Layout title={`${title} — Matan Ben David`} description={description}>
+<Layout
+  title={`${title} — Matan Ben David`}
+  description={description}
+  seo={c.Seo}
+  image={c.Thumb?.filename}
+  type="article"
+  jsonLd={jsonLd}
+>
   <article {...storyblokEditable(c)}>
     <section class="hero">
       <h1 class="hero-title">{title}</h1>

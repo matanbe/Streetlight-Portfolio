@@ -10,6 +10,7 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
     "@astrojs/vercel": "^8.2.11",
     "@storyblok/astro": "^10.3.2",
     "astro": "^5.17.1"

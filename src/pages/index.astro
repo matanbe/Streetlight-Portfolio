@@ -23,9 +23,29 @@ const projects = data.stories.map((story) => ({
   thumbAlt: story.content.Thumb?.alt || '',
   href: `/${story.full_slug}`,
 }));
+
+// The home page's own story (content type Page) holds the SEO field, if it
+// exists; the site falls back to the settings story when it doesn't.
+let seo = null;
+try {
+  const home = await storyblokApi.get('cdn/stories/home', {
+    version: isDraft ? 'draft' : 'published',
+  });
+  seo = home.data.story.content.Seo ?? null;
+} catch {
+  seo = null;
+}
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Matan Ben David',
+  jobTitle: 'Independent designer',
+  url: Astro.site?.href,
+};
 ---
 
-<Layout>
+<Layout seo={seo} jsonLd={jsonLd}>
   <section class="hero">
     <h1 class="hero-title">Independent designer working across brand, web and product.</h1>
   </section>
