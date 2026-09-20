@@ -15,8 +15,6 @@ const WEB3FORMS_KEY = '760a2983-955f-47d8-bc44-378cc5f42c19';
     <form class="contact-form" method="POST" action="https://api.web3forms.com/submit">
       <input type="hidden" name="access_key" value={WEB3FORMS_KEY} />
       <input type="hidden" name="subject" value="New message from the portfolio" />
-      <!-- Extra recipients (CC). Separate several addresses with ";". -->
-      <input type="hidden" name="ccemail" value="matan@studiostreetlight.com" />
       <input type="hidden" name="redirect" value="/thanks" id="form-redirect" />
       <input class="form-honeypot" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" />
 
