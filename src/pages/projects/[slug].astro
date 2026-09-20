@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import { storyblokApi } from '@storyblok/astro/client';
 import { getPayload, storyblokEditable } from '@storyblok/astro';
+import StoryblokRichText from '@storyblok/astro/StoryblokRichText.astro';
 
 // Production (static): one page per `Project` story, generated at build time.
 // Ignored on the preview deployment, which renders pages on request instead.
@@ -35,46 +36,78 @@ if (isPreview) {
   }
 }
 
-// NOTE: the title field is spelled `Tiele` in the Storyblok component schema.
-const title = story.content.Tiele ?? story.name;
-const description = story.content.Description;
-const thumb = story.content.Thumb?.filename
-  ? `${story.content.Thumb.filename}/m/900x0`
-  : null;
-const thumbAlt = story.content.Thumb?.alt || '';
+const c = story.content;
+
+// `Tiele` is the old misspelled field — kept as a fallback until it's removed.
+const title = c.Title || c.Tiele || story.name;
+const description = c.Description;
+const thumb = c.Thumb?.filename ? `${c.Thumb.filename}/m/1600x0` : null;
+const thumbAlt = c.Thumb?.alt || '';
+
+// Only show the facts that are filled in.
+const facts = [
+  ['Client', c.Client],
+  ['Role', c.Role],
+  ['Year', c.Year],
+].filter(([, value]) => value);
+
+// Rich text counts as empty when it has no text or images in it.
+const hasBody = Boolean(
+  c.Body?.content?.some((node) => node.content?.length || node.type === 'image'),
+);
+
+const gallery = (c.Gallery ?? []).filter((img) => img?.filename);
 ---
 
 <Layout title={`${title} — Matan Ben David`} description={description}>
-  <article {...storyblokEditable(story.content)}>
+  <article {...storyblokEditable(c)}>
     <section class="hero">
       <h1 class="hero-title">{title}</h1>
       {description && <p class="page-text">{description}</p>}
     </section>
 
     {
+      facts.length > 0 && (
+        <section class="project-facts">
+          {facts.map(([label, value]) => (
+            <div class="project-fact">
+              <p class="project-fact-label">{label}</p>
+              <p class="project-fact-value">{value}</p>
+            </div>
+          ))}
+        </section>
+      )
+    }
+
+    {
       thumb && (
-        <section class="project-detail">
-          <img src={thumb} alt={thumbAlt} />
+        <section class="project-cover">
+          <img class="project-cover-image" src={thumb} alt={thumbAlt} />
+        </section>
+      )
+    }
+
+    {
+      hasBody && (
+        <section class="project-body">
+          <StoryblokRichText document={c.Body} />
+        </section>
+      )
+    }
+
+    {
+      gallery.length > 0 && (
+        <section class="project-gallery">
+          {gallery.map((img) => (
+            <img
+              class="project-gallery-image"
+              src={`${img.filename}/m/1600x0`}
+              alt={img.alt || ''}
+              loading="lazy"
+            />
+          ))}
         </section>
       )
     }
   </article>
 </Layout>
-
-<style>
-  /* Scoped to this page so the shared stylesheet stays untouched. */
-  .project-detail {
-    max-width: var(--maxw);
-    margin: 0 auto;
-    padding: 0 24px 96px;
-  }
-
-  .project-detail img {
-    display: block;
-    /* Capped rather than full-bleed: the source assets are 900px wide, so a
-       full-width image would upscale and run very tall. */
-    max-width: 720px;
-    width: 100%;
-    height: auto;
-  }
-</style>

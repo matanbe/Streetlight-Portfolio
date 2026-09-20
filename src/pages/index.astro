@@ -13,9 +13,9 @@ const { data } = await storyblokApi.get('cdn/stories', {
   per_page: 100,
 });
 
-// NOTE: the title field is spelled `Tiele` in the Storyblok component schema.
+// `Tiele` is the old misspelled field — kept as a fallback until it's removed.
 const projects = data.stories.map((story) => ({
-  title: story.content.Tiele ?? story.name,
+  title: story.content.Title || story.content.Tiele || story.name,
   description: story.content.Description,
   // Resize through Storyblok's image service to match the 4:3 card box.
   thumb: story.content.Thumb?.filename

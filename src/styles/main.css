@@ -178,6 +178,70 @@ a {
   text-decoration: underline;
 }
 
+/* ── Project page ────────────────────────────────────────────────── */
+.project-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 48px;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 24px 64px;
+}
+
+.project-fact {
+  min-width: 120px;
+}
+
+.project-fact-label {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0 0 4px;
+}
+
+.project-fact-value {
+  font-size: 16px;
+  margin: 0;
+}
+
+.project-cover {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 24px 96px;
+}
+
+.project-cover-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.project-body {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 24px 96px;
+  font-size: 20px;
+  line-height: 1.6;
+}
+
+.project-body > * {
+  max-width: 60ch;
+}
+
+.project-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 24px 96px;
+}
+
+.project-gallery-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 /* ── Contact form ────────────────────────────────────────────────── */
 .contact {
   max-width: var(--maxw);
@@ -248,6 +312,14 @@ a {
   }
 
   .project-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project-facts {
+    gap: 24px;
+  }
+
+  .project-gallery {
     grid-template-columns: 1fr;
   }
 
