@@ -1061,7 +1061,7 @@ const HomeLamps = (function(){
     // tail: 0 when the list starts entering → 1 when About is settled
     const q0 = mo ? clamp((scrollY + innerHeight - mo.offsetTop) / Math.max(1, (ab.offsetTop - mo.offsetTop) + innerHeight * .2)) : 0;
     const ly = +document.getElementById('lampY').value;
-    const bigAbout = mob ? Math.min(innerHeight * .5, 420) : Math.min(innerHeight * .82, 720);   // phones: smaller at the end so its base stays above the footer
+    const bigAbout = mob ? Math.min(innerHeight * .4, 336) : Math.min(innerHeight * .82, 720);   // phones: smaller at the end so its base stays above the footer
     let h, top, left = 50, op = 1;
     // tail, in two legs:
     //  1) from the end of the last project until the table is done: grows and turns 1½ times, moving over to the right of the table
