@@ -101,7 +101,12 @@ function detach(){
   const v = n => cf.querySelector(`[name=${n}]`).value.trim();
   cf.querySelector('.cf-name').textContent = v('name').split(' ')[0] || 'friend';
   cfSuccess();
-  // (prototype: nothing is actually sent — hook a form endpoint in here)
+  // send it (the tear is the send button); if it fails, the thank-you note offers the email address instead
+  const budget = (cf.querySelector('.cf-budget .on') || {}).dataset?.b || '';
+  fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name: v('name'), email: v('email'), msg: v('msg'), budget, website: v('website') }) })
+    .then(r => { if (!r.ok) throw 0; })
+    .catch(() => { const d = cf.querySelector('.cf-done'); d.innerHTML = 'Hmm, that didn’t go through. Please email <a href="mailto:matan@studiostreetlight.com">matan@studiostreetlight.com</a>'; });
   setTimeout(() => { if (cf.classList.contains('sent')) cfClose(); }, 5400);
 }
 // success: the fields fade, the form shrinks to fit the note while it turns from red to black,
