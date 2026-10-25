@@ -116,7 +116,7 @@ function cfSuccess(){
   body.style.height = h0 + 'px'; body.style.overflow = 'hidden';
   form.animate([{opacity: 1}, {opacity: 0}], {duration: 350, fill: 'forwards'}).finished.then(() => {
     // measure the note's height, then glide there
-    cf.classList.add('sent'); body.style.height = 'auto'; const h1 = body.offsetHeight; body.style.height = h0 + 'px';
+    cf.classList.add('sent'); body.style.height = 'auto'; const h1 = body.offsetHeight + 16;   // a little air under the thank-you note body.style.height = h0 + 'px';
     // wrap the note's letters (words kept whole)
     { const nm = document.createElement('em'); nm.className = 'cf-name'; nm.textContent = done.querySelector('.cf-name').textContent;
       done.textContent = ''; done.append('Thanks ', nm, ',', document.createElement('br'), 'I’ll\u00a0be\u00a0in\u00a0touch\u00a0soon.'); }   // break after the comma; the second line stays whole
