@@ -222,7 +222,7 @@ const LampKit = (function(){
 })();
 
 // ---------------- params ----------------
-const DEF = {size:120, gap:26, thick:8, randH:false, hVar:90, hShare:100, hCurve:1, seed:1, hover:1.55, lamps:true, lampStyle:'mix', lampMode:'scatter', lampDensity:1.2, lampMin:1, lampMax:8, lampRot:true, every:2, lampSize:1,
+const DEF = {size:260, gap:123, thick:4, randH:false, hVar:90, hShare:100, hCurve:1, seed:1, hover:1.55, lamps:true, lampStyle:'mix', lampMode:'scatter', lampDensity:1.2, lampMin:1, lampMax:8, lampRot:true, every:2, lampSize:1,
              fall:750, pause:250, move:1000, stagger:350, arc:50};
 const KEY = 'iso-archive-params-v3';
 let P = {...DEF};
