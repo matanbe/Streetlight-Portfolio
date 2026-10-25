@@ -64,7 +64,10 @@ body.in-tail #stage{opacity:0}
   #about .strip{grid-template-columns:repeat(3,1fr) !important}
   #about .slot:nth-child(n+4){display:none}
   #about .lg{font-size:12px;padding:0 6px;justify-items:center}
-  #about{z-index:4200 !important}   /* phones: the About text reads over the lamp (it passes behind) */
+  #about{z-index:4200 !important;padding-bottom:72px !important}
+  #more .m-row{grid-template-columns:1fr auto !important}
+  #more .m-row > .go,#more .m-acts{display:none !important}
+  #more .m-row > span:nth-child(3){text-align:right;padding-right:0}   /* phones: the About text reads over the lamp (it passes behind) */
   #about h2{font-size:clamp(32px,9vw,44px)}
   .p-now{position:static !important;width:auto !important}
   .p-grid{grid-template-columns:1fr !important;padding-top:84px}

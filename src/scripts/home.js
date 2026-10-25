@@ -1061,7 +1061,7 @@ const HomeLamps = (function(){
     // tail: 0 when the list starts entering → 1 when About is settled
     const q0 = mo ? clamp((scrollY + innerHeight - mo.offsetTop) / Math.max(1, (ab.offsetTop - mo.offsetTop) + innerHeight * .2)) : 0;
     const ly = +document.getElementById('lampY').value;
-    const bigAbout = Math.min(innerHeight * .82, 720);
+    const bigAbout = mob ? Math.min(innerHeight * .5, 420) : Math.min(innerHeight * .82, 720);   // phones: smaller at the end so its base stays above the footer
     let h, top, left = 50, op = 1;
     // tail, in two legs:
     //  1) from the end of the last project until the table is done: grows and turns 1½ times, moving over to the right of the table
@@ -1821,8 +1821,9 @@ readParams();
     const fx = document.getElementById('floorX');
     // the X sits in the middle of the lamp's light pool on the pavement (follows the lamp on any screen size)
     // measured once (and again on resize) — it stays put when the lamp changes
-    const ring = !xLocked && !swapping && lampSvg.style.display !== 'none' && lampSvg.querySelector('.pool path');
-    if (ring){ const q = ring.getBoundingClientRect(); if (q.width){ xLocked = true; X_AT = [(q.left + q.width / 2 - r.left) / r.width, (q.top + q.height / 2 - r.top) / r.height]; } }
+    // always the centre of the COBRA's pool (whichever lamp is up), taken at the top of the page — so it never moves when the lamp changes
+    if (!xLocked && !swapping && scrollY < 4 && lampSvg.style.display !== 'none' && window.homeLampGeo && window.cobraPoolAt){
+      const c = cobraPoolAt(); if (c){ xLocked = true; X_AT = [(c[0] - r.left) / r.width, (c[1] - r.top) / r.height]; } }
     if (fx){ fx.style.left = (r.left + X_AT[0] * r.width) + 'px'; fx.style.top = (r.top + X_AT[1] * r.height) + 'px'; fx.style.opacity = op; fx.style.pointerEvents = op > .2 ? 'auto' : 'none'; }
     requestAnimationFrame(draw);
   }
@@ -1842,16 +1843,22 @@ readParams();
   function cobraSpot(deg){ deg = ((Math.round(deg) % 360) + 360) % 360; if (spotCache[deg]) return spotCache[deg];
     probe.innerHTML = HomeLamps.at('cobra', deg).svg; const ring = probe.querySelector('.pool > *'); const b = ring ? ring.getBBox() : {x: 0, y: 0, width: 0, height: 0};
     return spotCache[deg] = [b.x + b.width / 2, b.y + b.height / 2]; }
+  // screen position of the cobra's pool centre for the lamp as it stands now (any style, any turn)
+  window.cobraPoolAt = () => { if (!window.homeLampGeo) return null;
+    const P = cobraSpot(homeLampGeo.deg()), B = homeLampGeo.box('cobra'), r = lampSvg.getBoundingClientRect(), h = +lampSvg.getAttribute('height') || r.height;
+    if (!r.width) return null; const k = h / (B[3] - B[1]), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    return [cx + (P[0] - (B[0] + B[2]) / 2) * k, cy + (P[1] - (B[1] + B[3]) / 2) * k]; };
   (function placeX2(){
     requestAnimationFrame(placeX2);
     const maxS = document.documentElement.scrollHeight - innerHeight, near = Math.min(1, Math.max(0, 1 - (maxS - scrollY) / (innerHeight * .25)));
     const busy = document.body.classList.contains('in-project') || document.body.classList.contains('in-thoughts');
     if (near <= 0 || busy || lampSvg.style.display === 'none' || !window.homeLampGeo){ fx2.style.opacity = 0; fx2.style.pointerEvents = 'none'; return; }
     // always where the COBRA's light would land, whichever lamp is up (so the button never moves when the lamp changes)
-    const P = cobraSpot(homeLampGeo.deg()), B = homeLampGeo.box('cobra'), r = lampSvg.getBoundingClientRect(), h = +lampSvg.getAttribute('height') || r.height;
-    const k = h / (B[3] - B[1]), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
-    fx2.style.left = (cx + (P[0] - (B[0] + B[2]) / 2) * k) + 'px'; fx2.style.top = (cy + (P[1] - (B[1] + B[3]) / 2) * k) + 'px';
-    fx2.style.opacity = near.toFixed(3); fx2.style.pointerEvents = near > .5 ? 'auto' : 'none';
+    const c = cobraPoolAt(); if (!c) return;
+    let [x, y] = c;
+    if (innerWidth <= 800){ const r = lampSvg.getBoundingClientRect(); y = Math.max(y, r.bottom - 14); }   // phones: level with the lamp's base, not behind it
+    fx2.style.left = x + 'px'; fx2.style.top = y + 'px';
+    fx2.style.opacity = near.toFixed(3); fx2.style.pointerEvents = near > .05 ? 'auto' : 'none';
   })();                                   // double-click: back to the start point
   addEventListener('resize', () => {});
 })();

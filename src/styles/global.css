@@ -117,7 +117,7 @@ html[data-theme="dusk"] .site-foot{background:transparent}
 .site-foot .ft-r{justify-content:flex-end}
 .site-foot .ft-div{display:block;width:1px;height:14px;background:var(--soft)}
 /* phones: the logo on top, then copyright on one side and the links on the other */
-@media (max-width:800px){ .site-foot{grid-template-columns:1fr auto;grid-template-areas:"logo logo" "l r";row-gap:14px} .site-foot .ft-logo{grid-area:logo;justify-self:start} .site-foot .ft-l{grid-area:l;white-space:nowrap} .site-foot .ft-r{grid-area:r;gap:12px} }
+@media (max-width:800px){ .site-foot{grid-template-columns:1fr auto;grid-template-areas:"logo logo" "l r";row-gap:14px} .site-foot .ft-logo{grid-area:logo;justify-self:start} .site-foot .ft-l{grid-area:l;white-space:nowrap} .site-foot .ft-r{grid-area:r;gap:10px;flex-wrap:nowrap} .site-foot{font-size:12px} }
 
 /* ---------- buttons: sweep fill from the side the pointer came in + arrow swap ---------- */
 .fx{position:relative;overflow:hidden;isolation:isolate;display:inline-flex;align-items:center;gap:8px;transition:color .45s var(--ease),border-color .45s var(--ease)}
