@@ -1,6 +1,6 @@
 /* Streetlight — shared styles: tokens, type, header + mobile menu, footer, buttons, chips, tables, dusk */
 
-@font-face{font-family:'Simpler Mono';src:url('/fonts/SimplerProMono-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Simpler Mono';src:url('/fonts/SimplerProMono-Regular.woff2') format('woff2'),url('/fonts/SimplerProMono-Regular.woff') format('woff');font-weight:400;font-display:swap}
 @font-face{font-family:'Simpler Mono';src:url('/fonts/SimplerProMono-Medium.woff2') format('woff2');font-weight:500;font-display:swap}
 @font-face{font-family:'Simpler Mono';src:url('/fonts/SimplerProMono-Bold.woff2') format('woff2');font-weight:700;font-display:swap}
 

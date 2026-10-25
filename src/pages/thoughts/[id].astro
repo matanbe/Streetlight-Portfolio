@@ -46,14 +46,14 @@ const others = all.filter(p => p.id !== post.id);
   article :global(a:hover){color:var(--acc)}
   .more{max-width:var(--col);margin-top:96px}
   .more h2{font-size:24px;font-weight:400;letter-spacing:-.02em;margin-bottom:16px}
-  .more ul{list-style:none;border-top:1px solid var(--ink)}
-  .more li{position:relative;border-bottom:1px solid var(--ink);isolation:isolate;overflow:hidden}
-  .more li::before{content:"";position:absolute;inset:0;background:var(--acc);transform:scaleY(0);transform-origin:var(--o,top);transition:transform .45s var(--ease);z-index:-1}
-  .more li.h::before{transform:scaleY(1)}
-  .more a{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 0;color:var(--ink);text-decoration:none}
-  .more a span{transition:transform .45s var(--ease),color .4s}
-  .more a i{font-style:normal;color:var(--mute);transition:color .4s;white-space:nowrap}
-  .more li.h a span{transform:translateX(-12px);color:var(--bg)} .more li.h a i{color:var(--bg)}
+  .more :global(ul){list-style:none;border-top:1px solid var(--ink)}
+  .more :global(li){position:relative;border-bottom:1px solid var(--ink);isolation:isolate;overflow:hidden}
+  .more :global(li::before){content:"";position:absolute;inset:0;background:var(--acc);transform:scaleY(0);transform-origin:var(--o,top);transition:transform .45s var(--ease);z-index:-1}
+  .more :global(li.h::before){transform:scaleY(1)}
+  .more :global(a){display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 0;color:var(--ink);text-decoration:none}
+  .more :global(a span){transition:transform .45s var(--ease),color .4s}
+  .more :global(a i){font-style:normal;color:var(--mute);transition:color .4s;white-space:nowrap}
+  .more :global(li.h a span){transform:translateX(-12px);color:var(--bg)} .more :global(li.h a i){color:var(--bg)}
   @media (max-width:800px){
     .post{padding:110px var(--gut) 60px}
     h1{font-size:clamp(34px,10vw,48px)}
