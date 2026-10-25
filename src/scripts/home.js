@@ -101,7 +101,8 @@ function mount(g, start = 0, hl = -1){   // hl: the testimonial for this project
                 cardW:360, cardH:208, pad:21, quote:16, name:13, tag:10, avatar:35,
                 axle:26, axleLine:1.5, axleRings:7, collar:8, collarW:13, legH:64, legW:53, legT:17, knob:80, knobT:11, ridges:24, knobY:0, legY:0, scale:1.21, offX:0, offY:10,
                 stiff:.04, damp:.55, wheel:250, wheelGap:170, drag:70 };
-  let saved = {}; try { saved = (JSON.parse(localStorage.getItem('testimonial-rolodex-params-v1') || '{}') || {}).r7 || {}; } catch(e){}
+  // Matan's tuned rolodex (from the Rolodex tests page); a newer save in this browser still wins while tuning
+  let saved = {"cards":39,"spacing":13,"openTilt":-10,"backStart":16,"frontFall":90,"hang":3.6,"backLimit":94,"rail":37,"cardW":360,"cardH":208,"pad":21,"quote":16,"name":13,"tag":10,"avatar":35,"axle":26,"axleLine":1.5,"axleRings":7,"collar":8,"collarW":13,"legH":64,"legW":53,"legT":17,"knob":80,"knobT":11,"ridges":24,"knobY":0,"legY":0,"scale":1.21,"offX":0,"offY":10,"stiff":0.04,"damp":0.55,"wheel":250,"wheelGap":170,"drag":70}; try { Object.assign(saved, (JSON.parse(localStorage.getItem('testimonial-rolodex-params-v1') || '{}') || {}).r7 || {}); } catch(e){}
   const P = {...DEF, ...saved};
   const rig = g.querySelector('.rig'), pool = RX.pool(), M = pool.length;
   const st = { a:start, v:0, target:start, raf:0 };
