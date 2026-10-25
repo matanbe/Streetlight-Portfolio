@@ -10,7 +10,7 @@ export function initDuskLight(){
     poolR:520, poolA:.32, coneF:14, shape:'cone', coneDir:190, coneW:56, lampSize:460,
     beamOn:1, beamLen:620, beamStartW:34, beamStartOff:-4, beamA:.42, beamGamma:1.4, beamFeather:14, coreW:.38, coreA:.35, beamBlend:'screen',
     floorA:.18, floorAt:1, floorSize:1, floorFlat:.32, floorSoft:0, floorX:0, lampLit:.75, lampLitR:1.2, lampLitSide:.5,
-    ground:'lamp base', endFade:.45, beamFront:.28, lampBounce:.55, lampSpill:.15, poolOn:1, headBlock:0,
+    ground:'lamp base', endFade:.45, beamFront:.28, lampBounce:.55, lampSpill:.15, poolOn:1, headBlock:1,
     baseH:.2, baseLit:.35, baseFall:.5, baseSide:.5, baseBounce:.5, shX:0, shZ:0, shA:.55, shLen:280, shW:12, shSoft:8, shDir:0, shCut:.85, shBase:.5,
     tStr:.85, tGamma:1.6, reach:620 };
   const ENV = ['light', 'core', 'skyTop', 'skyMid', 'skyMidAt', 'skyBot', 'vig', 'grain', 'grainSize', 'grainBlend', 'tStr', 'tGamma', 'reach'];
