@@ -407,6 +407,7 @@ function render(){
     c.wrap.style.zIndex = e > 0.01 ? 1000 + Math.round(e*100) : Math.round(y);
     c.wrap.classList.toggle('on', e > 0.98);
     c.cube.style.transform = `translateY(${-lift}px) scale(${sc}) rotateX(${rx}deg) rotateY(${ry}deg)`;
+    c.cube.style.setProperty('--bw', (1 / sc).toFixed(3) + 'px');   // the border stays 1px on screen however much the card is zoomed
 
     // ground footprint: iso diamond that stays on the lane, fades in as cube lifts
     const half = P.sy/2;
