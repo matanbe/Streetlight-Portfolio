@@ -89,4 +89,8 @@ html[data-theme="dusk"] .lamp .f{fill:var(--l-plate,#0a152e)}
 #ctl .row{display:flex;gap:6px}
 #ctl button{font:inherit;background:none;border:1px solid var(--ink);padding:3px 8px;cursor:pointer}
 #ctl button:hover{background:var(--ink);color:var(--bg)}
-#hint{bottom:106px !important}
+#hint{bottom:106px !important}/* desktop: the filter chips stack in one column under the logo */
+@media (min-width:801px){
+  .pg-head .chips{flex-direction:column;align-items:stretch;width:max-content;min-width:180px}
+  .pg-head .chips button{margin:0 0 -1px 0;justify-content:space-between;gap:16px}
+}
