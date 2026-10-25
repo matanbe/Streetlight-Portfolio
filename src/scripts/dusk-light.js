@@ -1,6 +1,7 @@
 // Dusk: the sky (gradient + vignette + grain on one canvas) and the lamps' real light — the Dusk tests page's maths.
 // The home page runs it for its big lamp; other pages (the playground) use window.duskLightAPI.render() for theirs.
 export function initDuskLight(){
+  if (window.__duskInit) return; window.__duskInit = true;   // once per page
 
   const root = document.documentElement, lampSvg = document.getElementById('lamp') || Object.assign(document.createElementNS('http://www.w3.org/2000/svg', 'svg'), {}), noHomeLamp = !document.getElementById('lamp');
   if (noHomeLamp) lampSvg.style.display = 'none';   // pages without the home lamp: sky + render() only

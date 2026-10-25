@@ -38,7 +38,6 @@ body:not(.dev) #ctl{display:none}
 .lamp .mid{stroke:#a9a69e}
 .lamp .lo{stroke:#d6d3cb}
 html[data-theme="dusk"]{--bg:#10294b;--ink:#eaf0f7;--mute:#8299b8;--acc:#f07a2e;--line:#2c4d78;color-scheme:dark}
-html[data-theme="dusk"] body{background:linear-gradient(180deg,#0b1f3d 0%,#1d4a7a 58%,#0a1a33 100%) fixed}
 html[data-theme="dusk"] .face,html[data-theme="dusk"] .side{background:#15335a;border-color:rgba(234,240,247,.55)}
 html[data-theme="dusk"] .lamp .hi{stroke:#eaf0f7}
 html[data-theme="dusk"] .lamp .edge{stroke:#9fb3cc}

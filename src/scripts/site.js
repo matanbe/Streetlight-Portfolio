@@ -1,6 +1,7 @@
 // Site-wide behaviour: day / dusk switch, the wordmark, direction-aware wipes, table rows, the mobile menu.
 import lottie from 'lottie-web/build/player/lottie_light';
 import LOGO from '../assets/logo-lottie.json';
+import { initDuskLight } from './dusk-light.js';
 
 const root = document.documentElement;
 
@@ -71,5 +72,8 @@ document.querySelectorAll('.m-row:not(.m-head)').forEach(rowHover);
     matchMedia('(min-width:801px)').addEventListener('change', m => { if (m.matches && isOpen()) set(false); });
   }
 }
+
+// dusk sky (gradient + vignette + grain) — the same canvas on every page; the home page and the playground start it themselves
+if (!document.getElementById('lamp') && !document.getElementById('world')) initDuskLight();
 
 document.querySelectorAll('.ft-y').forEach(e => e.textContent = new Date().getFullYear());
