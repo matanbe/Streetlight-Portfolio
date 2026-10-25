@@ -272,7 +272,8 @@ const ease = t => t<.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2;
 const hash = n => { const s = Math.sin(n*127.1 + 311.7)*43758.5453; return s - Math.floor(s); };
 
 function geom(){
-  T = P.size; G = T + P.gap; A = Math.SQRT1_2 * G; B = 0.4082 * G;
+  const mob = innerWidth <= 800;   // phones: smaller tiles and streets
+  T = mob ? Math.round(P.size * .55) : P.size; G = T + (mob ? Math.round(P.gap * .5) : P.gap); A = Math.SQRT1_2 * G; B = 0.4082 * G;
   W = innerWidth; H = innerHeight;
   document.documentElement.style.setProperty('--T', T+'px');
   for (const t of tiles.values()) setHeight(t);

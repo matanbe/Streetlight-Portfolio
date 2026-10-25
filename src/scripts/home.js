@@ -317,6 +317,8 @@ const P = {};
 const ids = {sx:'v-sx',sy:'v-sy',sz:'v-sz',gap:'v-gap',lift:'v-lift',scale:'v-scale',hold:'v-hold',rad:'v-rad',spin:'v-spin'};
 function readParams(){
   for (const k in ids){ P[k] = +document.getElementById(k).value; document.getElementById(ids[k]).textContent = P[k]; }
+  // phones: smaller cards, gentler zoom on the active one
+  if (matchMedia('(max-width:800px)').matches){ const m = Math.min(1, innerWidth / 560); P.sx *= m * .62; P.sy *= m * .62; P.sz *= m * .62; P.scale = Math.min(P.scale, 1.6); P.gap *= .7; }
   P.lane = document.querySelector('input[name=lane]:checked').value;
   P.exit = document.querySelector('input[name=exit]:checked').value;
   P.target = document.querySelector('input[name=target]:checked').value;
@@ -1039,7 +1041,8 @@ const HomeLamps = (function(){
   let on = 0, target = 0;
   const easeIO = t => t<.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2;
   function size(){
-    const small = 170, big = Math.min(innerHeight * .66, 560);
+    const mob = innerWidth <= 800;
+    const small = mob ? 120 : 170, big = mob ? Math.min(innerHeight * .42, 340) : Math.min(innerHeight * .66, 560);
     const t = easeIO(clamp(scrollY / (innerHeight * .6)));            // 0 at the top of the page → 1 after ~60% of a screen
     const mo = document.getElementById('more'), ab = document.getElementById('about');
     // tail: 0 when the list starts entering → 1 when About is settled
@@ -1059,11 +1062,12 @@ const HomeLamps = (function(){
       a2 = easeIO(clamp((scrollY - s1) / Math.max(1, s2 - s1)));
     }
     const midH = bigAbout * .8;
-    if (a1 <= 0){ h = lerp(big, small, t); top = lerp(50, ly, t); }
+    if (a1 <= 0){ h = lerp(big, small, t); top = lerp(mob ? 74 : 50, ly, t); if (mob){ left = 72; op = 1 - t; } }
     else {
       h = lerp(small, midH, a1) + (bigAbout - midH) * a2;
       top = lerp(ly, 46, a1) + (54 - 46) * a2;
       left = lerp(50, 63, a1) + (24 - 63) * a2;   // over the table it stands in the gap between the years and the hover buttons
+      if (mob) op = 0;   // phones: no room beside the table / About — the lamp only stands in the opening
     }
     svg.setAttribute('height', h); svg.setAttribute('width', h*ratio);
     // SINK: 0 = standing, 1 = fully under the floor (moved down by its height, clipped at the floor line)
