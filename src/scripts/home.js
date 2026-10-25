@@ -1741,7 +1741,7 @@ readParams();
   wrap(p);
   const words = [...p.querySelectorAll('.w')];
   const R = () => Math.max(60, p.getBoundingClientRect().height * .2);          // how wide the light falls on the text
-  const STARTS = [[0.826, 1.060], [0.174, 1.060], [0.5, 1.45], [0.5, -0.2]];      // one start point per lamp head (relative to the paragraph)
+  const STARTS = [[0.76, 1.060], [0.174, 1.060], [0.5, 1.45], [0.5, -0.2]];      // one start point per lamp head (relative to the paragraph)
   let X_AT = [0.578, 1.802], xLocked = false;
   addEventListener('resize', () => xLocked = false);                                                    // the hidden X on the pavement
   // one crosshair + one beam per light on the lamp
