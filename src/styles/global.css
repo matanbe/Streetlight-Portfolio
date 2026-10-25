@@ -94,7 +94,13 @@ body.mn-open .mn-foot{opacity:1}
 html[data-theme="dusk"] .mn-dot{background:#ffc56a;border-color:#ffc56a;box-shadow:0 0 10px 2px rgba(255,190,100,.7)}
 @media (max-width:800px){
   #burger{display:block}
-  #top nav{display:none}
+  #top nav a:not(#contact){display:none}   /* phones: Contact stays, to the right of the burger */
+  #top nav{gap:0}
+  #top{justify-content:flex-start;align-items:center} #top .brand{margin-right:auto} #burger{margin:0}
+  #contact{padding:6px 14px;font-size:13px;margin-left:10px}
+}
+@media (max-width:440px){ #top .tagline{display:none} }
+@media (max-width:800px){
   #mnav{display:flex}
   #top{background:var(--bg)}
   html[data-theme="dusk"] #top{background:transparent}

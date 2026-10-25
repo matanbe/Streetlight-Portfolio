@@ -48,6 +48,8 @@ section.outro{height:40vh;border:0}
 #more .m-all{flex:none;border:1px solid var(--ink);border-radius:999px;padding:10px 20px;background:var(--ink);color:var(--bg);text-decoration:none;font-size:14px}
 body.in-tail #stage{opacity:0}
 @media (max-width:800px){#more{padding:80px 24px}.m-row{grid-template-columns:1fr 34% 18% 20px}}
+/* captions under the slides: phones only (desktop shows them in the side column) */
+.s-cap{display:none}
 /* ---------- phones ---------- */
 @media (max-width:800px){
   #reel{display:none !important}
@@ -66,6 +68,10 @@ body.in-tail #stage{opacity:0}
   .p-now{position:static !important;width:auto !important}
   .p-grid{grid-template-columns:1fr !important;padding-top:84px}
   .p-side{position:static !important;max-height:none !important}
+  .rolo{height:min(400px,58vh) !important;touch-action:pan-y !important}   /* page still scrolls over it; a tap turns a card */
+  .s-cap{display:grid;gap:4px;margin-top:12px;font-size:13px;line-height:1.5}
+  .s-cap b{font-weight:400;font-size:15px}
+  .s-cap span{color:var(--ink2)}
 }
 #about{height:auto;min-height:100vh;position:relative;z-index:4000;background:transparent;border-top:1px solid var(--ink);padding:120px 48px 200px}
 #about .ab-in{max-width:min(640px,54vw);margin-left:auto}

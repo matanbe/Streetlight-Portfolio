@@ -19,7 +19,7 @@ const count = (t: string | null) => t ? projects.filter(p => p.disciplines.inclu
         return (
           <a class="m-row" role="row" href={href} target={ext ? '_blank' : undefined} rel={ext ? 'noopener' : undefined} data-tags={p.disciplines.join(',')}>
             <span>{p.name}</span><span class="c2">{p.industry}</span><span class="c3">{p.year}</span>
-            <span class="go"><span class="l-arr"><i>→</i><i>→</i></span></span>
+            {ext ? <span class="go ext" aria-label="opens the live site">↗</span> : <span class="go"><span class="l-arr"><i>→</i><i>→</i></span></span>}
             {(p.hasCase && p.live) && <span class="m-acts">
               <span class="m-btn" data-live={p.live}>View live ↗</span><span class="m-btn solid">View case</span>
             </span>}
@@ -33,7 +33,9 @@ const count = (t: string | null) => t ? projects.filter(p => p.disciplines.inclu
 
 <style>
   .work-table{--cols:var(--c1,280px) var(--c2,160px) var(--c3,90px) 1fr 28px}
-  @media (max-width:800px){ .work-table{--cols:1fr auto 14px} .work-table .m-row > span:nth-child(2){display:none} }
+  .go.ext{justify-content:flex-end;color:var(--mute)}
+  /* phones: project + year (+ ↗ when it opens a live site) */
+  @media (max-width:800px){ .work-table{--cols:1fr auto 16px} .work-table .m-row > span:nth-child(2){display:none} .work-table .m-row > .go:not(.ext){visibility:hidden} }
 </style>
 
 <script>

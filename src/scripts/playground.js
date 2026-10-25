@@ -315,8 +315,11 @@ function makeTile(item){
     <div class="cap"><b>${item.title}</b><i>${item.tags.join(' · ')}</i></div></div></div>`;
   const slab = el.firstChild, face = slab.querySelector('.face');
   const tile = {el, slab, item, e:0, hover:false, x:0, y:0, state:'in', move:null, appear:null, fall:null};
-  face.addEventListener('pointerenter', ()=>{ if(!dragMoved && !phase){ tile.hover = true; showDetail(item);} });
-  face.addEventListener('pointerleave', ()=>{ tile.hover = false; showDetail(null); });
+  // mouse: hover turns a frame toward you; touch: a tap does (hover would fire while scrolling)
+  face.addEventListener('pointerenter', e=>{ if (e.pointerType === 'mouse' && !dragMoved && !phase){ tile.hover = true; showDetail(item);} });
+  face.addEventListener('pointerleave', e=>{ if (e.pointerType === 'mouse'){ tile.hover = false; showDetail(null); } });
+  face.addEventListener('click', e=>{ if (dragMoved || phase || matchMedia('(hover:hover)').matches) return;
+    const on = !tile.hover; for (const t of tiles.values()) t.hover = false; tile.hover = on; showDetail(on ? item : null); });
   world.appendChild(el);
   setHeight(tile);
   return tile;

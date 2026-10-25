@@ -15,6 +15,7 @@ const others = all.filter(p => p.id !== post.id);
 <Base title={post.title} description={description} lang="he">
   <section class="post" dir="rtl" lang="he">
     <div class="a-head">
+      <a class="back" href="/thoughts"><span>→</span> חזרה</a>
       <div class="idx">{post.topic}</div>
       <h1>{post.title}</h1>
       <div class="a-date">{post.date}</div>
@@ -33,6 +34,9 @@ const others = all.filter(p => p.id !== post.id);
   .post{--col:800px;padding:150px max(var(--gut), calc((100vw - var(--col)) / 2)) 80px;max-width:none}
   .a-head{border-bottom:1px solid var(--ink);padding-bottom:28px;max-width:var(--col)}
   .a-date{color:var(--mute);margin-top:16px}
+  .back{display:inline-flex;gap:8px;color:var(--mute);text-decoration:none;margin-bottom:28px;transition:color .2s}
+  .back:hover{color:var(--acc)}
+  .back span{transition:transform .3s var(--ease)} .back:hover span{transform:translateX(4px)}
   h1{font-size:60px;font-weight:400;letter-spacing:-.03em;line-height:1.05}
   article{max-width:var(--col);margin-top:56px;font-size:16px;line-height:1.75}
   article :global(h2){font-size:24px;font-weight:400;letter-spacing:-.02em;line-height:1.2;margin:56px 0 16px}
@@ -59,6 +63,9 @@ const others = all.filter(p => p.id !== post.id);
     h1{font-size:clamp(34px,10vw,48px)}
     article{margin-top:40px}
     .more{margin-top:72px}
+    .more :global(a){flex-direction:column;align-items:flex-start;gap:4px;padding:16px 0}
+    .more :global(a i){font-size:13px}
+    .more :global(li.h a span){transform:none}
   }
 </style>
 

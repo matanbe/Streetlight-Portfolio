@@ -90,7 +90,8 @@ const RX = (() => {
   const look = (g, P) => {
     g.style.setProperty('--cw', P.cardW + 'px'); g.style.setProperty('--ch', P.cardH + 'px'); g.style.setProperty('--pad', P.pad + 'px');
     g.style.setProperty('--qf', P.quote + 'px'); g.style.setProperty('--nf', P.name + 'px'); g.style.setProperty('--tf', P.tag + 'px'); g.style.setProperty('--av', P.avatar + 'px'); g.style.setProperty('--axw', (P.axleLine || 1.5) + 'px');
-    g.querySelector('.rig').style.transform = `translate(${P.offX}px,${P.offY}px) rotateX(-35.264deg) rotateY(-45deg) scale(${P.scale})`;
+    const fit = 1;
+    g.querySelector('.rig').style.transform = `translate(${P.offX * fit}px,${P.offY * fit}px) rotateX(-35.264deg) rotateY(-45deg) scale(${P.scale * fit})`;
   };
   return { cyl, rodLines, rings, circ, side, knob, collar, pool, cardHTML, ss, nav, look };
 })();
@@ -104,9 +105,20 @@ function mount(g, start = 0, hl = -1){   // hl: the testimonial for this project
   // Matan's tuned rolodex (from the Rolodex tests page); a newer save in this browser still wins while tuning
   let saved = {"cards":39,"spacing":13,"openTilt":-10,"backStart":16,"frontFall":90,"hang":3.6,"backLimit":94,"rail":37,"cardW":360,"cardH":208,"pad":21,"quote":16,"name":13,"tag":10,"avatar":35,"axle":26,"axleLine":1.5,"axleRings":7,"collar":8,"collarW":13,"legH":64,"legW":53,"legT":17,"knob":80,"knobT":11,"ridges":24,"knobY":0,"legY":0,"scale":1.21,"offX":0,"offY":10,"stiff":0.04,"damp":0.55,"wheel":250,"wheelGap":170,"drag":70}; try { Object.assign(saved, (JSON.parse(localStorage.getItem('testimonial-rolodex-params-v1') || '{}') || {}).r7 || {}); } catch(e){}
   const P = {...DEF, ...saved};
+  if (innerWidth <= 800){ P.cards = Math.min(P.cards, 14); P.rail = Math.min(P.rail, 20); }   // phones: a shorter rolodex so it all fits
   const rig = g.querySelector('.rig'), pool = RX.pool(), M = pool.length;
   const st = { a:start, v:0, target:start, raf:0 };
   let cards = [], dots = [];
+  // phones: scale the whole thing down to fit inside its box (measured, so it holds for any setting)
+  function fitBox(){
+    if (innerWidth > 800){ g.style.transform = ''; return; }
+    g.style.transform = ''; const r = g.getBoundingClientRect(); let x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9;
+    g.querySelectorAll('.rig *').forEach(e => { const b = e.getBoundingClientRect(); if (!b.width && !b.height) return; x0 = Math.min(x0, b.left); x1 = Math.max(x1, b.right); y0 = Math.min(y0, b.top); y1 = Math.max(y1, b.bottom); });
+    if (x1 <= x0) return;
+    const k = Math.min(1, (r.width - 8) / (x1 - x0), (r.height - 8) / (y1 - y0)), ox = (x0 + x1) / 2 - r.left, oy = (y0 + y1) / 2 - r.top;
+    g.style.transformOrigin = `${ox}px ${oy}px`; g.style.transform = `translate(${r.width / 2 - ox}px,${r.height / 2 - oy}px) scale(${k})`;
+  }
+  setTimeout(fitBox, 60); addEventListener('resize', () => setTimeout(fitBox, 60));
   function build(){
     RX.look(g, P);
     const half = P.legW, members = [[...Array.from({length:19}, (_, k) => { const t = Math.PI + Math.PI*k/18; return [half*Math.cos(t), half*Math.sin(t)]; }), [half, P.legH], [-half, P.legH]]
@@ -1204,7 +1216,7 @@ function buildProject(i){
     return head + ch.slides.map((sl, si) => { const k = n++;
       const hs = sl.hs ? sl.hs.map((h, hi) => `<button class="hs" style="left:${h.x}%;top:${h.y}%;--k:${hi}" data-h="${hi}">${hi+1}</button>`).join('')
                          + `<svg class="hs-line" preserveAspectRatio="none"><path/></svg><div class="hs-card"></div><span class="hs-hint">Tap the numbers to explore</span>` : '';
-      return `<figure class="slide" data-ch="${ci}" data-k="${k}"><div class="s-frame"><span class="s-no">${String(k+1).padStart(2,'0')}</span><span class="s-lbl">slide ${String(k+1).padStart(2,'0')} / ${total}</span>${multi ? `<span class="s-tag">${ch.label}</span>` : ''}${hs}</div></figure>`; }).join('');
+      return `<figure class="slide" data-ch="${ci}" data-k="${k}"><div class="s-frame"><span class="s-no">${String(k+1).padStart(2,'0')}</span><span class="s-lbl">slide ${String(k+1).padStart(2,'0')} / ${total}</span>${multi ? `<span class="s-tag">${ch.label}</span>` : ''}${hs}</div>${(sl.t || sl.p) && !sl.cont ? `<figcaption class="s-cap">${sl.t ? `<b>${sl.t}</b>` : ''}${sl.p ? `<span>${sl.p}</span>` : ''}</figcaption>` : ''}</figure>`; }).join('');
   }).join('');
   const navHTML = multi ? `<nav class="p-chap reveal" style="--d:4">${C.chapters.map((ch, ci) => `<div class="c-grp" data-ch="${ci}"><span class="c-lbl"><b>${String(ci+1).padStart(2,'0')}</b>${ch.label}</span><ol>${
       ch.slides.filter(s => !s.cont).map(s => `<li data-t="${s.t}">${s.t}</li>`).join('')}</ol></div>`).join('')}</nav>` : '';
@@ -1536,7 +1548,7 @@ function caseFx(){
   const now = projEl.querySelector('.p-now'), m = best >= 0 ? slideMeta(best) : null, ci = best >= 0 ? +slides[best].dataset.ch : -1;
   projEl.querySelectorAll('.p-chap .c-grp').forEach(g => g.classList.toggle('on', +g.dataset.ch === ci));
   projEl.querySelectorAll('.p-chap li').forEach(li => li.classList.toggle('on', !!m && li.dataset.t === m.t && +li.closest('.c-grp').dataset.ch === ci));
-  if (!now) return;
+  if (!now || innerWidth <= 800) return;   // phones: captions sit under each image instead
   now.classList.add('swap');
   clearTimeout(CH.t); CH.t = setTimeout(() => {
     const C = caseOf(CH.idx);
@@ -1618,7 +1630,7 @@ function nxDrive(dy, e){
   if (!projEl.classList.contains('shown') || busy || NX.fired || NX.lock) return;
   // the page stops at its end for a beat (≈0.25s) before extra scroll starts filling the bar, so a fast flick lands on the end instead of shooting through
   if (!atEnd()) NX.endSince = 0;
-  else if (dy > 0){ const now = performance.now(); if (!NX.endSince) NX.endSince = now; if (now - NX.endSince < 250){ e.preventDefault(); return; } }
+  else if (dy > 0 && !e.touches){ const now = performance.now(); if (!NX.endSince) NX.endSince = now; if (now - NX.endSince < 250){ e.preventDefault(); return; } }
   if ((dy > 0 && atEnd()) || (dy < 0 && NX.p > 0)){
     e.preventDefault(); cancelAnimationFrame(NX.raf);
     nxSet(NX.p + dy / 900); nxIdle();
@@ -1627,8 +1639,9 @@ function nxDrive(dy, e){
 projEl.addEventListener('wheel', e => nxDrive(e.deltaMode === 1 ? e.deltaY * 32 : e.deltaY, e), {passive:false});
 let nxTouchY = null;
 projEl.addEventListener('touchstart', e => { nxTouchY = e.touches[0].clientY; }, {passive:true});
-projEl.addEventListener('touchmove', e => { if (nxTouchY == null) return; const y = e.touches[0].clientY; nxDrive((nxTouchY - y) * 2.2, e); nxTouchY = y; }, {passive:false});
-projEl.addEventListener('touchend', () => { nxTouchY = null; });
+projEl.addEventListener('touchmove', e => { if (nxTouchY == null) return; const y = e.touches[0].clientY; nxDrive((nxTouchY - y) * 4.5, e); nxTouchY = y; }, {passive:false});
+// let go past halfway → it carries on to the next project
+projEl.addEventListener('touchend', () => { nxTouchY = null; if (NX.p >= .45 && !NX.fired){ clearTimeout(NX.idle); (function on(){ if (NX.fired) return; nxSet(NX.p + .06); if (!NX.fired) requestAnimationFrame(on); })(); } });
 addEventListener('keydown', e => { if (openIdx >= 0 && ['ArrowDown','PageDown',' '].includes(e.key) && atEnd()){ e.preventDefault(); nxSet(NX.p + .12); nxIdle(); } });
 
 

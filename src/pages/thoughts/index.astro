@@ -31,10 +31,14 @@ const count = (t: string | null) => t ? posts.filter(p => p.topic === t).length 
   .t-table .m-row{font-size:15px}
   .t-table .m-head > span{font-size:12px}
   .t-table .m-row > span{padding-inline:0 12px}
+  /* phones: no column titles — the title takes the full width, the date sits under it */
   @media (max-width:800px){
-    .t-table{--cols:1fr auto}
+    .t-table{--cols:1fr}
+    .t-table .m-head{display:none}
+    .t-table .m-row:not(.m-head){max-height:none;row-gap:0}
     .t-table .m-row > span:nth-child(2),.t-table .m-row > span:nth-child(4),.t-table .m-row > span:nth-child(5){display:none}
-    .t-table .m-row > span:first-child{white-space:normal;line-height:1.35}
+    .t-table .m-row > span:first-child{white-space:normal;line-height:1.35;padding:16px 0 4px}
+    .t-table .m-row > span:nth-child(3){padding:0 0 16px;font-size:13px}
   }
 </style>
 
