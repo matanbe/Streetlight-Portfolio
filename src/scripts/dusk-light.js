@@ -7,7 +7,7 @@ export function initDuskLight(){
   if (noHomeLamp) lampSvg.style.display = 'none';   // pages without the home lamp: sky + render() only
   const KEY = 'dusk-tests-v1';
   // defaults = the Dusk tests page defaults; whatever was saved on that page wins (same origin → same storage)
-  const DEF = { light:'#ffb04a', core:'#fff1d6', skyTop:'#0b1f3d', skyMid:'#1d4a7a', skyMidAt:58, skyBot:'#0a1a33', vig:.55, grain:.06, grainSize:.9, grainBlend:'overlay',
+  const DEF = { light:'#f09800', core:'#ffe0a3', skyTop:'#0b1f3d', skyMid:'#1d4a7a', skyMidAt:58, skyBot:'#0a1a33', vig:.55, grain:.06, grainSize:.9, grainBlend:'overlay',
     poolR:520, poolA:.32, coneF:14, shape:'cone', coneDir:190, coneW:56, lampSize:460,
     beamOn:1, beamLen:620, beamStartW:34, beamStartOff:-4, beamA:.42, beamGamma:1.4, beamFeather:14, coreW:.38, coreA:.35, beamBlend:'screen',
     floorA:.18, floorAt:1, floorSize:1, floorFlat:.32, floorSoft:0, floorX:0, lampLit:.75, lampLitR:1.2, lampLitSide:.5,
@@ -17,7 +17,8 @@ export function initDuskLight(){
   const ENV = ['light', 'core', 'skyTop', 'skyMid', 'skyMidAt', 'skyBot', 'vig', 'grain', 'grainSize', 'grainBlend', 'tStr', 'tGamma', 'reach'];
   const LAMP_KEYS = Object.keys(DEF).filter(k => !ENV.includes(k));
   const SPREAD = { poolR:300, poolA:.18, shape:'spread', beamLen:360, beamA:.3, beamFeather:18, coreW:.3, coreA:.3, floorA:.2, floorSize:1, floorFlat:.32, lampLitR:.9, lampSpill:0, beamFront:.15, shLen:160, shA:.45 };
-  const STYLE_DEF = { cobra:{}, classic:{ coneW:70, baseH:.22 }, mushroom:{ coneW:110, beamStartW:60 }, double:{}, post:{ ...SPREAD }, globe:{ ...SPREAD, beamLen:420 } };
+  // Matan's tuned profiles (from Dusk tests screenshots)
+  const STYLE_DEF = { cobra:{ lampSize:540, headBlock:1, shape:'cone', coneDir:181, coneW:33, beamStartW:21, beamStartOff:-4, beamLen:440, beamA:1, beamGamma:1.65, beamFeather:21, coreW:.33, coreA:.33, poolOn:0, ground:'lamp base', floorAt:1, endFade:.45, poolA:.32, poolR:520, coneF:14, lampLit:.91, lampLitR:1.36, lampLitSide:.5, lampSpill:.28, beamFront:.28, baseH:.2, baseLit:.35, baseFall:.5, baseSide:.5, shA:.79, shLen:180, shW:19, shSoft:10, shDir:0, shX:-1, shZ:-2, shBase:.13 }, classic:{ coneW:70, baseH:.22 }, mushroom:{ coneW:110, beamStartW:60 }, double:{}, post:{ ...SPREAD }, globe:{ ...SPREAD, beamLen:420 } };
   let SV = {};
   // grain can also be set from the home page's dusk palette panel (overrides the test page)
   let GRAIN = null;
