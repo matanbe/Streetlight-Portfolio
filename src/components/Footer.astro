@@ -1,0 +1,12 @@
+---
+import { getSettings } from '../lib/cms';
+const { email, socials } = getSettings();
+---
+<footer class="site-foot">
+  <div class="ft-l"><span>© <span class="ft-y"></span> Streetlight Studio</span></div>
+  <a class="ft-logo" href="/" aria-label="Streetlight — home"><span class="lt-logo" data-logo aria-hidden="true"></span></a>
+  <div class="ft-r">
+    <a href={`mailto:${email}?subject=Hey%20Streetlight`}>{email}</a>
+    {socials.map(s => <><i class="ft-div"></i><a href={s.url} target="_blank" rel="noopener">{s.label}</a></>)}
+  </div>
+</footer>

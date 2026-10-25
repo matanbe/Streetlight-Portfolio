@@ -1,0 +1,72 @@
+[
+  {
+    "id": "oran-huberman",
+    "order": 1,
+    "ini": "OH",
+    "name": "Oran Huberman",
+    "role": "CEO, Kayma",
+    "proj": "Kayma Stories",
+    "short": "Matan's ability to <b>simplify, clear the noise</b> and identify the minimum necessary is what makes him an exceptional designer.",
+    "full": "I can wholeheartedly say that Matan is the kind of designer you want by your side when there are serious challenges related to complexity – an idea, an interface or an entire system with multiple stakeholders. Matan's ability to simplify, clear the noise and identify the minimum necessary, are what makes him an exceptional designer, and the products that come out under his hands to the magic of elegance and functionality."
+  },
+  {
+    "id": "moran-sinai",
+    "order": 2,
+    "ini": "MS",
+    "name": "Moran Sinai",
+    "role": "CEO & Co-founder, Cognit",
+    "proj": "Cognit",
+    "full": "Collaborating with Matan was an absolute delight. Not only did he grasp our needs, but his ability to articulate his design decisions, reassure us, and keep the focus on what truly mattered was truly remarkable. His patience, clear communication, and dedication to perfection made the entire process seamless and thoroughly enjoyable.",
+    "short": "His patience, clear communication, and <b>dedication to perfection</b> made the entire process seamless and thoroughly enjoyable."
+  },
+  {
+    "id": "ohad-ron",
+    "order": 3,
+    "ini": "OR",
+    "name": "Ohad Ron",
+    "role": "Former VP Product, Showdigs",
+    "proj": "Showdigs",
+    "full": "Matan's expertise in product, web, marketing and brand design, positions him as a key resource for any startup. His holistic skill set offers a one-stop solution, perfectly tailored to the needs of early-stage companies. Working with him streamlined our processes, enhanced our product, and was a true pleasure.",
+    "short": "Matan's expertise in product, web, marketing and brand design positions him as <b>a key resource for any startup</b>."
+  },
+  {
+    "id": "aviad-oren",
+    "order": 4,
+    "ini": "AO",
+    "name": "Aviad Oren",
+    "role": "CEO, Content Lab",
+    "proj": "Content Lab",
+    "short": "His ability to understand our business and transforming it into <b>a standout brand and website</b> was unmatched.",
+    "full": "Stumbling upon streetlight was a game-changer! After a string of disappointing experiences with other studios, Matan just blew us away. His ability to understand our business and transforming it into a standout brand and website was unmatched. Thanks to him, we now have a bold brand and an award-winning online presence. Now we proudly stand out in our industry. Highly recommend!"
+  },
+  {
+    "id": "maya-halevy",
+    "order": 5,
+    "ini": "MH",
+    "name": "Maya Halevy",
+    "role": "Director, The Bloomfield Science Museum Jerusalem",
+    "proj": "Bloomfield Museum",
+    "short": "He designed multiple stunning websites for our museum, <b>enhancing our digital presence significantly</b>.",
+    "full": "Working with Matan has been a fantastic experience. He designed multiple stunning websites for our museum, enhancing our digital presence significantly. His innovative approach and dedication to excellence ensured that each project exceeded our expectations. We couldn't be happier with the results and highly recommend Streetlight to anyone in need of top-tier design services."
+  },
+  {
+    "id": "merav-dvori-levi",
+    "order": 6,
+    "ini": "MD",
+    "name": "Merav Dvori Levi",
+    "role": "Head of marketing, SPNI",
+    "proj": "SPNI",
+    "short": "Matan excelled in redesigning our website, consolidating multiple sites into <b>one clear and effective platform</b>.",
+    "full": "Matan excelled in redesigning our website, consolidating multiple sites into one clear and effective platform. His ability to see the bigger picture and truly understand our goals is what make his standout from the crowd. He is trustworthy, reliable and it was a pleasure to work with him."
+  },
+  {
+    "id": "anis-kadis",
+    "order": 7,
+    "ini": "AK",
+    "name": "Anis Kadis",
+    "role": "Creative director & Founder, N1 Agency",
+    "proj": "N1",
+    "short": "From crafting our brand identity to swiftly delivering a website that perfectly embodies our vision, his communication and quick turnaround were <b>exceptional</b>.",
+    "full": "A designer who get things done. From crafting our brand identity to swiftly delivering a website that perfectly embodies our vision, his communication and quick turnaround were exceptional. I highly recommend him for any design project!"
+  }
+]

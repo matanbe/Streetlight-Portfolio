@@ -1,0 +1,44 @@
+{
+  "clients": [
+    "Amazon",
+    "Taboola",
+    "Aisap",
+    "Second Nature",
+    "Kovrr",
+    "Superwise",
+    "Showdigs",
+    "Commcrete",
+    "Cyber-Ridge",
+    "Chiral Energy",
+    "Kayma",
+    "Content Lab",
+    "Cognit",
+    "Traffilog",
+    "Buildin",
+    "B-summit",
+    "N1 Agency",
+    "Ecsite",
+    "National Library of Israel",
+    "SPNI",
+    "Davidson Institute",
+    "SpaceIL",
+    "TALI Foundation",
+    "Bloomfield Science Museum"
+  ],
+  "email": "matan@studiostreetlight.com",
+  "tagline": "Digital assets you’ll be proud to own.",
+  "socials": [
+    {
+      "label": "LI",
+      "url": "https://www.linkedin.com/in/mbd1"
+    },
+    {
+      "label": "IN",
+      "url": "https://www.instagram.com/studio.streetlight"
+    },
+    {
+      "label": "X",
+      "url": "https://x.com/matanbendavid_"
+    }
+  ]
+}

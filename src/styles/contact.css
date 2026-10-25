@@ -1,0 +1,80 @@
+/* contact form: drops from the navbar; tear the perforated stub off to send (ported from the prototype) */
+#contactPop{--bg:#ff4d1a;--ink:#1b1b1b}
+#contactPop{filter:drop-shadow(0 14px 28px rgba(27,27,27,.18)) drop-shadow(0 2px 4px rgba(27,27,27,.12))}
+#contactPop input::selection,#contactPop textarea::selection{background:#1b1b1b;color:#fff}
+#contactPop{position:fixed;right:16px;top:0;width:min(428px,calc(100vw - 32px));z-index:7100;transform:translateY(calc(-100% - 20px));
+              transition:transform .7s cubic-bezier(.7,0,.2,1);pointer-events:none;font-size:13px}
+#contactPop.on{transform:none;pointer-events:auto}
+#contactPop .cf-body{background:var(--bg);border:0;padding:22px 20px 16px;position:relative;align-content:start;display:grid;gap:14px}
+#contactPop .cf-head{display:flex;justify-content:space-between;align-items:baseline}
+#contactPop .cf-head b{font-weight:400;font-size:28px;letter-spacing:-.02em;color:var(--ink)}
+#contactPop .cf-head small{color:rgba(27,27,27,.6)}
+#contactPop .cf-x{background:none;border:0;cursor:pointer;color:var(--ink);line-height:0;padding:0;align-self:center}
+#contactPop .cf-x:hover{color:#fff}
+#contactPop label{display:grid;gap:4px;color:rgba(27,27,27,.6);font-size:13px}
+#contactPop input,#contactPop textarea{font:inherit;font-size:18px;color:var(--ink);background:transparent;border:0;border-bottom:1px solid rgba(27,27,27,.35);padding:2px 0 4px;outline:none;resize:none;border-radius:0}
+#contactPop label[data-f]::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:#fff;transform:scaleX(0);transform-origin:right;
+      transition:transform .5s cubic-bezier(.7,0,.2,1);pointer-events:none}
+#contactPop label[data-f]:focus-within::after{transform:scaleX(1);transform-origin:left}
+#contactPop label[data-f]{position:relative;padding-top:21px;gap:0}
+#contactPop label[data-f] .fl{position:absolute;left:0;top:23px;font-size:18px;line-height:1.3;color:rgba(27,27,27,.6);pointer-events:none;transform-origin:0 0;
+      transition:transform .28s cubic-bezier(.4,0,.2,1),color .28s;white-space:nowrap}
+#contactPop label[data-f]:focus-within .fl,#contactPop label[data-f]:has(input:not(:placeholder-shown)) .fl,#contactPop label[data-f]:has(textarea:not(:placeholder-shown)) .fl{transform:translateY(-23px) scale(.72)}
+#contactPop label[data-f]:focus-within .fl{color:#fff}
+#contactPop .bad .fl{color:#1b1b1b !important}
+#contactPop label[data-f].bad.bad::after{background:#1b1b1b;height:2px;transform:scaleX(1);transform-origin:left}
+#contactPop .err{display:block;font-size:14px;line-height:1;color:#1b1b1b;height:0;opacity:0;overflow:hidden;transition:height .3s,opacity .3s,margin .3s}
+#contactPop .bad .err{height:14px;opacity:1;margin-top:7px}
+#contactPop label[data-f].bad.bad::after{bottom:auto;top:var(--line-y,auto)}
+@keyframes cfNudge{0%,100%{transform:none}20%{transform:translateX(-6px)}45%{transform:translateX(5px)}70%{transform:translateX(-3px)}}
+#contactPop .nudge{animation:cfNudge .38s}
+#contactPop input::placeholder,#contactPop textarea::placeholder{color:transparent}
+#contactPop textarea{line-height:1.3;overflow:hidden;min-height:0;display:block}
+#contactPop .cf-b{display:grid;gap:16px;color:rgba(27,27,27,.6);font-size:13px;margin-top:8px}
+#contactPop .cf-budget{display:flex;flex-wrap:nowrap;gap:0}
+#contactPop .cf-budget button{font:inherit;font-size:14px;background:none;border:1px solid rgba(27,27,27,.35);color:var(--ink);padding:6px 4px;cursor:pointer;border-radius:0;flex:1 1 auto;white-space:nowrap}
+#contactPop .cf-budget button + button{margin-left:-1px}
+#contactPop .cf-budget button{position:relative}
+#contactPop .cf-budget button:hover,#contactPop .cf-budget button.on{z-index:1}
+#contactPop .cf-budget button{overflow:hidden;isolation:isolate;transition:color .45s cubic-bezier(.7,0,.2,1),border-color .45s}
+#contactPop .cf-budget button::before{content:"";position:absolute;inset:0;background:var(--ink);transform:scaleX(0);transform-origin:var(--o,left);
+      transition:transform .45s cubic-bezier(.7,0,.2,1);z-index:-1}
+#contactPop .cf-budget button:hover,#contactPop .cf-budget button.on{color:var(--bg);border-color:var(--ink)}
+#contactPop .cf-budget button:hover::before,#contactPop .cf-budget button.on::before{transform:scaleX(1)}
+#contactPop{--hole:3.4px;--pitch:11px;--notch:7px}
+#contactPop .cf-body{padding-bottom:22px;
+      -webkit-mask:radial-gradient(circle at 50% 100%,#0000 var(--hole),#000 calc(var(--hole) + .6px)) center bottom/var(--pitch) 100% repeat-x,
+                   radial-gradient(circle at 0 100%,#0000 var(--notch),#000 calc(var(--notch) + .6px)),
+                   radial-gradient(circle at 100% 100%,#0000 var(--notch),#000 calc(var(--notch) + .6px));
+      -webkit-mask-composite:source-in;mask-composite:intersect}
+.cf-stub{position:relative;display:block;width:100%;height:70px;padding:0;margin:0;border:0;background:none;font:inherit;color:var(--ink);cursor:grab;
+      touch-action:none;user-select:none;perspective:700px;perspective-origin:50% 0;text-align:left}
+.cf-strip{position:absolute;left:0;top:0;width:100%;transform-origin:50% 0;transform-style:preserve-3d}
+.cf-strip > .cf-face{position:absolute;inset:0;overflow:hidden;background:var(--bg);transition:background .25s,color .25s}
+.cf-face > .cf-in{position:absolute;left:0;width:100%;height:70px;display:flex;justify-content:center;align-items:center;padding:3px 20px 0;font-size:14px;font-weight:500;color:var(--ink)}
+.cf-face > i{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none}
+.cf-strip.s0 > .cf-face{
+      -webkit-mask:radial-gradient(circle at 50% 0,#0000 var(--hole),#000 calc(var(--hole) + .6px)) center top/var(--pitch) 100% repeat-x,
+                   radial-gradient(circle at 0 0,#0000 var(--notch),#000 calc(var(--notch) + .6px)),
+                   radial-gradient(circle at 100% 0,#0000 var(--notch),#000 calc(var(--notch) + .6px));
+      -webkit-mask-composite:source-in;mask-composite:intersect}
+#contactPop:not(.tearing):not(.sent) .cf-stub:hover .cf-face{background:#1b1b1b}
+#contactPop:not(.tearing):not(.sent) .cf-stub:hover .cf-in{color:#fff}
+#contactPop.tearing .cf-stub{cursor:grabbing}
+.cf-peel{position:absolute;pointer-events:none;display:none}
+#contactPop.peeling .cf-peel{display:block}
+#contactPop.peeling .cf-strip{visibility:hidden}
+.cf-in small{font-size:11px;opacity:.6}
+#contactPop .cf-done{display:none;padding:6px 0 4px;font-size:18px;line-height:1.3;line-height:1.45;color:var(--ink)}
+#contactPop .cf-done em{font-style:normal;color:#fff}
+#contactPop.sent .cf-form{display:none}
+#contactPop.sent .cf-done{display:block}
+#contactPop .cf-body{transition:background-color .8s cubic-bezier(.65,0,.25,1)}
+#contactPop.dark .cf-body{background:#1b1b1b}
+#contactPop .cf-head b,#contactPop .cf-x{transition:color .8s}
+#contactPop.dark .cf-head b,#contactPop.dark .cf-x{color:#fff}
+@keyframes cfShake{0%,100%{transform:none}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+#contactPop.shake .cf-stub{animation:cfShake .3s}
+html[data-theme="dusk"] #contactPop{--bg:var(--acc)}
+html[data-theme="dusk"] #contactPop:not(.tearing):not(.sent) .cf-stub:hover .cf-face{background:#fff}
+html[data-theme="dusk"] #contactPop:not(.tearing):not(.sent) .cf-stub:hover .cf-in{color:#1b1b1b}

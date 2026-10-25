@@ -1,0 +1,543 @@
+[
+  {
+    "id": "molad-institute",
+    "name": "Molad Institute",
+    "industry": "Policy research",
+    "year": "2026",
+    "disciplines": [
+      "Website",
+      "Branding"
+    ],
+    "lines": [],
+    "services": [],
+    "live": null,
+    "hasCase": false,
+    "heroOrder": null,
+    "moreOrder": null,
+    "about": null,
+    "outcome": null,
+    "chapters": []
+  },
+  {
+    "id": "commcrete",
+    "name": "Commcrete",
+    "industry": "Defense tech",
+    "year": "2026",
+    "disciplines": [
+      "Branding",
+      "Website",
+      "Marketing"
+    ],
+    "lines": [],
+    "services": [],
+    "live": null,
+    "hasCase": false,
+    "heroOrder": null,
+    "moreOrder": null,
+    "about": null,
+    "outcome": null,
+    "chapters": []
+  },
+  {
+    "id": "sunsay",
+    "name": "Sunsay",
+    "industry": "AI companion",
+    "year": "2026",
+    "disciplines": [
+      "Product",
+      "Branding",
+      "Marketing"
+    ],
+    "lines": [],
+    "services": [],
+    "live": null,
+    "hasCase": false,
+    "heroOrder": null,
+    "moreOrder": null,
+    "about": null,
+    "outcome": null,
+    "chapters": []
+  },
+  {
+    "id": "litevision",
+    "name": "Litevision",
+    "industry": "Defense tech",
+    "year": "2026",
+    "disciplines": [
+      "Website",
+      "Branding",
+      "Marketing"
+    ],
+    "lines": [],
+    "services": [],
+    "live": null,
+    "hasCase": false,
+    "heroOrder": null,
+    "moreOrder": null,
+    "about": null,
+    "outcome": null,
+    "chapters": []
+  },
+  {
+    "id": "second-nature",
+    "name": "Second Nature",
+    "industry": "Sales enablement",
+    "year": "2020–2025",
+    "disciplines": [
+      "Product",
+      "Branding",
+      "Marketing"
+    ],
+    "lines": [],
+    "services": [],
+    "live": null,
+    "hasCase": false,
+    "heroOrder": null,
+    "moreOrder": null,
+    "about": null,
+    "outcome": null,
+    "chapters": []
+  },
+  {
+    "id": "science-museum",
+    "name": "Science Museum",
+    "industry": "Arts & culture",
+    "year": "2022",
+    "disciplines": [
+      "Website"
+    ],
+    "lines": [],
+    "services": [],
+    "live": null,
+    "hasCase": false,
+    "heroOrder": null,
+    "moreOrder": null,
+    "about": null,
+    "outcome": null,
+    "chapters": []
+  },
+  {
+    "id": "young-scientists",
+    "name": "Young Scientists",
+    "industry": "Education",
+    "year": "2022",
+    "disciplines": [
+      "Website"
+    ],
+    "lines": [],
+    "services": [],
+    "live": null,
+    "hasCase": false,
+    "heroOrder": null,
+    "moreOrder": null,
+    "about": null,
+    "outcome": null,
+    "chapters": []
+  },
+  {
+    "id": "intent",
+    "name": "Intent",
+    "industry": "Defense tech",
+    "year": "2025",
+    "disciplines": [
+      "Branding",
+      "Marketing"
+    ],
+    "lines": [],
+    "services": [],
+    "live": null,
+    "hasCase": false,
+    "heroOrder": null,
+    "moreOrder": null,
+    "about": null,
+    "outcome": null,
+    "chapters": []
+  },
+  {
+    "id": "cryohexagon",
+    "name": "Cryohexagon",
+    "industry": "Healthcare",
+    "year": "2025",
+    "disciplines": [
+      "Website",
+      "Branding"
+    ],
+    "lines": [],
+    "services": [],
+    "live": null,
+    "hasCase": false,
+    "heroOrder": null,
+    "moreOrder": null,
+    "about": null,
+    "outcome": null,
+    "chapters": []
+  },
+  {
+    "id": "cyberidge",
+    "name": "CybeRidge",
+    "industry": "Cybersecurity",
+    "year": "2025",
+    "disciplines": [
+      "Website",
+      "Branding",
+      "Marketing"
+    ],
+    "lines": [
+      "Post-quantum optical security for data in transit.",
+      "Protecting data as it travels through fiber."
+    ],
+    "services": [
+      "Website",
+      "Branding"
+    ],
+    "live": "https://www.cyber-ridge.com/",
+    "hasCase": true,
+    "heroOrder": 1,
+    "moreOrder": null,
+    "about": null,
+    "outcome": null,
+    "chapters": []
+  },
+  {
+    "id": "geoquant",
+    "name": "Geoquant",
+    "industry": "Geopolitics",
+    "year": "2017–2018",
+    "disciplines": [
+      "Product",
+      "Website",
+      "Branding",
+      "Marketing"
+    ],
+    "lines": [
+      "Quantitative analysis of geopolitical risks and trends.",
+      "Solo designer, every design aspect of the company."
+    ],
+    "services": [
+      "SaaS",
+      "UX/UI"
+    ],
+    "live": null,
+    "hasCase": true,
+    "heroOrder": 2,
+    "moreOrder": null,
+    "about": "Geoquant uses quantitative methods to analyze geopolitical risks and trends — data and analysis that help businesses and governments understand how geopolitics affects investments, supply chains and security.",
+    "outcome": {
+      "k": "The results are in",
+      "v": "Fitch Group acquired GeoQuant to enhance its global risk analysis."
+    },
+    "chapters": [
+      {
+        "key": "product",
+        "label": "Product",
+        "slides": [
+          {
+            "t": "User-friendly dashboard",
+            "p": "A quick overview of recent dramatic events, with an easy way to filter and focus on what matters most to each analyst."
+          },
+          {
+            "t": "Different views of the same data",
+            "p": "Multiple views let analysts explore and compare data points in more ways — more insights, and better ones."
+          },
+          {
+            "t": "Exploratory graph",
+            "p": "The main research tool, built from the ground up to support multiple views for deep investigation."
+          },
+          {
+            "t": "In-app reporting",
+            "p": "Research showed users preferred to write reports inside the app — so we added graph annotations, a rich text editor and better export and sharing."
+          },
+          {
+            "t": "Data-point ranking",
+            "p": "Ranking and scoring data points improves insights and predictions, and refines the data set behind the algorithms."
+          }
+        ]
+      },
+      {
+        "key": "brand",
+        "label": "Web & Brand",
+        "slides": [
+          {
+            "t": "Website, brand & marketing",
+            "p": "As a one-man team, everything from the login screen to the email signature had to feel consistent, polished and trustworthy."
+          },
+          {
+            "t": "The brand",
+            "p": "A sleek, dark theme with bold colors — a futuristic feel that sets the product apart from traditional political-risk analysis."
+          },
+          {
+            "t": "The brand",
+            "p": "A sleek, dark theme with bold colors — a futuristic feel that sets the product apart from traditional political-risk analysis.",
+            "cont": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dorot",
+    "name": "Dorot",
+    "industry": "Education",
+    "year": "2023",
+    "disciplines": [
+      "Website",
+      "Product"
+    ],
+    "lines": [
+      "The Jewish Timeline — 4,000 years of Jewish history.",
+      "An interactive timeline for the Tali Center."
+    ],
+    "services": [
+      "Website",
+      "Data Viz",
+      "UX/UI"
+    ],
+    "live": "https://dorot.tali.org.il/",
+    "hasCase": true,
+    "heroOrder": 3,
+    "moreOrder": null,
+    "about": null,
+    "outcome": null,
+    "chapters": []
+  },
+  {
+    "id": "kayma-stories",
+    "name": "Kayma Stories",
+    "industry": "Education",
+    "year": "2020",
+    "disciplines": [
+      "Website"
+    ],
+    "lines": [
+      "Turning complex academic research into something people want to read.",
+      "Eight stories on economic behavior in everyday life."
+    ],
+    "services": [
+      "Website",
+      "Illustration"
+    ],
+    "live": null,
+    "hasCase": true,
+    "heroOrder": 4,
+    "moreOrder": null,
+    "about": null,
+    "outcome": null,
+    "chapters": []
+  },
+  {
+    "id": "cognit",
+    "name": "Cognit",
+    "industry": "Agency",
+    "year": "2023",
+    "disciplines": [
+      "Website",
+      "Branding"
+    ],
+    "lines": [
+      "Identity and website for a UX and usability testing agency.",
+      "Highly professional, with a personal touch."
+    ],
+    "services": [
+      "Website",
+      "Branding"
+    ],
+    "live": null,
+    "hasCase": true,
+    "heroOrder": 5,
+    "moreOrder": null,
+    "about": null,
+    "outcome": null,
+    "chapters": []
+  },
+  {
+    "id": "showdigs",
+    "name": "Showdigs",
+    "industry": "Real estate",
+    "year": "2018–2020",
+    "disciplines": [
+      "Product",
+      "Marketing"
+    ],
+    "lines": [
+      "Scheduling and managing property showings.",
+      "An on-demand marketplace for real estate."
+    ],
+    "services": [
+      "SaaS",
+      "UX/UI"
+    ],
+    "live": null,
+    "hasCase": true,
+    "heroOrder": null,
+    "moreOrder": 1,
+    "about": null,
+    "outcome": null,
+    "chapters": []
+  },
+  {
+    "id": "chiral-energy",
+    "name": "Chiral Energy",
+    "industry": "Energy",
+    "year": "2024",
+    "disciplines": [
+      "Branding",
+      "Website"
+    ],
+    "lines": [
+      "Boosting next-gen power and computing",
+      "by aligning the electron spin."
+    ],
+    "services": [
+      "Website",
+      "Branding"
+    ],
+    "live": "https://www.chiral.energy/",
+    "hasCase": true,
+    "heroOrder": null,
+    "moreOrder": 2,
+    "about": null,
+    "outcome": null,
+    "chapters": []
+  },
+  {
+    "id": "content-lab",
+    "name": "Content Lab",
+    "industry": "Content",
+    "year": "2021",
+    "disciplines": [
+      "Branding",
+      "Website"
+    ],
+    "lines": [
+      "Identity and website for an SEO content agency.",
+      "Geometric shapes meet optical illusions."
+    ],
+    "services": [
+      "Website",
+      "Branding"
+    ],
+    "live": null,
+    "hasCase": true,
+    "heroOrder": null,
+    "moreOrder": 3,
+    "about": null,
+    "outcome": null,
+    "chapters": []
+  },
+  {
+    "id": "science-museum-decade-report",
+    "name": "Science Museum Decade Report",
+    "industry": "Arts & culture",
+    "year": "2021",
+    "disciplines": [
+      "Website",
+      "Branding"
+    ],
+    "lines": [],
+    "services": [],
+    "live": null,
+    "hasCase": true,
+    "heroOrder": null,
+    "moreOrder": 4,
+    "about": null,
+    "outcome": null,
+    "chapters": []
+  },
+  {
+    "id": "the-traffic-report",
+    "name": "The Traffic Report",
+    "industry": "Education",
+    "year": "2019",
+    "disciplines": [
+      "Website"
+    ],
+    "lines": [],
+    "services": [],
+    "live": null,
+    "hasCase": false,
+    "heroOrder": null,
+    "moreOrder": 5,
+    "about": null,
+    "outcome": null,
+    "chapters": []
+  },
+  {
+    "id": "napoleon-journeys",
+    "name": "Napoleon Journeys",
+    "industry": "Education",
+    "year": "2017",
+    "disciplines": [
+      "Website"
+    ],
+    "lines": [],
+    "services": [],
+    "live": null,
+    "hasCase": true,
+    "heroOrder": null,
+    "moreOrder": null,
+    "about": null,
+    "outcome": null,
+    "chapters": []
+  },
+  {
+    "id": "n1",
+    "name": "N1",
+    "industry": "Agency",
+    "year": "2023",
+    "disciplines": [
+      "Branding",
+      "Website"
+    ],
+    "lines": [],
+    "services": [],
+    "live": null,
+    "hasCase": true,
+    "heroOrder": null,
+    "moreOrder": null,
+    "about": null,
+    "outcome": null,
+    "chapters": []
+  },
+  {
+    "id": "superwise",
+    "name": "Superwise",
+    "industry": "MLOps",
+    "year": "2019–2021",
+    "disciplines": [
+      "Product",
+      "Website",
+      "Branding",
+      "Marketing"
+    ],
+    "lines": [],
+    "services": [],
+    "live": null,
+    "hasCase": false,
+    "heroOrder": null,
+    "moreOrder": null,
+    "about": null,
+    "outcome": null,
+    "chapters": []
+  },
+  {
+    "id": "aisap",
+    "name": "Aisap",
+    "industry": "Healthcare",
+    "year": "2023–2026",
+    "disciplines": [
+      "Product",
+      "Branding",
+      "Website",
+      "Marketing"
+    ],
+    "lines": [],
+    "services": [],
+    "live": null,
+    "hasCase": true,
+    "heroOrder": null,
+    "moreOrder": null,
+    "about": null,
+    "outcome": null,
+    "chapters": []
+  }
+]

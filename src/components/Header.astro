@@ -1,0 +1,34 @@
+---
+// the navbar: wordmark + tagline, links, Contact; on mobile a burger opens a full-screen menu
+import { getSettings } from '../lib/cms';
+const { tagline, email } = getSettings();
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const LINKS = [
+  { href: '/work', label: 'Work' },
+  { href: '/#about', label: 'About' },
+  { href: '/playground', label: 'Playground' },
+  { href: '/thoughts', label: 'Thoughts' },
+];
+const cur = (h: string) => (h !== '/#about' && (path === h || path.startsWith(h + '/'))) ? 'page' : undefined;
+const [t1, t2] = tagline.split(' be ');
+---
+<div id="mnav" aria-hidden="true">
+  <ul class="mn-links">
+    {LINKS.map((l, k) => <li><a href={l.href} style={`--k:${k}`} aria-current={cur(l.href)}><span>{l.label}</span><small>{String(k + 1).padStart(2, '0')}</small></a></li>)}
+  </ul>
+  <div class="mn-foot">
+    <button class="mn-contact" type="button">Let’s talk <span>→</span></button>
+    <div class="mn-row"><a href={`mailto:${email}`}>{email}</a><button class="mn-night" type="button" aria-pressed="false"><span class="mn-dot"></span><b>Lights</b></button></div>
+  </div>
+</div>
+<header id="top">
+  <nav aria-label="Main">
+    {LINKS.map(l => <a href={l.href} aria-current={cur(l.href)}>{l.label}</a>)}
+    <a id="contact" class="fx solid" href="#contact" data-nav="contact"><span class="l-txt">Contact</span></a>
+  </nav>
+  <button id="burger" aria-label="Menu" aria-expanded="false" aria-controls="mnav"><i></i><i></i></button>
+  <div class="brand"><div class="b-txt">
+    <a class="logo" href="/" aria-label="Streetlight — home"><span class="lt-logo" data-logo aria-hidden="true"></span></a>
+    <p class="tagline">{t1}<br>be {t2}</p>
+  </div><slot name="brand" /></div>
+</header>

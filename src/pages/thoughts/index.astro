@@ -1,0 +1,53 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getPosts } from '../../lib/cms';
+const posts = await getPosts();
+const topics = [...new Set(posts.map(p => p.topic))];
+const count = (t: string | null) => t ? posts.filter(p => p.topic === t).length : posts.length;
+---
+<Base title="Thoughts" description="מחשבות על עיצוב, קריירה ותעשייה — מאת מתן בן דוד.">
+  <section class="page thoughts" dir="rtl" lang="he">
+    <h1>עיצוב, קריירה ודלפ״ים <span class="t-soon" dir="ltr" lang="en">(English may come soon)</span></h1>
+    <nav class="chips" id="filters" aria-label="סינון לפי נושא">
+      {[null, ...topics].map(t => <button data-t={t ?? ''} class={t ? '' : 'on'}>{t ?? 'הכל'}<span>{count(t)}</span></button>)}
+    </nav>
+    <div class="m-table t-table" role="table">
+      <div class="m-row m-head" role="row"><span>כותרת</span><span>נושא</span><span>תאריך</span><span>קריאה</span><span></span></div>
+      {posts.map(p => (
+        <a class="m-row" role="row" href={`/thoughts/${p.id}`} data-topic={p.topic}>
+          <span>{p.title}</span><span class="c2">{p.topic}</span><span class="c3">{p.date}</span><span class="c3">{p.read} דק׳</span>
+          <span class="go"><span class="l-arr"><i>→</i><i>→</i></span></span>
+        </a>
+      ))}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .thoughts{font-size:15px}
+  .thoughts h1{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 12px}
+  .t-soon{font-size:14px;letter-spacing:0;color:var(--acc)}
+  .t-table{--cols:var(--c1,360px) var(--c2,140px) var(--c3,60px) var(--c4,60px) 1fr}
+  .t-table .m-row{font-size:15px}
+  .t-table .m-head > span{font-size:12px}
+  .t-table .m-row > span{padding-inline:0 12px}
+  @media (max-width:800px){
+    .t-table{--cols:1fr auto}
+    .t-table .m-row > span:nth-child(2),.t-table .m-row > span:nth-child(4),.t-table .m-row > span:nth-child(5){display:none}
+    .t-table .m-row > span:first-child{white-space:normal;line-height:1.35}
+  }
+</style>
+
+<script>
+  const table = document.querySelector('.t-table') as HTMLElement, rows = [...table.querySelectorAll<HTMLElement>('.m-row:not(.m-head)')];
+  const filters = document.getElementById('filters')!;
+  filters.addEventListener('click', e => {
+    const b = (e.target as HTMLElement).closest('button'); if (!b) return;
+    rows.forEach(r => r.classList.toggle('out', !!b.dataset.t && r.dataset.topic !== b.dataset.t));
+    filters.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+  });
+  const fit = () => { if (matchMedia('(max-width:800px)').matches) return; [1, 2, 3, 4].forEach(c => { let w = 0;
+    table.querySelectorAll(`.m-row > span:nth-child(${c})`).forEach(sp => { const r = document.createRange(); r.selectNodeContents(sp); w = Math.max(w, r.getBoundingClientRect().width); });
+    table.style.setProperty('--c' + c, Math.ceil(w + 14) + 'px'); }); };
+  fit(); addEventListener('resize', fit); document.fonts?.ready.then(fit);
+</script>

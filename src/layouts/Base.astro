@@ -1,0 +1,36 @@
+---
+import '../styles/global.css';
+import '../styles/contact.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Contact from '../components/Contact.astro';
+interface Props { title?: string; description?: string; lang?: string; footer?: boolean }
+const { title, description = 'Streetlight is a creative design studio run by Matan Ben David — brand, web & product.', lang = 'en', footer = true } = Astro.props;
+const full = title ? `${title} — Streetlight` : 'Streetlight — Digital assets you’ll be proud to own';
+---
+<!doctype html>
+<html lang={lang}>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{full}</title>
+  <meta name="description" content={description}>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="/fonts/SimplerProMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <meta property="og:title" content={full}>
+  <meta property="og:description" content={description}>
+  <meta property="og:type" content="website">
+  <!-- day / dusk before the first paint, so there's no flash -->
+  <script is:inline>try { if (sessionStorage.getItem('sl-theme') === 'dusk') document.documentElement.dataset.theme = 'dusk'; } catch(e){}</script>
+  <slot name="head" />
+</head>
+<body>
+  <div id="sky" aria-hidden="true"></div>
+  <Header><slot name="brand" slot="brand" /></Header>
+  <Contact />
+  <main><slot /></main>
+  {footer && <Footer />}
+  <script>import '../scripts/site.js'; import '../scripts/contact.js';</script>
+  <slot name="end" />
+</body>
+</html>
