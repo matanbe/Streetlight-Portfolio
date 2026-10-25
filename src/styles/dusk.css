@@ -9,3 +9,4 @@ html.sky-cone #duskSky .glow{-webkit-mask:conic-gradient(from var(--sky-cs) at v
 .dsk-c{position:fixed;left:0;top:0;pointer-events:none;display:none}
 html[data-theme="dusk"] .dsk-c{display:block}
 #dskShad{mix-blend-mode:normal}
+#duskSky ~ #sky{display:none}   /* the canvas sky (with grain) replaces the CSS fallback */
