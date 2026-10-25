@@ -1293,7 +1293,7 @@ async function openProject(i, push = true){
     buildProject(i); projEl.classList.add('open'); projTop();
     dock(makeFlyer(i, projEl.querySelector('.hero-slot').getBoundingClientRect()));
     document.body.classList.add('in-project'); projEl.classList.add('bg');
-    if (push) hist('pushState', {p: i, ours: true}, '', '#project/' + SLUG(PROJECTS[i].name));
+    if (push) hist('pushState', {p: i, ours: true}, '', '/work/' + SLUG(PROJECTS[i].name));
     projEl.querySelector('.p-intro').classList.add('fade-in');
     projEl.animate([{opacity: 0}, {opacity: 1}], {duration: 450, easing: 'ease'});
     await wait(120); projEl.classList.add('below', 'shown'); MAP.intro = performance.now(); drawMap(); CH.cur = -2; caseFx();
@@ -1308,7 +1308,7 @@ async function openProject(i, push = true){
   cubes[i].wrap.style.visibility = 'hidden';
   document.body.classList.add('in-project');
   projEl.classList.add('bg');
-  if (push) hist('pushState', {p: i, ours: true}, '', '#project/' + SLUG(PROJECTS[i].name));
+  if (push) hist('pushState', {p: i, ours: true}, '', '/work/' + SLUG(PROJECTS[i].name));
   intro.style.visibility = 'hidden';
   const tf = iRect ? textFlight(i, iRect, intro, false) : null;
   if (!iRect) intro.classList.add('fade-in');
@@ -1370,7 +1370,7 @@ async function toNextProject(j, frameEl, push = true){
   buildProject(j); projTop();
   projEl.querySelector('.p-intro').classList.add('fade-in');
   const to = projEl.querySelector('.hero-slot').getBoundingClientRect();
-  if (push) hist('pushState', {p: j, ours: true}, '', '#project/' + SLUG(PROJECTS[j].name));
+  if (push) hist('pushState', {p: j, ours: true}, '', '/work/' + SLUG(PROJECTS[j].name));
   if (cubes[i]) cubes[i].wrap.style.visibility = ''; if (cubes[j]) cubes[j].wrap.style.visibility = 'hidden';
   setTimeout(() => projEl.classList.add('below'), DUR - 300);
   await fly(f, from, to);
@@ -1407,7 +1407,7 @@ function closeFromUI(){
   const st = (()=>{ try { return history.state; } catch(e){ return null; } })();
   closeProject();
   if (st && st.ours){ skipPop++; if (!hist('back')) skipPop--; }
-  else hist('replaceState', {}, '', location.pathname + location.search);
+  else hist('replaceState', {}, '', '/' + location.search);
 }
 addEventListener('popstate', e => {
   if (skipPop){ skipPop--; return; }
@@ -1422,19 +1422,19 @@ window.slOpenProject = name => { const i = PROJECTS.findIndex(p => p.name === na
 (function(){
   const m = location.hash.match(/^#project\/(.+)$/); if (!m) return;
   const i = PROJECTS.findIndex(p => SLUG(p.name) === m[1]); if (i < 0) return;
-  hist('replaceState', {p: i}, '', location.hash);
+  hist('replaceState', {p: i}, '', '/work/' + m[1]);   // the shareable address
   setTimeout(() => openProject(i, false), 400);
 })();
 
 
 // ---------------- header links on the home page: the logo scrolls to the top, About scrolls to its section ----------------
 function smoothTo(y){ if (window.lenis) window.lenis.scrollTo(y, {duration: 1.1}); else window.scrollTo({top: y, behavior: 'smooth'}); }
-async function leaveOverlays(){ if (openIdx >= 0){ await closeProject(); hist('replaceState', {}, '', location.pathname + location.search); } }
+async function leaveOverlays(){ if (openIdx >= 0){ await closeProject(); hist('replaceState', {}, '', '/' + location.search); } }
 document.addEventListener('click', async e => {
   const a = e.target.closest('a[href="/"], a[href="/#about"]'); if (!a || e.metaKey || e.ctrlKey) return;
   e.preventDefault();
   await leaveOverlays();
-  if (location.hash) hist('replaceState', {}, '', location.pathname + location.search);
+  if (location.hash) hist('replaceState', {}, '', '/' + location.search);
   if (a.getAttribute('href') === '/') smoothTo(0); else smoothTo(document.getElementById('about').offsetTop);
 });
 if (location.hash === '#about') setTimeout(() => smoothTo(document.getElementById('about').offsetTop), 300);

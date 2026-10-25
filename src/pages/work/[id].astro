@@ -1,18 +1,27 @@
 ---
-// /work/<project> — for now the case opens over the home page (#project/<id>); this page forwards there.
-// TODO: a full static project page (same layout as the overlay) for search engines and sharing.
-import { getProjects } from '../../lib/cms';
+// /work/<project>: the shareable address of a case study. It carries the project's own title + description (+ the studio share image),
+// then hands over to the home page, where the card flies open (/#project/<id>), and the address bar is set back to /work/<id>.
+import { getProjects, getSettings } from '../../lib/cms';
 export async function getStaticPaths(){
   return (await getProjects()).filter(p => p.hasCase).map(p => ({ params: { id: p.id }, props: { p } }));
 }
 const { p } = Astro.props;
 const to = `/#project/${p.id}`;
+const title = `${p.seo?.title || p.name} — Streetlight`;
+const description = p.seo?.description || p.lines.join(' ') || `${p.name} — ${p.industry}, ${p.year}. Case study by Streetlight.`;
+const url = new URL(`/work/${p.id}`, Astro.site), og = new URL('/og.png', Astro.site);
 ---
 <!doctype html>
 <html lang="en"><head>
-  <meta charset="utf-8"><title>{p.name} — Streetlight</title>
-  <meta name="description" content={p.lines.join(' ') || `${p.name} — ${p.industry}, ${p.year}`}>
-  <link rel="canonical" href={new URL(`/work/${p.id}`, Astro.site)}>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{title}</title>
+  <meta name="description" content={description}>
+  <link rel="canonical" href={url}>
+  <meta property="og:type" content="article"><meta property="og:title" content={title}><meta property="og:description" content={description}>
+  <meta property="og:url" content={url}><meta property="og:image" content={og}><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content={og}>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <meta http-equiv="refresh" content={`0; url=${to}`}>
   <script is:inline define:vars={{ to }}>location.replace(to);</script>
+  <style>body{background:#f3f2ee;color:#1b1b1b;font:14px ui-monospace,monospace;padding:24px}</style>
 </head><body><a href={to}>{p.name}</a></body></html>

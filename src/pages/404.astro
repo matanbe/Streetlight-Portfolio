@@ -1,0 +1,17 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Not found" description="This street is dark — the page isn’t here.">
+  <section class="page nf">
+    <div class="idx">404</div>
+    <h1>This street is dark.</h1>
+    <p>The page you’re after isn’t here — maybe it moved, maybe it never was.</p>
+    <a class="fx solid nf-btn" href="/"><span class="l-txt">Back to the light</span><span class="l-arr"><i>→</i><i>→</i></span></a>
+  </section>
+</Base>
+<style>
+  .nf{min-height:60vh;display:grid;align-content:center;justify-items:start;gap:0}
+  .nf h1{font-size:clamp(40px,7vw,88px);letter-spacing:-.03em;line-height:1;margin-bottom:20px}
+  .nf p{color:var(--ink2);max-width:46ch;margin-bottom:36px}
+  .nf-btn{border:1px solid var(--ink);border-radius:999px;padding:12px 22px;background:var(--ink);color:var(--bg);text-decoration:none}
+</style>

@@ -21,6 +21,13 @@ const full = title ? `${title} — Streetlight` : 'Streetlight — Digital asset
   <meta property="og:title" content={full}>
   <meta property="og:description" content={description}>
   <meta property="og:type" content="website">
+  <meta property="og:url" content={new URL(Astro.url.pathname, Astro.site)}>
+  <meta property="og:image" content={new URL('/og.png', Astro.site)}>
+  <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content={new URL('/og.png', Astro.site)}>
+  <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)}>
+  <meta name="theme-color" content="#f3f2ee">
   <!-- day / dusk before the first paint, so there's no flash -->
   <script is:inline>try { if (sessionStorage.getItem('sl-theme') === 'dusk') document.documentElement.dataset.theme = 'dusk'; } catch(e){}</script>
   <slot name="head" />
