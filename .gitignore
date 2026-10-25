@@ -8,3 +8,5 @@ dist/
 .DS_Store
 .sync/
 Claude outputs/
+.vercel
+.env*
