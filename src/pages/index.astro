@@ -11,13 +11,13 @@ const by = (k: 'heroOrder' | 'moreOrder') => all.filter(p => p[k]).sort((a, b) =
 const hero = by('heroOrder'), more = by('moreOrder');
 // project pages (the overlay): the hero cards first, then every other project that has a case
 const withCase = [...hero, ...all.filter(p => p.hasCase && !p.heroOrder)];
-const projects = withCase.map(p => ({ name: p.name, lines: p.lines.length ? p.lines : [p.industry], meta: [p.year, ...p.services].join(' · '), live: p.live ?? undefined, id: p.id }));
+const projects = withCase.map(p => ({ name: p.name, lines: p.lines.length ? p.lines : [p.industry], meta: [p.year, ...p.services].join(' · '), live: p.live ?? undefined, id: p.id, hero: p.hero ?? undefined }));
 const cases = Object.fromEntries(withCase.filter(p => p.chapters.length).map(p => [p.name, { about: p.about, outcome: p.outcome ?? undefined, chapters: p.chapters }]));
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
 const moreRows = more.map((p, i) => `<div class="m-row" role="row" style="--d:${i}"><span>${esc(p.name)}</span><span>${esc(p.industry)}</span><span>${p.year}</span><span class="go"><span class="l-arr"><i>→</i><i>→</i></span></span></div>`).join('');
 const moreLinks = more.map(p => ({ ...(p.hasCase ? { home: p.name } : {}), ...(p.live ? { live: p.live } : {}) }));
 const testimonials = (await getTestimonials()).map(({ id, order, ...t }) => t);
-const SL = { projects, cases, heroCount: hero.length, testimonials, clients: getSettings().clients, moreRows, moreLinks };
+const SL = { projects, cases, heroCount: hero.length, testimonials, clients: (await getSettings()).clients, moreRows, moreLinks };
 ---
 <Base bare footer={false}>
   <Reel slot="brand" />

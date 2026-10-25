@@ -590,3 +590,9 @@ html[data-theme="dusk"] .site-foot{background:transparent}
 html[data-theme="dusk"] #about .ab-btn:hover,html[data-theme="dusk"] #contact:hover,html[data-theme="dusk"] #contact:hover .l-txt{color:var(--bg) !important}
 html[data-theme="dusk"] #top nav a:not(#contact){color:color-mix(in srgb,rgb(var(--sky-light)) calc(var(--lk,0) * 100%),var(--ink))}
 html[data-theme="dusk"] .site-foot{color:color-mix(in srgb,rgb(var(--sky-light)) calc(var(--lk,0) * 100%),var(--ink));border-top-color:color-mix(in srgb,rgb(var(--sky-light)) calc(var(--lk,0) * 100%),var(--ink))}
+
+/* real images from the CMS */
+.hero-art video,.s-media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.slide.has-media .s-no,.slide.has-media .s-lbl{display:none}
+.slide.has-media .s-frame{background:none}
+.f-top.img{background-size:cover;background-position:center}

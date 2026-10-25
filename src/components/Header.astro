@@ -1,7 +1,7 @@
 ---
 // the navbar: wordmark + tagline, links, Contact; on mobile a burger opens a full-screen menu
 import { getSettings } from '../lib/cms';
-const { tagline, email } = getSettings();
+const { tagline, email } = await getSettings();
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const LINKS = [
   { href: '/work', label: 'Work' },

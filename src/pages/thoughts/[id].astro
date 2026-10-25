@@ -1,15 +1,13 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { getPosts } from '../../lib/cms';
-import { blocksToHtml } from '../../lib/post';
 export async function getStaticPaths(){
   const posts = await getPosts();
   return posts.map(p => ({ params: { id: p.id }, props: { post: p, all: posts } }));
 }
 const { post, all } = Astro.props;
-const html = blocksToHtml(post.blocks);
-const first = post.blocks.find((b: any) => b.p) as any;
-const description = first ? first.p.replace(/\*\*/g, '').slice(0, 155) : post.title;
+const html = post.html;
+const description = post.description;
 const others = all.filter(p => p.id !== post.id);
 ---
 <Base title={post.title} description={description} lang="he">

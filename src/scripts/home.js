@@ -316,6 +316,9 @@ const cubes = SECTIONS.map((s,i)=>{
   stage.appendChild(w);
   return {wrap:w, cube:w.querySelector('.cube'), shadow:w.querySelector('.shadow')};
 });
+// the CMS hero image on the card's face (the flying hero picks it up from here too)
+cubes.forEach((c, i) => { const H = PROJECTS[i] && PROJECTS[i].hero; if (!H || H.video) return;
+  const top = c.wrap.querySelector('.f-top'); top.classList.add('img'); top.style.backgroundImage = `url('${H.url}/m/800x0')`; top.innerHTML = ''; });
 
 // ---------- hairline figures on the front faces ----------
 const FIGS = ['vault','terrain','terrain','turntable','phone','phone','router','terminal'];
@@ -1190,6 +1193,8 @@ var lastActive = -1, lastBest = 0;   // var: render() may run before this line
 
 function frontFace(i){ return cubes[i].wrap.querySelector(P.target === 'top' ? '.f-top' : '.f-front'); }
 function heroInner(i){
+  const H = PROJECTS[i].hero;   // from the CMS
+  if (H) return H.video ? `<div class="hero-art"><video src="${H.url}" muted loop playsinline autoplay></video></div>` : `<div class="hero-art" style="background-image:url('${H.url}/m/1600x0')"></div>`;
   const top = cubes[i] && cubes[i].wrap.querySelector('.f-top');   // projects past HERO_COUNT have no cube
   if (top && top.classList.contains('img'))
     return `<div class="hero-art" style="background-image:${getComputedStyle(top).backgroundImage.replace(/"/g, "'")}"></div>`;
@@ -1216,7 +1221,8 @@ function buildProject(i){
     return head + ch.slides.map((sl, si) => { const k = n++;
       const hs = sl.hs ? sl.hs.map((h, hi) => `<button class="hs" style="left:${h.x}%;top:${h.y}%;--k:${hi}" data-h="${hi}">${hi+1}</button>`).join('')
                          + `<svg class="hs-line" preserveAspectRatio="none"><path/></svg><div class="hs-card"></div><span class="hs-hint">Tap the numbers to explore</span>` : '';
-      return `<figure class="slide" data-ch="${ci}" data-k="${k}"><div class="s-frame"><span class="s-no">${String(k+1).padStart(2,'0')}</span><span class="s-lbl">slide ${String(k+1).padStart(2,'0')} / ${total}</span>${multi ? `<span class="s-tag">${ch.label}</span>` : ''}${hs}</div>${(sl.t || sl.p) && !sl.cont ? `<figcaption class="s-cap">${sl.t ? `<b>${sl.t}</b>` : ''}${sl.p ? `<span>${sl.p}</span>` : ''}</figcaption>` : ''}</figure>`; }).join('');
+      const media = sl.img ? (sl.img.video ? `<video class="s-media" src="${sl.img.url}" muted loop playsinline autoplay></video>` : `<img class="s-media" src="${sl.img.url}/m/1800x0" alt="${(sl.img.alt || sl.t || '').replace(/"/g, '&quot;')}" loading="lazy">`) : '';
+      return `<figure class="slide${sl.img ? ' has-media' : ''}" data-ch="${ci}" data-k="${k}"><div class="s-frame">${media}<span class="s-no">${String(k+1).padStart(2,'0')}</span><span class="s-lbl">slide ${String(k+1).padStart(2,'0')} / ${total}</span>${multi ? `<span class="s-tag">${ch.label}</span>` : ''}${hs}</div>${(sl.t || sl.p) && !sl.cont ? `<figcaption class="s-cap">${sl.t ? `<b>${sl.t}</b>` : ''}${sl.p ? `<span>${sl.p}</span>` : ''}</figcaption>` : ''}</figure>`; }).join('');
   }).join('');
   const navHTML = multi ? `<nav class="p-chap reveal" style="--d:4">${C.chapters.map((ch, ci) => `<div class="c-grp" data-ch="${ci}"><span class="c-lbl"><b>${String(ci+1).padStart(2,'0')}</b>${ch.label}</span><ol>${
       ch.slides.filter(s => !s.cont).map(s => `<li data-t="${s.t}">${s.t}</li>`).join('')}</ol></div>`).join('')}</nav>` : '';
