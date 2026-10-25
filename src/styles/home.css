@@ -61,9 +61,10 @@ body.in-tail #stage{opacity:0}
   #more .m-row > span:nth-child(2){display:none}
   #more .m-row > span:first-child{white-space:normal}
   #more .m-top{flex-direction:column;align-items:flex-start}
-  #about .strip{grid-template-columns:repeat(3,1fr)}
+  #about .strip{grid-template-columns:repeat(3,1fr) !important}
   #about .slot:nth-child(n+4){display:none}
   #about .lg{font-size:12px;padding:0 6px;justify-items:center}
+  #about{z-index:4200 !important}   /* phones: the About text reads over the lamp (it passes behind) */
   #about h2{font-size:clamp(32px,9vw,44px)}
   .p-now{position:static !important;width:auto !important}
   .p-grid{grid-template-columns:1fr !important;padding-top:84px}

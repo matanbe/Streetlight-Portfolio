@@ -1078,14 +1078,14 @@ const HomeLamps = (function(){
     else {
       h = lerp(small, midH, a1) + (bigAbout - midH) * a2;
       top = lerp(ly, 46, a1) + (54 - 46) * a2;
-      left = lerp(50, 63, a1) + (24 - 63) * a2;   // over the table it stands in the gap between the years and the hover buttons
+      left = lerp(50, 63, a1) + ((mob ? 80 : 24) - 63) * a2;   // over the table it stands in the gap between the years and the hover buttons; phones: About ends with it on the right, beside the awards + Let's Collab
     }
     svg.setAttribute('height', h); svg.setAttribute('width', h*ratio);
     // SINK: 0 = standing, 1 = fully under the floor (moved down by its height, clipped at the floor line)
     svg.style.transform = `translate(-50%,-50%) translateY(${SINK * FLOOR * h}px)`;
     svg.style.clipPath = SINK > 0 ? `inset(0 0 ${(1 - FLOOR + SINK * FLOOR) * 100}% 0)` : '';
     svg.style.top = top + '%'; svg.style.left = left + '%'; svg.style.opacity = op;
-    setAngle(360 * t + 540 * a1 + 180 * a2 + SPIN);                                     // the turn ends exactly when it lands — head pointing right, at the text                       // 1¼ turns → ends with the head pointing left, at the text
+    setAngle(360 * t + 540 * a1 + (mob ? 360 : 180) * a2 + SPIN);   // phones: a full turn through About (½ over the text, ½ more as it moves right)                                     // the turn ends exactly when it lands — head pointing right, at the text                       // 1¼ turns → ends with the head pointing left, at the text
     svg.style.display = document.getElementById('lampOn').checked ? '' : 'none';
     const it = document.getElementById('intro'); if (it){ const k = clamp(scrollY / (innerHeight * .45)); it.style.opacity = 1 - k; it.style.transform = `translate(-50%, calc(-50% - ${k * 80}px))`; }
     document.getElementById('v-lampY').textContent = ly;
