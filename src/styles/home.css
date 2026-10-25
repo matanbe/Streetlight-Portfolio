@@ -524,15 +524,15 @@ body.dev #reel{right:282px}
 #reel .r-lbl{position:absolute;top:100%;left:50%;margin-top:6px;z-index:0;will-change:transform,opacity;white-space:nowrap}
 #lampTag{display:none !important}
 html[data-theme="dusk"]{
-    --bg:#10294b; --ink:#eaf0f7; --mute:#8299b8; --acc:#f07a2e; --face:#15335a;
-    --ink2:#b9c7d8; --soft:#2c4d78; --beam:#ffb04a; --rv-from:#2c4d78; --rv-mid:#f07a2e;
+    --bg:#10294b; --ink:#eaf0f7; --mute:#8299b8; --acc:#fdbd4e; --face:#15335a;
+    --ink2:#b9c7d8; --soft:#2c4d78; --beam:#ffb04a; --rv-from:#2c4d78; --rv-mid:#fdbd4e;
     color-scheme:dark;
   }
 html[data-theme="dusk"] #lamp{--hi:#eaf0f7;--edge:#9fb3cc;--mid:#5f7b9f;--lo:#2f527e;--plate:#10294b}
 html[data-theme="dusk"] #lamp .bulb{fill:#ffc56a}
 html[data-theme="dusk"] #lamp .ray{stroke:#ffb04a}
 html[data-theme="dusk"] .hl{--hairline-plate:#15335a;--hairline-hi:#eaf0f7;--hairline-edge:#9fb3cc;--hairline-mid:#5f7b9f;--hairline-lo:#2f527e}
-html[data-theme="dusk"] .wrap.on .hl{--hairline-hi:#f07a2e}
+html[data-theme="dusk"] .wrap.on .hl{--hairline-hi:#fdbd4e}
 html[data-theme="dusk"] #beam stop{stop-color:var(--beam)}
 html[data-theme="dusk"] #beam{mix-blend-mode:screen}
 html[data-theme="dusk"] .w.lit,html[data-theme="dusk"] #intro .so{color:#ffb04a}

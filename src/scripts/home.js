@@ -2044,7 +2044,7 @@ initDuskLight();
 (() => {
   const KEY = 'dusk-palette-v1';
   const DEF = {bg:'#10294b', face:'#15335a', ink:'#eaf0f7', ink2:'#b9c7d8', mute:'#8299b8', soft:'#2c4d78',
-               acc:'#f07a2e', beam:'#ffb04a', bulb:'#ffc56a', rvFrom:'#2c4d78', rvMid:'#f07a2e',
+               acc:'#fdbd4e', beam:'#ffb04a', bulb:'#ffc56a', rvFrom:'#2c4d78', rvMid:'#fdbd4e',
                lampHi:'#eaf0f7', lampEdge:'#9fb3cc', lampMid:'#5f7b9f', lampLo:'#2f527e', guideLine:'#bdb9af'};
   const SPEC = [['Surfaces'], ['bg','background'], ['face','cubes / cards'], ['soft','soft lines'],
                 ['Type'], ['ink','text + lines'], ['ink2','secondary text'], ['mute','muted text'],
