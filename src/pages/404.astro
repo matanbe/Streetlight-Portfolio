@@ -1,17 +1,108 @@
 ---
 import Base from '../layouts/Base.astro';
 ---
-<Base title="Not found" description="This street is dark — the page isn’t here.">
-  <section class="page nf">
-    <div class="idx">404</div>
-    <h1>This street is dark.</h1>
-    <p>The page you’re after isn’t here — maybe it moved, maybe it never was.</p>
-    <a class="fx solid nf-btn" href="/"><span class="l-txt">Back to the light</span><span class="l-arr"><i>→</i><i>→</i></span></a>
+<Base title="Not found" description="Some streetlights are broken — the page isn’t here.">
+  <section class="nf">
+    <svg id="nfLamp" role="button" tabindex="0" aria-label="Switch the lights" overflow="visible"></svg>
+    <label class="nf-heads">
+      <span class="nf-k">Lamps</span>
+      <input id="nfHeads" type="range" min="1" max="8" step="1" value="1" aria-label="Number of lamps" />
+      <span class="nf-v" id="nfV">1/8</span>
+    </label>
+    <h1 class="nf-t"><span class="nf-404">404</span><span class="nf-bar">|</span>Some streetlights are broken</h1>
+    <a class="fx ghost nf-btn" href="/"><span class="l-txt">Back home</span></a>
   </section>
 </Base>
 <style>
-  .nf{min-height:60vh;display:grid;align-content:center;justify-items:start;gap:0}
-  .nf h1{font-size:clamp(40px,7vw,88px);letter-spacing:-.03em;line-height:1;margin-bottom:20px}
-  .nf p{color:var(--ink2);max-width:46ch;margin-bottom:36px}
-  .nf-btn{border:1px solid var(--ink);border-radius:999px;padding:12px 22px;background:var(--ink);color:var(--bg);text-decoration:none}
+  .nf{min-height:calc(100svh - 160px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:110px 16px 56px}
+  #nfLamp{height:min(50vh,460px);width:auto;max-width:92vw;cursor:pointer;outline:none;margin-bottom:8px;
+    --hi:#1b1b1b;--edge:#6f6c65;--mid:#a9a69e;--lo:#d6d3cb;--plate:#f3f2ee}
+  :global(html[data-theme="dusk"]) #nfLamp{--hi:#35425f;--edge:#323f4e;--mid:#384557;--lo:#04070c;--plate:#0a152e}
+  #nfLamp :global(path),#nfLamp :global(circle),#nfLamp :global(line){fill:none;stroke-width:.9;vector-effect:non-scaling-stroke;stroke-linejoin:round;stroke-linecap:round}
+  #nfLamp :global(.f){fill:var(--plate)}
+  #nfLamp :global(.hi){stroke:var(--hi)}
+  #nfLamp :global(.edge){stroke:var(--edge)}
+  #nfLamp :global(.mid){stroke:var(--mid)}
+  #nfLamp :global(.lo){stroke:var(--lo)}
+  #nfLamp :global(.ray){stroke:var(--acc);stroke-opacity:.45;stroke-dasharray:1.5 3.5}
+  #nfLamp :global(.bulb){fill:var(--acc);stroke:none}
+  #nfLamp :global(.beams){display:none;mix-blend-mode:screen}
+  #nfLamp :global(.beam){fill:url(#nfBeamG);stroke:none}
+  #nfLamp :global(.puddle){fill:url(#nfPoolG);stroke:none}
+  :global(html[data-theme="dusk"]) #nfLamp :global(.beams){display:inline}
+  :global(html[data-theme="dusk"]) #nfLamp :global(.bulb){fill:#fff}
+  :global(html[data-theme="dusk"]) #nfLamp :global(.ray),:global(html[data-theme="dusk"]) #nfLamp :global(.pool){visibility:hidden}
+  /* broken heads: an uneven flicker, each on its own clock */
+  :global(html[data-theme="dusk"]) #nfLamp :global(.broken){animation:nfFlick var(--d,2.4s) var(--dl,0s) infinite steps(1,end)}
+  @keyframes nfFlick{
+    0%{opacity:1} 6%{opacity:.08} 9%{opacity:.9} 13%{opacity:.05} 15%{opacity:1} 44%{opacity:1} 46%{opacity:.15}
+    48%{opacity:.85} 62%{opacity:.04} 71%{opacity:.04} 73%{opacity:1} 88%{opacity:.6} 90%{opacity:1}
+  }
+  @media (prefers-reduced-motion: reduce){ :global(html[data-theme="dusk"]) #nfLamp :global(.broken){animation:none;opacity:.25} }
+
+  .nf-heads{display:flex;align-items:center;gap:14px;margin:18px 0 36px;color:var(--ink2);font-size:13px}
+  .nf-v{min-width:3ch;text-align:left}
+  #nfHeads{-webkit-appearance:none;appearance:none;width:180px;height:18px;background:transparent;cursor:pointer;margin:0}
+  #nfHeads::-webkit-slider-runnable-track{height:1px;background:var(--ink)}
+  #nfHeads::-moz-range-track{height:1px;background:var(--ink)}
+  #nfHeads::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--bg);border:1px solid var(--ink);margin-top:-7px}
+  #nfHeads::-moz-range-thumb{width:12px;height:12px;border-radius:50%;background:var(--bg);border:1px solid var(--ink)}
+  #nfHeads:focus-visible{outline:1px dashed var(--ink2);outline-offset:4px}
+
+  .nf-t{font-size:clamp(20px,2.6vw,30px);line-height:1.2;letter-spacing:-.01em;color:var(--ink);margin:0 0 28px}
+  .nf-404{color:var(--acc)}
+  .nf-bar{margin:0 .55em;color:var(--ink)}
+  .nf-btn{border:1px solid var(--ink);border-radius:999px;padding:11px 26px;color:var(--ink);text-decoration:none;background:transparent}
+  @media (max-width:800px){ .nf{padding-top:96px} #nfLamp{height:min(42vh,340px)} .nf-t{max-width:18ch} .nf-bar{display:none} .nf-404{display:block;margin-bottom:6px} }
 </style>
+<script>
+  import { LampKit2 } from '../scripts/lampkit.js';
+  const svg = document.getElementById('nfLamp');
+  const input = document.getElementById('nfHeads');
+  const out = document.getElementById('nfV');
+  const DEG = 20, NS = 'http://www.w3.org/2000/svg';
+  // fixed frame: the union of every head count, so the lamp doesn't jump as heads are added
+  let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+  for (let n = 1; n <= 8; n++){ const m = LampKit2.make('cobra', DEG, {heads: n}); x0 = Math.min(x0, m.minX); y0 = Math.min(y0, m.minY); x1 = Math.max(x1, m.minX + m.w); y1 = Math.max(y1, m.minY + m.h); }
+  const cx = 0, half = Math.max(cx - x0, x1 - cx);   // centred on the pole
+  svg.setAttribute('viewBox', `${-half} ${y0} ${half * 2} ${y1 - y0}`);
+  // which heads are broken: the first always, a few others at random (kept for the visit)
+  const broken = [true, ...Array.from({length: 7}, () => Math.random() < .4)];
+  const clocks = broken.map(() => [(1.6 + Math.random() * 2.4).toFixed(2), (-Math.random() * 3).toFixed(2)]);
+  const DEFS = `<defs><linearGradient id="nfBeamG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe0a3" stop-opacity=".75"/><stop offset=".35" stop-color="#ffa82e" stop-opacity=".38"/><stop offset="1" stop-color="#ffa82e" stop-opacity=".05"/></linearGradient>
+    <radialGradient id="nfPoolG"><stop offset="0" stop-color="#ffa82e" stop-opacity=".45"/><stop offset="1" stop-color="#ffa82e" stop-opacity="0"/></radialGradient></defs>`;
+
+  function draw(n){
+    svg.innerHTML = DEFS + LampKit2.make('cobra', DEG, {heads: n}).svg;
+    const pool = svg.querySelector('.pool'), glow = svg.querySelector('.glow');
+    glow.setAttribute('class', 'nf-glow');   // keep the site's dusk renderer off this lamp
+    // regroup per light: each light = one bulb + its rays (glow), two rings (pool)
+    const lights = [];
+    [...glow.children].forEach(el => { if (el.classList.contains('bulb')) lights.push({g: document.createElementNS(NS, 'g'), bulb: el}); lights[lights.length - 1].g.appendChild(el); });
+    const rings = [...pool.children];
+    const beams = document.createElementNS(NS, 'g'); beams.setAttribute('class', 'beams');
+    pool.after(beams);
+    lights.forEach((L, i) => {
+      glow.appendChild(L.g);
+      const pg = document.createElementNS(NS, 'g'); rings.slice(i * 2, i * 2 + 2).forEach(r => pg.appendChild(r)); pool.appendChild(pg);
+      // the beam: from the bulb down to the outer ring's ellipse
+      const b = rings[i * 2].getBBox(), ex = b.x + b.width / 2, ey = b.y + b.height / 2, rx = b.width / 2 * .8, ry = b.height / 2 * .8;
+      const bx = +L.bulb.getAttribute('cx'), by = +L.bulb.getAttribute('cy');
+      const bg = document.createElementNS(NS, 'g');
+      bg.innerHTML = `<ellipse class="puddle" cx="${ex}" cy="${ey}" rx="${rx * 1.15}" ry="${ry * 1.15}"/>` +
+        `<path class="beam" d="M${bx - 1.6} ${by} L${bx + 1.6} ${by} L${ex + rx} ${ey} A${rx} ${ry} 0 0 1 ${ex - rx} ${ey} Z"/>`;
+      beams.appendChild(bg);
+      if (broken[i]) [L.g, pg, bg].forEach(g => { g.classList.add('broken'); g.style.setProperty('--d', clocks[i][0] + 's'); g.style.setProperty('--dl', clocks[i][1] + 's'); });
+    });
+    out.textContent = n + '/8';
+  }
+  draw(1);
+  input.addEventListener('input', () => draw(+input.value));
+
+  const toggle = () => {
+    const b = svg.querySelector('.bulb').getBoundingClientRect();
+    window.slSetTheme(document.documentElement.dataset.theme !== 'dusk', b.left + b.width / 2, b.top + b.height / 2);
+  };
+  svg.addEventListener('click', toggle);
+  svg.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(); } });
+</script>
