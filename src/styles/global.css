@@ -62,6 +62,7 @@ html[data-theme="dusk"] #top{background:transparent}
 #contact .l-txt{color:var(--bg)}
 #contact:hover{border-color:var(--acc)}
 html[data-theme="dusk"] #contact:hover,html[data-theme="dusk"] #contact:hover .l-txt{color:var(--bg) !important}
+html[data-theme="dusk"] #contact,html[data-theme="dusk"] #about .ab-btn{background:#fff;border-color:#fff}
 
 /* the Streetlight wordmark (Lottie): the i turns into a streetlight on hover */
 .lt-logo{display:block;aspect-ratio:400/220;margin:-4px -2px}

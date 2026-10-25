@@ -1843,7 +1843,7 @@ initDuskLight();
   // Matan's tuned dusk palette
   const DEF = {bg:'#0a152e', face:'#0a152e', ink:'#98b1cd', ink2:'#607c9f', mute:'#607c9f', soft:'#1e2d66',
                acc:'#fdbd4e', beam:'#ffa82e', bulb:'#ffffff', rvFrom:'#2c4d78', rvMid:'#fcbd4f',
-               lampHi:'#35425f', lampEdge:'#323f4e', lampMid:'#384557', lampLo:'#04070c', guideLine:'#536d88', grain:.46};
+               lampHi:'#35425f', lampEdge:'#323f4e', lampMid:'#384557', lampLo:'#04070c', guideLine:'#536d88', grain:.16};
   const SPEC = [['Surfaces'], ['bg','background'], ['face','cubes / cards'], ['soft','soft lines'],
                 ['Type'], ['ink','text + lines'], ['ink2','secondary text'], ['mute','muted text'],
                 ['Light'], ['acc','accent (hover, tags, selection)'], ['beam','light beam + lit words'], ['bulb','bulb'],

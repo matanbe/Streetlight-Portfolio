@@ -5,7 +5,6 @@ import Base from '../layouts/Base.astro';
   <section class="nf">
     <svg id="nfLamp" role="button" tabindex="0" aria-label="Switch the lights" overflow="visible"></svg>
     <label class="nf-heads">
-      <span class="nf-k">Lamps</span>
       <input id="nfHeads" type="range" min="1" max="8" step="1" value="1" aria-label="Number of lamps" />
       <span class="nf-v" id="nfV">1/8</span>
     </label>
@@ -49,11 +48,11 @@ import Base from '../layouts/Base.astro';
   #nfHeads::-moz-range-thumb{width:12px;height:12px;border-radius:50%;background:var(--bg);border:1px solid var(--ink)}
   #nfHeads:focus-visible{outline:1px dashed var(--ink2);outline-offset:4px}
 
-  .nf-t{font-size:clamp(20px,2.6vw,30px);line-height:1.2;letter-spacing:-.01em;color:var(--ink);margin:0 0 28px}
+  .nf-t{font-size:15px;line-height:1.2;letter-spacing:-.01em;color:var(--ink);margin:0 0 28px}
   .nf-404{color:var(--acc)}
-  .nf-bar{margin:0 .55em;color:var(--ink)}
-  .nf-btn{border:1px solid var(--ink);border-radius:999px;padding:11px 26px;color:var(--ink);text-decoration:none;background:transparent}
-  @media (max-width:800px){ .nf{padding-top:96px} #nfLamp{height:min(42vh,340px)} .nf-t{max-width:18ch} .nf-bar{display:none} .nf-404{display:block;margin-bottom:6px} }
+  .nf-bar{margin:0 .4em;color:var(--ink)}
+  .nf-btn{border:1px solid var(--ink);border-radius:999px;padding:9px 22px;font-size:14px;color:var(--ink);text-decoration:none;background:transparent}
+  @media (max-width:800px){ .nf{padding-top:96px} #nfLamp{height:min(42vh,340px)} }
 </style>
 <script>
   import { LampKit2 } from '../scripts/lampkit.js';
