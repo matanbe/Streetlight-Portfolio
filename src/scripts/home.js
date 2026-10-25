@@ -289,7 +289,7 @@ page.innerHTML =
      <div class="ft-l"><span>© <span class="ft-y"></span> Streetlight Studio</span></div>
      <a class="ft-logo" href="/" aria-label="Streetlight — back to top"><span class="lt-logo" data-logo aria-hidden="true"></span></a>
      <div class="ft-r">
-       <a href="mailto:matan@studiostreetlight.com?subject=Hey%20Streetlight">matan@studiostreetlight.com</a><i class="ft-div"></i>
+       <a href="mailto:matan@studiostreetlight.com?subject=Hey%20Streetlight" title="matan@studiostreetlight.com">Email</a><i class="ft-div"></i>
        <a href="https://www.linkedin.com/in/mbd1/" target="_blank" rel="noopener" title="LinkedIn">LI</a><i class="ft-div"></i>
        <a href="https://www.instagram.com/studio.streetlight/" target="_blank" rel="noopener" title="Instagram">IN</a><i class="ft-div"></i>
        <a href="https://x.com/matanbendavid_" target="_blank" rel="noopener" title="X">X</a>
@@ -330,7 +330,7 @@ const ids = {sx:'v-sx',sy:'v-sy',sz:'v-sz',gap:'v-gap',lift:'v-lift',scale:'v-sc
 function readParams(){
   for (const k in ids){ P[k] = +document.getElementById(k).value; document.getElementById(ids[k]).textContent = P[k]; }
   // phones: smaller cards, gentler zoom on the active one
-  if (matchMedia('(max-width:800px)').matches){ const m = Math.min(1, innerWidth / 560); P.sx *= m * .62; P.sy *= m * .62; P.sz *= m * .62; P.scale = Math.min(P.scale, 1.6); P.gap *= .7; }
+  if (matchMedia('(max-width:800px)').matches){ const m = Math.min(1, innerWidth / 560); P.sx *= m * .62; P.sy *= m * .62; P.sz *= m * .62; P.scale = (innerWidth - 48) / P.sx; P.gap *= .7; }   // phones: the active card fills the width (inside the page padding)
   P.lane = document.querySelector('input[name=lane]:checked').value;
   P.exit = document.querySelector('input[name=exit]:checked').value;
   P.target = document.querySelector('input[name=target]:checked').value;
@@ -1054,7 +1054,7 @@ const HomeLamps = (function(){
   const easeIO = t => t<.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2;
   function size(){
     const mob = innerWidth <= 800;
-    const small = mob ? 120 : 170, big = mob ? Math.min(innerHeight * .42, 340) : Math.min(innerHeight * .66, 560);
+    const small = mob ? 110 : 170, big = mob ? Math.min(innerHeight * .5, 400) : Math.min(innerHeight * .66, 560);
     const t = easeIO(clamp(scrollY / (innerHeight * .6)));            // 0 at the top of the page → 1 after ~60% of a screen
     const mo = document.getElementById('more'), ab = document.getElementById('about');
     // tail: 0 when the list starts entering → 1 when About is settled
@@ -1074,12 +1074,11 @@ const HomeLamps = (function(){
       a2 = easeIO(clamp((scrollY - s1) / Math.max(1, s2 - s1)));
     }
     const midH = bigAbout * .8;
-    if (a1 <= 0){ h = lerp(big, small, t); top = lerp(mob ? 74 : 50, ly, t); if (mob){ left = 72; op = 1 - t; } }
+    if (a1 <= 0){ h = lerp(big, small, t); top = lerp(50, ly, t); }
     else {
       h = lerp(small, midH, a1) + (bigAbout - midH) * a2;
       top = lerp(ly, 46, a1) + (54 - 46) * a2;
       left = lerp(50, 63, a1) + (24 - 63) * a2;   // over the table it stands in the gap between the years and the hover buttons
-      if (mob) op = 0;   // phones: no room beside the table / About — the lamp only stands in the opening
     }
     svg.setAttribute('height', h); svg.setAttribute('width', h*ratio);
     // SINK: 0 = standing, 1 = fully under the floor (moved down by its height, clipped at the floor line)
@@ -1744,7 +1743,7 @@ function fillStrip(first){
   });
 }
 fillStrip(true);
-setInterval(() => { cIdx = (cIdx + 5) % CLIENTS.length; fillStrip(false); }, 2800);
+setInterval(() => { cIdx = (cIdx + (innerWidth <= 800 ? 3 : 5)) % CLIENTS.length; fillStrip(false); }, 2800);   // phones show 3
 
 readParams();
 
@@ -1760,6 +1759,11 @@ readParams();
   const words = [...p.querySelectorAll('.w')];
   const R = () => Math.max(60, p.getBoundingClientRect().height * .2);          // how wide the light falls on the text
   const STARTS = [[0.76, 1.060], [0.174, 1.060], [0.5, 1.45], [0.5, -0.2]];      // one start point per lamp head (relative to the paragraph)
+  // phones: the text wraps differently — aim the first light under "stand out" wherever it lands
+  const startFor = k => { const s = STARTS[k % STARTS.length].slice();
+    if (k === 0 && innerWidth <= 800){ const so = p.querySelector('.so'), r = p.getBoundingClientRect();
+      if (so && r.width){ const b = so.getBoundingClientRect(); s[0] = (b.left + b.width / 2 - r.left) / r.width; } }
+    return s; };
   let X_AT = [0.578, 1.802], xLocked = false;
   addEventListener('resize', () => xLocked = false);                                                    // the hidden X on the pavement
   // one crosshair + one beam per light on the lamp
@@ -1770,13 +1774,13 @@ readParams();
       const a = k ? aim.cloneNode(true) : aim; if (k){ a.removeAttribute('id'); document.body.appendChild(a); }
       const g = k ? grad.cloneNode(true) : grad; g.id = 'beamG' + k; if (k) defs.appendChild(g);
       const c = k ? cone.cloneNode() : cone, pl = k ? pool.cloneNode() : pool; c.style.fill = `url(#beamG${k})`; if (k){ beam.appendChild(c); beam.appendChild(pl); }
-      const A = {el: a, rel: STARTS[k % STARTS.length].slice(), k, drag: false};
+      const A = {el: a, rel: startFor(k), k, drag: false};
       a.addEventListener('pointerdown', e => { A.drag = true; a.classList.add('drag'); a.setPointerCapture(e.pointerId); e.preventDefault(); e.stopPropagation(); });
       a.addEventListener('pointermove', e => { if (!A.drag) return; const r = p.getBoundingClientRect();
         A.rel = [Math.max(-.1, Math.min(1.1, (e.clientX - r.left) / r.width)), Math.max(-.3, Math.min(Math.max(1.3 + 120 / r.height, X_AT[1] + .1), (e.clientY - r.top) / r.height))]; });
       const up = () => { A.drag = false; a.classList.remove('drag'); };
       a.addEventListener('pointerup', up); a.addEventListener('pointercancel', up);
-      a.addEventListener('dblclick', () => A.rel = STARTS[k % STARTS.length].slice());   // double-click: back to the start point
+      a.addEventListener('dblclick', () => A.rel = startFor(k));   // double-click: back to the start point
       aims.push(A); beams.push({cone: c, pool: pl, grad: g});
     }
   }

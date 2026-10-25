@@ -1,8 +1,6 @@
 /* Streetlight — shared styles: tokens, type, header + mobile menu, footer, buttons, chips, tables, dusk */
 
 @font-face{font-family:'Simpler Mono';src:url('/fonts/SimplerProMono-Regular.woff2') format('woff2'),url('/fonts/SimplerProMono-Regular.woff') format('woff');font-weight:400;font-display:swap}
-@font-face{font-family:'Simpler Mono';src:url('/fonts/SimplerProMono-Medium.woff2') format('woff2');font-weight:500;font-display:swap}
-@font-face{font-family:'Simpler Mono';src:url('/fonts/SimplerProMono-Bold.woff2') format('woff2');font-weight:700;font-display:swap}
 
 /* ---------- tokens ---------- */
 :root{
@@ -24,6 +22,9 @@ html[data-theme="dusk"]{
 html,body{background:var(--bg);color:var(--ink);font:14px/1.4 'Simpler Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
 body{min-height:100vh;display:flex;flex-direction:column}
 main{flex:1 0 auto;width:100%}
+/* one weight only (Regular is the licensed cut) — never synthesize bold */
+b,strong,h1,h2,h3,h4,h5,h6,th{font-weight:400}
+html{font-synthesis:none}
 a{color:inherit}
 ::selection{background:var(--acc);color:#fff}
 :focus-visible{outline:1px solid var(--acc);outline-offset:3px}
@@ -115,7 +116,8 @@ html[data-theme="dusk"] .site-foot{background:transparent}
 .site-foot .ft-l,.site-foot .ft-r{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 .site-foot .ft-r{justify-content:flex-end}
 .site-foot .ft-div{display:block;width:1px;height:14px;background:var(--soft)}
-@media (max-width:800px){ .site-foot{grid-template-columns:1fr;justify-items:center} .site-foot .ft-r{justify-content:center} }
+/* phones: the logo on top, then copyright on one side and the links on the other */
+@media (max-width:800px){ .site-foot{grid-template-columns:1fr auto;grid-template-areas:"logo logo" "l r";row-gap:14px} .site-foot .ft-logo{grid-area:logo;justify-self:start} .site-foot .ft-l{grid-area:l;white-space:nowrap} .site-foot .ft-r{grid-area:r;gap:12px} }
 
 /* ---------- buttons: sweep fill from the side the pointer came in + arrow swap ---------- */
 .fx{position:relative;overflow:hidden;isolation:isolate;display:inline-flex;align-items:center;gap:8px;transition:color .45s var(--ease),border-color .45s var(--ease)}

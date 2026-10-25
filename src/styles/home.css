@@ -53,7 +53,6 @@ body.in-tail #stage{opacity:0}
 /* ---------- phones ---------- */
 @media (max-width:800px){
   #reel{display:none !important}
-  #intro{top:40% !important}
   #stage{transform:translateY(-12vh)}   /* the active card sits above the project text */
   #info{left:24px !important;right:24px;width:auto !important;top:auto !important;bottom:28px;transform:none !important}
   #info h2{font-size:clamp(30px,9vw,40px) !important}
@@ -64,6 +63,7 @@ body.in-tail #stage{opacity:0}
   #more .m-top{flex-direction:column;align-items:flex-start}
   #about .strip{grid-template-columns:repeat(3,1fr)}
   #about .slot:nth-child(n+4){display:none}
+  #about .lg{font-size:12px;padding:0 6px;justify-items:center}
   #about h2{font-size:clamp(32px,9vw,44px)}
   .p-now{position:static !important;width:auto !important}
   .p-grid{grid-template-columns:1fr !important;padding-top:84px}
@@ -85,13 +85,13 @@ body.in-tail #stage{opacity:0}
 #about .cols ul{list-style:none;margin:0;padding:0;color:var(--ink2);line-height:1.7;display:flex;flex-wrap:wrap}
 #about .cols ul{--sep:calc(2em + 1ch);margin-left:calc(-1 * var(--sep));clip-path:inset(0 0 0 var(--sep))}
 #about .cols li::before{content:'|';color:#bdbab2;margin:0 1em}
-#about h3{font-size:16px;font-weight:500;margin:0}
+#about h3{font-size:16px;font-weight:400;margin:0}
 #about .cols p{color:var(--ink2)}
 #about .awards,#about .clients{margin-top:96px}
 #about .lbl{color:var(--acc);margin-bottom:16px}
 #about .aw{display:block;border-top:1px dashed var(--soft)}
 #about .aw > div{display:grid;grid-template-columns:200px 1fr;gap:24px;padding:18px 0;border-bottom:1px dashed var(--soft);align-items:baseline}
-#about .aw b{display:block;font-weight:500;font-size:14px;color:var(--ink)}
+#about .aw b{display:block;font-weight:400;font-size:14px;color:var(--ink)}
 #about .aw span{color:var(--ink2)}
 #about .strip{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
 #about .slot{position:relative;height:72px;overflow:hidden;border-left:1px solid var(--line)}
@@ -126,11 +126,11 @@ body.over-snap{cursor:pointer}
 body.lamp-swap #beam{opacity:0 !important;transition:opacity .2s}
 #floorX{position:fixed;left:0;top:0;width:60px;height:36px;margin:-18px 0 0 -30px;z-index:4455;cursor:pointer;transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
 #floorX svg{display:block;overflow:visible}
-#floorX line{stroke:var(--bg);stroke-width:5;stroke-linecap:square}
+#floorX line{stroke:#ff0000 !important;stroke-width:5;stroke-linecap:square}   /* TEMP: red while we place it — back to var(--bg) after */
 #floorX.pop,#floorX2.pop{transform:scale(1.35)}
 #floorX2{position:fixed;left:0;top:0;width:60px;height:36px;margin:-18px 0 0 -30px;z-index:4455;cursor:pointer;transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
 #floorX2 svg{display:block;overflow:visible}
-#floorX2 line{stroke:var(--bg);stroke-width:5;stroke-linecap:square;transition:stroke .25s}
+#floorX2 line{stroke:#ff0000 !important;stroke-width:5;stroke-linecap:square;transition:stroke .25s}   /* TEMP: red while we place it — back to var(--bg) after */
 #floorX2:hover line{stroke:var(--acc)}
 body.in-tail #floorX2{z-index:4105}
 #aimZone{position:fixed;left:0;top:0;z-index:4590;pointer-events:none;border:1px dashed #2f6bff}
@@ -476,7 +476,7 @@ body.in-about #stage{opacity:0}
 #about .ab-btn{background:var(--ink);color:var(--bg);border:1px solid var(--ink);border-radius:999px;padding:14px 26px;font-size:16px;text-decoration:none}
 #about .ab-btn:hover{color:#fff;border-color:var(--acc)}
 #hud{position:fixed;left:16px;bottom:16px;line-height:1.6;background:color-mix(in srgb, var(--bg) 85%, transparent);padding:8px 10px;border:1px solid var(--soft)}
-#hud b{color:var(--acc);font-weight:500}
+#hud b{color:var(--acc);font-weight:400}
 #ctl{z-index:6000;position:fixed;right:16px;bottom:16px;background:var(--bg);border:1px solid var(--ink);width:250px;max-height:calc(100vh - 110px);overflow-y:auto}
 #ctl summary{cursor:pointer;padding:8px 10px;list-style:none}
 #ctl summary::before{content:"+ "}

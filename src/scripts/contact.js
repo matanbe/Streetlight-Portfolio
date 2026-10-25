@@ -64,7 +64,7 @@ function drawPeel(){
     pctx.globalCompositeOperation = 'source-over';
     const cs = getComputedStyle(cfStub.querySelector('.cf-in'));
     pctx.fillStyle = cs.color; pctx.textBaseline = 'middle';
-    pctx.font = `500 14px ${cs.fontFamily}`; pctx.textAlign = 'center'; pctx.fillText(cfStub.querySelector('.cf-in span').textContent, w / 2, SH / 2 + 1.5);
+    pctx.font = `400 14px ${cs.fontFamily}`; pctx.textAlign = 'center'; pctx.fillText(cfStub.querySelector('.cf-in span').textContent, w / 2, SH / 2 + 1.5);
     pctx.restore();
   }
   if (flap.length > 2){

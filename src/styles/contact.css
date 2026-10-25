@@ -51,7 +51,7 @@
       touch-action:none;user-select:none;perspective:700px;perspective-origin:50% 0;text-align:left}
 .cf-strip{position:absolute;left:0;top:0;width:100%;transform-origin:50% 0;transform-style:preserve-3d}
 .cf-strip > .cf-face{position:absolute;inset:0;overflow:hidden;background:var(--bg);transition:background .25s,color .25s}
-.cf-face > .cf-in{position:absolute;left:0;width:100%;height:70px;display:flex;justify-content:center;align-items:center;padding:3px 20px 0;font-size:14px;font-weight:500;color:var(--ink)}
+.cf-face > .cf-in{position:absolute;left:0;width:100%;height:70px;display:flex;justify-content:center;align-items:center;padding:3px 20px 0;font-size:14px;font-weight:400;color:var(--ink)}
 .cf-face > i{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none}
 .cf-strip.s0 > .cf-face{
       -webkit-mask:radial-gradient(circle at 50% 0,#0000 var(--hole),#000 calc(var(--hole) + .6px)) center top/var(--pitch) 100% repeat-x,
