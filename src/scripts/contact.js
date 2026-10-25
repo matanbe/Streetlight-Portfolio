@@ -102,9 +102,9 @@ function detach(){
   cf.querySelector('.cf-name').textContent = v('name').split(' ')[0] || 'friend';
   cfSuccess();
   // send it (the tear is the send button); if it fails, the thank-you note offers the email address instead
-  const budget = (cf.querySelector('.cf-budget .on') || {}).dataset?.b || '';
+  const budget = (cf.querySelector('.cf-budget:not(.cf-need) .on') || {}).dataset?.b || '', need = [...cf.querySelectorAll('.cf-need .on')].map(x => x.dataset.n);
   fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name: v('name'), email: v('email'), msg: v('msg'), budget, website: v('website') }) })
+    body: JSON.stringify({ name: v('name'), email: v('email'), msg: v('msg'), budget, need, website: v('website') }) })
     .then(r => { if (!r.ok) throw 0; })
     .catch(() => { const d = cf.querySelector('.cf-done'); d.innerHTML = 'Hmm, that didn’t go through. Please email <a href="mailto:matan@studiostreetlight.com">matan@studiostreetlight.com</a>'; });
   setTimeout(() => { if (cf.classList.contains('sent')) cfClose(); }, 5400);
@@ -250,7 +250,9 @@ function cfClose(){ cf.classList.remove('on'); if (cf.classList.contains('sent')
 cf.addEventListener('click', e => {
   if (e.target.closest('[data-close]')) return cfClose();
   const b = e.target.closest('.cf-budget button');
-  if (b){ cf.querySelectorAll('.cf-budget button').forEach(x => x.classList.toggle('on', x === b && !b.classList.contains('on'))); return; }
+  if (b){ if (b.closest('.cf-need')) b.classList.toggle('on');   // what they need: any number of them
+    else b.parentNode.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b && !b.classList.contains('on')));   // budget: one
+    return; }
 });
 cf.addEventListener('input', e => e.target.closest('label')?.classList.remove('bad'));
 // the message grows from one line up to three, and the form grows with it

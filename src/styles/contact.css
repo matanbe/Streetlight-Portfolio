@@ -78,3 +78,12 @@
 html[data-theme="dusk"] #contactPop{--bg:var(--acc)}
 html[data-theme="dusk"] #contactPop:not(.tearing):not(.sent) .cf-stub:hover .cf-face{background:#fff}
 html[data-theme="dusk"] #contactPop:not(.tearing):not(.sent) .cf-stub:hover .cf-in{color:#1b1b1b}
+/* the two chip rows: adjacent picks keep a hairline between them */
+#contactPop .cf-budget button.on + button.on{border-left-color:var(--bg) !important}
+/* phones: the rows wrap instead of pushing the form off screen */
+@media (max-width:480px){
+  #contactPop{right:12px;width:calc(100vw - 24px)}
+  #contactPop .cf-budget{flex-wrap:wrap}
+  #contactPop .cf-budget button{flex:1 1 30%;margin-bottom:-1px;padding:7px 4px}
+  #contactPop .cf-budget button.on + button.on{border-left-color:var(--bg) !important}
+}
