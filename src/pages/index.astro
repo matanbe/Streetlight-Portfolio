@@ -1,6 +1,27 @@
 ---
 import Base from '../layouts/Base.astro';
+import HomeBody from '../components/HomeBody.astro';
+import Reel from '../components/Reel.astro';
+import '../styles/home.css';
+import { getProjects, getTestimonials, getSettings } from '../lib/cms';
+
+// everything the home script needs, in the shapes it was written for
+const all = await getProjects();
+const by = (k: 'heroOrder' | 'moreOrder') => all.filter(p => p[k]).sort((a, b) => a[k]! - b[k]!);
+const hero = by('heroOrder'), more = by('moreOrder');
+// project pages (the overlay): the hero cards first, then every other project that has a case
+const withCase = [...hero, ...all.filter(p => p.hasCase && !p.heroOrder)];
+const projects = withCase.map(p => ({ name: p.name, lines: p.lines.length ? p.lines : [p.industry], meta: [p.year, ...p.services].join(' · '), live: p.live ?? undefined, id: p.id }));
+const cases = Object.fromEntries(withCase.filter(p => p.chapters.length).map(p => [p.name, { about: p.about, outcome: p.outcome ?? undefined, chapters: p.chapters }]));
+const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+const moreRows = more.map((p, i) => `<div class="m-row" role="row" style="--d:${i}"><span>${esc(p.name)}</span><span>${esc(p.industry)}</span><span>${p.year}</span><span class="go"><span class="l-arr"><i>→</i><i>→</i></span></span></div>`).join('');
+const moreLinks = more.map(p => ({ ...(p.hasCase ? { home: p.name } : {}), ...(p.live ? { live: p.live } : {}) }));
+const testimonials = (await getTestimonials()).map(({ id, order, ...t }) => t);
+const SL = { projects, cases, heroCount: hero.length, testimonials, clients: getSettings().clients, moreRows, moreLinks };
 ---
-<Base>
-  <section class="page"><h1>Home — coming next</h1><p>The home page (cubes, lamp, rolodex) is being ported.</p></section>
+<Base bare footer={false}>
+  <Reel slot="brand" />
+  <HomeBody />
+  <script is:inline define:vars={{ SL }}>window.__SL = SL;</script>
+  <script>import '../scripts/home.js';</script>
 </Base>

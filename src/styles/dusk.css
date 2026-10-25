@@ -1,0 +1,11 @@
+/* dusk sky canvas + light layers (built by src/scripts/dusk-light.js) */
+#duskSky{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:0;transition:opacity .6s}
+html[data-theme="dusk"] #duskSky{opacity:1}
+#duskSky > *{position:absolute;inset:0}
+#duskSky .sk{width:100%;height:100%}
+#duskSky .glow{background:radial-gradient(var(--sky-pr,0px) var(--sky-pr,0px) at var(--sky-lx,50%) var(--sky-ly,30%),rgba(var(--sky-light),calc(var(--sky-pa,0) * var(--sky-fade,1))),rgba(var(--sky-light),0) 70%)}
+html.sky-cone #duskSky .glow{-webkit-mask:conic-gradient(from var(--sky-cs) at var(--sky-lx) var(--sky-ly),#0000 0deg,#000 var(--sky-cf),#000 calc(var(--sky-cw) - var(--sky-cf)),#0000 var(--sky-cw),#0000 360deg);
+                               mask:conic-gradient(from var(--sky-cs) at var(--sky-lx) var(--sky-ly),#0000 0deg,#000 var(--sky-cf),#000 calc(var(--sky-cw) - var(--sky-cf)),#0000 var(--sky-cw),#0000 360deg)}
+.dsk-c{position:fixed;left:0;top:0;pointer-events:none;display:none}
+html[data-theme="dusk"] .dsk-c{display:block}
+#dskShad{mix-blend-mode:normal}

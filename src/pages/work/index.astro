@@ -14,7 +14,7 @@ const count = (t: string | null) => t ? projects.filter(p => p.disciplines.inclu
     <div class="m-table work-table" role="table">
       <div class="m-row m-head" role="row"><span>Project</span><span>Industry</span><span>Year</span><span></span></div>
       {projects.map(p => {
-        const href = p.hasCase ? `/work/${p.id}` : (p.live ?? undefined);
+        const href = p.hasCase ? `/#project/${p.id}` : (p.live ?? undefined);   // case pages open over the home page (the cube flies in)
         const ext = !p.hasCase && p.live;
         return (
           <a class="m-row" role="row" href={href} target={ext ? '_blank' : undefined} rel={ext ? 'noopener' : undefined} data-tags={p.disciplines.join(',')}>

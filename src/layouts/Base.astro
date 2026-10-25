@@ -1,11 +1,12 @@
 ---
 import '../styles/global.css';
 import '../styles/contact.css';
+import '../styles/dusk.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Contact from '../components/Contact.astro';
-interface Props { title?: string; description?: string; lang?: string; footer?: boolean }
-const { title, description = 'Streetlight is a creative design studio run by Matan Ben David — brand, web & product.', lang = 'en', footer = true } = Astro.props;
+interface Props { title?: string; description?: string; lang?: string; footer?: boolean; bare?: boolean }
+const { title, description = 'Streetlight is a creative design studio run by Matan Ben David — brand, web & product.', lang = 'en', footer = true, bare = false } = Astro.props;
 const full = title ? `${title} — Streetlight` : 'Streetlight — Digital assets you’ll be proud to own';
 ---
 <!doctype html>
@@ -28,7 +29,7 @@ const full = title ? `${title} — Streetlight` : 'Streetlight — Digital asset
   <div id="sky" aria-hidden="true"></div>
   <Header><slot name="brand" slot="brand" /></Header>
   <Contact />
-  <main><slot /></main>
+  {bare ? <slot /> : <main><slot /></main>}
   {footer && <Footer />}
   <script>import '../scripts/site.js'; import '../scripts/contact.js';</script>
   <slot name="end" />

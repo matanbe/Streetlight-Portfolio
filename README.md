@@ -17,9 +17,14 @@ npm run build
 - `public/fonts` — Simpler Pro Mono.
 
 ## Status
-- [x] Base layout, header + mobile menu, footer, contact form, dusk mode
+- [x] Base layout, header + mobile menu, footer, contact form (UI), dusk mode
 - [x] /work, /thoughts, /thoughts/[id]
-- [ ] Home (cubes, lamp + light, rolodex, About, More work)
-- [ ] /work/[id] project pages
-- [ ] /playground
-- [ ] Storyblok, contact form backend, SEO / OG images, analytics
+- [x] Home (cubes, lamp + light, rolodex, More work, About, project overlay) — ported from the prototype as-is
+- [x] /playground (lamps take the home lamp's style, dusk light)
+- [ ] /work/[id] as full static pages (now they forward to the overlay: /#project/<id>)
+- [ ] Mobile pass: home cubes, project overlay, playground touch
+- [ ] Bake the tuned settings from the prototype (rolodex, dusk palette, lamp profiles) into the defaults
+- [ ] Storyblok, contact form backend, SEO / OG images, analytics, 404
+
+## Dev tools
+Press **H** for the dev panels (controls, dusk palette) — hidden in production.

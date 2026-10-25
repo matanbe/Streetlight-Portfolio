@@ -1,0 +1,75 @@
+---
+// the home page's stage (cubes, lamp, beam), the page the JS fills, the project overlay, the reel player and the dev panel (H)
+---
+<div id="stage"><svg id="guide"></svg></div>
+<svg id="lamp"></svg>
+<div id="lampTag" aria-hidden="true"></div>
+<div id="intro"><p>Streetlight is a creative design studio run by Matan Ben David. Working at the intersection of brand, web &amp; product, I create digital products that <em class="so">stand out</em>.</p></div>
+<svg id="beam" aria-hidden="true"><defs><linearGradient id="beamG" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ff4d1a" stop-opacity=".04"/><stop offset=".72" stop-color="#ff4d1a" stop-opacity=".2"/><stop offset="1" stop-color="#ff4d1a" stop-opacity="0"/></linearGradient><filter id="beamF" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="9"/></filter><radialGradient id="poolG"><stop offset="0" stop-color="#ff4d1a" stop-opacity=".38"/><stop offset=".55" stop-color="#ff4d1a" stop-opacity=".14"/><stop offset="1" stop-color="#ff4d1a" stop-opacity="0"/></radialGradient></defs><path class="cone"/><ellipse class="pool"/></svg>
+<div id="aimZone" aria-hidden="true"><span>light can move here</span></div>
+<div id="floorX" role="button" aria-label="hidden switch" title=""><svg viewBox="-30 -18 60 36" width="60" height="36"><line x1="-17.3" y1="-10" x2="17.3" y2="10"/><line x1="-17.3" y1="10" x2="17.3" y2="-10"/></svg></div>
+<div id="aim" class="aim" title="drag the light"><svg viewBox="-14 -14 28 28" width="28" height="28"><circle r="7"/><line x1="-13" y1="0" x2="13" y2="0"/><line x1="0" y1="-13" x2="0" y2="13"/></svg><b class="xy"></b></div>
+
+<main id="page"></main>
+<div id="hud"></div>
+<div id="info"></div>
+<div id="project" aria-live="polite" data-lenis-prevent></div>
+<div id="reelPlayer" aria-hidden="true"><div class="rp-stage"><video controls playsinline preload="none" src="https://streetlight.s3.eu-north-1.amazonaws.com/Short.mp4"></video></div><button class="rp-close fx ghost"><span class="l-txt">Close</span></button></div>
+
+
+<details id="ctl" data-lenis-prevent>
+  <summary>controls</summary>
+  <div class="body">
+    <div class="row">
+      <label><input type="radio" name="lane" value="corner" checked> corner→corner</label>
+      <label><input type="radio" name="lane" value="iso"> iso 30°</label>
+    </div>
+    <label>X · width <span id="v-sx"></span><input id="sx" type="range" min="0" max="300" value="300"></label>
+    <label>Y · height <span id="v-sy"></span><input id="sy" type="range" min="0" max="300" value="2"></label>
+    <label>Z · depth (0 = flat) <span id="v-sz"></span><input id="sz" type="range" min="0" max="300" value="180"></label>
+    <label><input id="lock" type="checkbox"> lock X=Y=Z</label>
+    <label>spacing <span id="v-gap"></span><input id="gap" type="range" min="60" max="1600" step="10" value="860"></label>
+    <label>lift (px) <span id="v-lift"></span><input id="lift" type="range" min="0" max="300" value="0"></label>
+    <label>active scale <span id="v-scale"></span><input id="scale" type="range" min="1" max="3" step=".05" value="2.3"></label>
+    <label>hold (pause on section) <span id="v-hold"></span><input id="hold" type="range" min="0" max=".8" step=".05" value="0.4"></label>
+    <label>activation radius <span id="v-rad"></span><input id="rad" type="range" min=".15" max="1.5" step=".05" value="0.55"></label>
+    <label>extra spin (turns) <span id="v-spin"></span><input id="spin" type="range" min="0" max="2" step="1" value="0"></label>
+    <div class="row">
+      <span>face to front:</span>
+      <label><input type="radio" name="target" value="front"> ● circle</label>
+      <label><input type="radio" name="target" value="top" checked> △ triangle</label>
+    </div>
+    <div class="row">
+      <span>after section:</span>
+      <label><input type="radio" name="exit" value="back" checked> back to cube</label>
+      <label><input type="radio" name="exit" value="stay"> stay frontal</label>
+    </div>
+    <div class="row">
+      <label><input id="lampOn" type="checkbox" checked> street lamp</label>
+    </div>
+    <div class="row"><label><input id="lenisOn" type="checkbox" checked> smooth scroll (Lenis)</label></div>
+    <div class="row"><label><input id="guidesOn" type="checkbox"> show guides (blue frames)</label></div>
+    <div class="row">lamp change:
+      <label><input type="radio" name="lampFx" value="flow" checked> flow (shapes morph)</label>
+      <label><input type="radio" name="lampFx" value="morph"> fold</label>
+      <label><input type="radio" name="lampFx" value="pop"> vanish &amp; reappear</label>
+      <label><input type="radio" name="lampFx" value="sink"> sink</label>
+    </div>
+    <label>lamp height on screen (%) <span id="v-lampY">18</span><input id="lampY" type="range" min="5" max="90" value="18"></label>
+    <div class="row">
+      <label><input id="figs" type="checkbox" checked> hairline figures</label>
+      <label><input id="xray" type="checkbox"> x-ray</label>
+      <label><input id="guideOn" type="checkbox" checked> guides</label>
+    </div>
+    <div class="row" id="presets">
+      <button data-a="save">save</button>
+      <button data-a="export">export .json</button>
+      <button data-a="import">import</button>
+      <button data-a="copy">copy</button>
+      <button data-a="reset">reset</button>
+      <input id="importFile" type="file" accept=".json,application/json" hidden>
+    </div>
+    <div id="saveMsg" style="color:var(--mute);min-height:1.4em"></div>
+    <div id="legend"><span>● front</span><span>△ top</span><span>+ left</span><span>— right</span></div>
+  </div>
+</details>
