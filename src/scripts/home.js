@@ -2043,9 +2043,10 @@ initDuskLight();
 // ---------------- dusk palette controls (dev panel, H) ----------------
 (() => {
   const KEY = 'dusk-palette-v1';
-  const DEF = {bg:'#10294b', face:'#15335a', ink:'#eaf0f7', ink2:'#b9c7d8', mute:'#8299b8', soft:'#2c4d78',
-               acc:'#fdbd4e', beam:'#ffb04a', bulb:'#ffc56a', rvFrom:'#2c4d78', rvMid:'#fdbd4e',
-               lampHi:'#eaf0f7', lampEdge:'#9fb3cc', lampMid:'#5f7b9f', lampLo:'#2f527e', guideLine:'#bdb9af'};
+  // Matan's tuned dusk palette
+  const DEF = {bg:'#0a152e', face:'#0a152e', ink:'#98b1cd', ink2:'#607c9f', mute:'#607c9f', soft:'#1e2d66',
+               acc:'#fdbd4e', beam:'#ffa82e', bulb:'#ffffff', rvFrom:'#2c4d78', rvMid:'#fcbd4f',
+               lampHi:'#35425f', lampEdge:'#323f4e', lampMid:'#384557', lampLo:'#04070c', guideLine:'#536d88', grain:.46};
   const SPEC = [['Surfaces'], ['bg','background'], ['face','cubes / cards'], ['soft','soft lines'],
                 ['Type'], ['ink','text + lines'], ['ink2','secondary text'], ['mute','muted text'],
                 ['Light'], ['acc','accent (hover, tags, selection)'], ['beam','light beam + lit words'], ['bulb','bulb'],

@@ -7,7 +7,7 @@ export function initDuskLight(){
   if (noHomeLamp) lampSvg.style.display = 'none';   // pages without the home lamp: sky + render() only
   const KEY = 'dusk-tests-v1';
   // defaults = the Dusk tests page defaults; whatever was saved on that page wins (same origin → same storage)
-  const DEF = { light:'#f09800', core:'#ffe0a3', skyTop:'#0b1f3d', skyMid:'#1d4a7a', skyMidAt:58, skyBot:'#0a1a33', vig:.55, grain:.06, grainSize:.9, grainBlend:'overlay',
+  const DEF = { light:'#f09800', core:'#ffe0a3', skyTop:'#0b1f3d', skyMid:'#1d4a7a', skyMidAt:58, skyBot:'#0a1a33', vig:.55, grain:.46, grainSize:.9, grainBlend:'overlay',
     poolR:520, poolA:.32, coneF:14, shape:'cone', coneDir:190, coneW:56, lampSize:460,
     beamOn:1, beamLen:620, beamStartW:34, beamStartOff:-4, beamA:.42, beamGamma:1.4, beamFeather:14, coreW:.38, coreA:.35, beamBlend:'screen',
     floorA:.18, floorAt:1, floorSize:1, floorFlat:.32, floorSoft:0, floorX:0, lampLit:.75, lampLitR:1.2, lampLitSide:.5,

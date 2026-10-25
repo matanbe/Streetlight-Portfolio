@@ -12,7 +12,7 @@
 }
 /* dusk: the street at night (the lamp's bulb / the menu switch it on) */
 html[data-theme="dusk"]{
-  --bg:#10294b; --ink:#eaf0f7; --ink2:#b9c7d8; --mute:#8299b8; --acc:#fdbd4e; --soft:#2c4d78; --face:#15335a; --tag:var(--mute);
+  --bg:#0a152e; --ink:#98b1cd; --ink2:#607c9f; --mute:#607c9f; --acc:#fdbd4e; --soft:#1e2d66; --face:#0a152e; --tag:var(--mute);
   --sky-top:#0b1f3d; --sky-mid:#1d4a7a; --sky-mid-at:58%; --sky-bot:#0a1a33; --sky-light:255,176,74;
   color-scheme:dark;
 }
