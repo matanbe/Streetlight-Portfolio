@@ -34,7 +34,9 @@ async function upload(f){
 }
 
 // ---- the case: blocks of frames (files → Storyblok, videos stay on AWS) ----
-const F = (files = [], fill = '', urls = []) => ({ files, fill, urls });
+// Lottie .json can't go to Storyblok (needs a verified space): those live in public/lottie/kayma-stories and go in as URLs
+const LOT = '/lottie/kayma-stories/';
+const F = (files = [], fill = '', urls = []) => ({ files: files.filter(f => !f.endsWith('.json')), fill, urls: [...files.filter(f => f.endsWith('.json')).map(f => LOT + f), ...urls] });
 const CH = [
   { label: 'Concept', slides: [
     { t: 'Intriguing visuals', p: 'A lot of text, and a design that makes people want to read it.', b: 'duo', r: '16/9', f: [F([], '', [AWS + 'KS-homepage.mp4']), F([], '', [AWS + 'Kayma-scroll.mp4'])] },
