@@ -601,7 +601,7 @@ html[data-theme="dusk"] .site-foot{color:color-mix(in srgb,rgb(var(--sky-light))
 .s-row{display:grid;gap:16px}
 .b-duo .s-row{grid-template-columns:repeat(2,minmax(0,1fr))} .b-trio .s-row{grid-template-columns:repeat(3,minmax(0,1fr))} .b-quad .s-row{grid-template-columns:repeat(4,minmax(0,1fr))}
 .bf{position:relative;aspect-ratio:var(--r,16/9)}
-.cc-face{position:absolute;inset:0;border:1px solid var(--ink);overflow:hidden;backface-visibility:hidden}
+.cc-face{position:absolute;inset:0;overflow:hidden;backface-visibility:hidden}
 .cc-face img,.cc-face video,.cc-face .f-lot{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
 .f-lot svg{display:block}
 .cc-face > i{position:absolute;inset:0;background:#1b1b1b;opacity:0;pointer-events:none}
