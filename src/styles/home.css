@@ -158,7 +158,7 @@ body.in-project #stage,body.in-project #info,body.in-project #hud,body.in-projec
 .p-back:hover{color:var(--acc)}
 .hero-slot{position:relative;margin:0 24px;height:68vh}
 .flyer{position:fixed;z-index:4950;overflow:hidden;background:var(--bg);border:1px solid var(--acc)}
-.flyer.docked{position:absolute;inset:0;border-color:var(--ink);transition:border-color .6s}
+.flyer.docked{position:absolute;inset:0;border-color:transparent;transition:border-color .6s}
 .hero-art{position:absolute;inset:0;background-size:cover;background-position:center}
 .hero-art.ph{display:grid;place-content:center;text-align:center;gap:6px;
     background:repeating-linear-gradient(0deg,transparent 0 39px,var(--soft) 39px 40px),repeating-linear-gradient(90deg,transparent 0 39px,var(--soft) 39px 40px),var(--bg)}
@@ -214,7 +214,7 @@ body.in-project #stage,body.in-project #info,body.in-project #hud,body.in-projec
 .p-side .p-text{font-size:13px}
 .p-next-link{cursor:pointer;color:var(--ink);border-bottom:1px solid var(--ink);justify-self:start;padding-bottom:2px}
 .p-next-link:hover{color:var(--acc);border-color:var(--acc)}
-.p-main .hero-slot{margin:0;height:auto;aspect-ratio:16/9;max-height:calc(100vh - 140px)}
+.p-main .hero-slot{margin:0;height:auto;aspect-ratio:16/9;width:min(100%,calc((100vh - 140px) * 16 / 9))}   /* always exactly 16:9 */
 .p-main .p-slides{margin:56px 0 0;padding:0;gap:48px}
 .p-main .slide{width:100%}
 .p-main .p-next{margin-top:96px}
