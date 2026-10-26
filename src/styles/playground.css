@@ -5,8 +5,8 @@ body{display:block}
 .pg-head{position:fixed;left:var(--gut);top:92px;z-index:4500}
 #world{z-index:0}   /* tiles stack among themselves, under the header + menu */
 .pg-head .chips{margin:0}
-.site-foot{position:fixed;left:0;right:0;bottom:0;margin:0;z-index:4500}
-@media (max-width:800px){ .site-foot{display:none} #hint{display:none} #detail{bottom:20px !important} .pg-head{top:84px;right:var(--gut)} }
+html body .site-foot{position:fixed;left:0;right:0;top:auto;bottom:0;margin:0;z-index:4500}
+@media (max-width:800px){ html body .site-foot{display:none} #hint{display:none} #detail{bottom:20px !important} .pg-head{top:84px;right:var(--gut)} }
 #hint{bottom:106px !important}
 #detail{bottom:128px !important}
 body:not(.dev) #ctl{display:none}
