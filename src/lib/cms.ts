@@ -64,6 +64,6 @@ export async function getPosts(): Promise<Post[]>{
 export async function getTestimonials(){
   if (!hasStoryblok) return (await getCollection('testimonials')).map(e => ({ id: e.id, ...e.data })).sort((a: any, b: any) => a.order - b.order);
   return (await stories('testimonials')).map((s: any) => { const c = s.content;
-    return { id: s.slug, order: +c.order || 0, ini: c.initials || '', name: c.name, role: c.role || '', proj: c.project || '', short: md(c.short), full: md(c.full) }; })
+    return { id: s.slug, order: +c.order || 0, ini: c.initials || '', name: c.name, role: c.role || '', proj: c.project || '', photo: c.photo || '', short: md(c.short), full: md(c.full) }; })
     .sort((a: any, b: any) => a.order - b.order);
 }

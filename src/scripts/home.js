@@ -15,7 +15,8 @@ const N = SECTIONS.length;
 const Rolo = (() => {
 const T = window.__SL.testimonials;
 
-const ph = t => `<div class="ph"><i>${t.ini}</i></div>`;
+// avatar: a portrait (drawn as a mask, so it takes the card's ink colour) or the initials
+const ph = t => t.photo ? `<div class="ph has-img"><b style="--ph:url('${t.photo}')"></b></div>` : `<div class="ph"><i>${t.ini}</i></div>`;
 const RX = (() => {
   const VIEW = new DOMMatrix('rotateX(-35.264deg) rotateY(-45deg)');
   const nzOf = (y, z) => { const o = VIEW.transformPoint(new DOMPoint(0,0,0)), q = VIEW.transformPoint(new DOMPoint(0, y, z)); return q.z - o.z; };
@@ -247,7 +248,8 @@ function mount(g, start = 0, hl = -1){   // hl: the testimonial for this project
   build();
 }
 const FOR = {'Kayma Stories':'Kayma', 'Cognit':'Cognit', 'Showdigs':'Showdigs', 'Content Lab':'Content Lab'};
-return { mount, indexFor: name => T.findIndex(t => t.proj === FOR[name]) };
+const same = (a, b) => !!a && !!b && a.trim().toLowerCase() === b.trim().toLowerCase();
+return { mount, indexFor: name => T.findIndex(t => same(t.proj, name) || same(t.proj, FOR[name])) };
 })();
 
 // ---------------- case studies: chapters + slides (texts from studiostreetlight.com) ----------------
@@ -1243,7 +1245,7 @@ if (location.hash === '#about') setTimeout(() => smoothTo(document.getElementByI
 // each on an optional fill colour (for files that sit 'contain' inside a frame of another ratio). Media only plays while on screen.
 const Blocks = (() => {
   let io = null, anims = [];
-  const kind = u => /\.(mp4|webm|mov|m4v)(\?|$)/i.test(u) ? 'video' : /\.json(\?|$)/i.test(u) ? 'lottie' : 'img';
+  const kind = u => /\.(mp4|webm|mov|m4v)([?#]|$)/i.test(u) ? 'video' : /\.json([?#]|$)/i.test(u) ? 'lottie' : 'img';   // a #pause=N may follow
   const img = (u, w) => /a\.storyblok\.com/.test(u) && !/\.svg(\?|$)/i.test(u) ? `${u}/m/${w}x0` : u;
   const esc = v => String(v || '').replace(/"/g, '&quot;');
   const per = {full: 1, duo: 2, trio: 3, quad: 4};

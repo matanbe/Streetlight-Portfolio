@@ -390,6 +390,9 @@ body.info-hold #info{opacity:0 !important;transition:none}
 .rolo .disc .rot::before{top:var(--dr,8px)}
 .rolo .ph{position:relative;background:repeating-linear-gradient(45deg,transparent 0 9px,var(--soft) 9px 10px),var(--bg);display:grid;place-items:center;overflow:hidden}
 .rolo .ph i{font-style:normal;letter-spacing:-.04em;color:var(--ink)}
+.rolo .ph.has-img{background:var(--bg);color:var(--ink)}
+.rolo .card.proj .ph.has-img{background:transparent;color:#fff}
+.rolo .ph b{position:absolute;inset:0;background:currentColor;-webkit-mask:var(--ph) center/cover no-repeat;mask:var(--ph) center/cover no-repeat}
 .p-rolo{margin-top:96px;position:relative}
 .p-rolo .rolo{width:100%;margin:0 auto}
 .p-rolo .r-lbl{color:var(--mute);margin-bottom:-20px}

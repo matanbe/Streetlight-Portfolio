@@ -43,7 +43,7 @@ const posts = defineCollection({
 
 const testimonials = defineCollection({
   loader: file('src/content/testimonials.json'),
-  schema: z.object({ order: z.number(), ini: z.string(), name: z.string(), role: z.string(), proj: z.string(), short: z.string(), full: z.string() }),
+  schema: z.object({ order: z.number(), ini: z.string(), name: z.string(), role: z.string(), proj: z.string(), photo: z.string().optional(), short: z.string(), full: z.string() }),
 });
 
 export const collections = { projects, posts, testimonials };
