@@ -15,8 +15,7 @@ const N = SECTIONS.length;
 const Rolo = (() => {
 const T = window.__SL.testimonials;
 
-// avatar: a portrait (drawn as a mask, so it takes the card's ink colour) or the initials
-const ph = t => t.photo ? `<div class="ph has-img"><b style="--ph:url('${t.photo}')"></b></div>` : `<div class="ph"><i>${t.ini}</i></div>`;
+const ph = t => `<div class="ph"><i>${t.ini}</i></div>`;
 const RX = (() => {
   const VIEW = new DOMMatrix('rotateX(-35.264deg) rotateY(-45deg)');
   const nzOf = (y, z) => { const o = VIEW.transformPoint(new DOMPoint(0,0,0)), q = VIEW.transformPoint(new DOMPoint(0, y, z)); return q.z - o.z; };
@@ -248,8 +247,7 @@ function mount(g, start = 0, hl = -1){   // hl: the testimonial for this project
   build();
 }
 const FOR = {'Kayma Stories':'Kayma', 'Cognit':'Cognit', 'Showdigs':'Showdigs', 'Content Lab':'Content Lab'};
-const same = (a, b) => !!a && !!b && a.trim().toLowerCase() === b.trim().toLowerCase();
-return { mount, indexFor: name => T.findIndex(t => same(t.proj, name) || same(t.proj, FOR[name])) };
+return { mount, indexFor: name => T.findIndex(t => t.proj === FOR[name]) };
 })();
 
 // ---------------- case studies: chapters + slides (texts from studiostreetlight.com) ----------------
