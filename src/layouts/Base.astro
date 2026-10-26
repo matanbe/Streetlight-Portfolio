@@ -1,4 +1,5 @@
 ---
+import Analytics from '@vercel/analytics/astro';
 import '../styles/global.css';
 import '../styles/contact.css';
 import '../styles/dusk.css';
@@ -40,5 +41,6 @@ const full = title ? `${title} — Streetlight` : 'Streetlight — Digital asset
   {footer && <Footer />}
   <script>import '../scripts/site.js'; import '../scripts/contact.js';</script>
   <slot name="end" />
+  <Analytics />
 </body>
 </html>
