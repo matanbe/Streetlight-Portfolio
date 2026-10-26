@@ -1019,6 +1019,7 @@ function buildProject(i){
       const hs = sl.hs ? sl.hs.map((h, hi) => `<button class="hs" style="left:${h.x}%;top:${h.y}%;--k:${hi}" data-h="${hi}">${hi+1}</button>`).join('')
                          + `<svg class="hs-line" preserveAspectRatio="none"><path/></svg><div class="hs-card"></div><span class="hs-hint">Tap the numbers to explore</span>` : '';
       const media = sl.img ? (sl.img.video ? `<video class="s-media" src="${sl.img.url}" muted loop playsinline autoplay></video>` : `<img class="s-media" src="${sl.img.url}/m/1800x0" alt="${(sl.img.alt || sl.t || '').replace(/"/g, '&quot;')}" loading="lazy">`) : '';
+      if (sl.b) return `<figure class="slide is-block b-${sl.b}" data-ch="${ci}" data-k="${k}">${Blocks.html(sl)}${(sl.t || sl.p) && !sl.cont ? `<figcaption class="s-cap">${sl.t ? `<b>${sl.t}</b>` : ''}${sl.p ? `<span>${sl.p}</span>` : ''}</figcaption>` : ''}</figure>`;
       return `<figure class="slide${sl.img ? ' has-media' : ''}" data-ch="${ci}" data-k="${k}"><div class="s-frame">${media}<span class="s-no">${String(k+1).padStart(2,'0')}</span><span class="s-lbl">slide ${String(k+1).padStart(2,'0')} / ${total}</span>${multi ? `<span class="s-tag">${ch.label}</span>` : ''}${hs}</div>${(sl.t || sl.p) && !sl.cont ? `<figcaption class="s-cap">${sl.t ? `<b>${sl.t}</b>` : ''}${sl.p ? `<span>${sl.p}</span>` : ''}</figcaption>` : ''}</figure>`; }).join('');
   }).join('');
   const navHTML = multi ? `<nav class="p-chap reveal" style="--d:4">${C.chapters.map((ch, ci) => `<div class="c-grp" data-ch="${ci}"><span class="c-lbl"><b>${String(ci+1).padStart(2,'0')}</b>${ch.label}</span><ol>${
@@ -1044,6 +1045,7 @@ function buildProject(i){
       </div>
     </div>`;
   { const k = Rolo.indexFor(pr.name); Rolo.mount(projEl.querySelector('.rolo'), Math.max(0, k), k); }
+  Blocks.mount(projEl, C);
   CH.cur = -2; CH.idx = i; caseFx(); if (typeof NX !== 'undefined'){ NX.p = 0; }
 }
 // text flyer: the home-page project text travels into the left column
@@ -1235,6 +1237,84 @@ document.addEventListener('click', async e => {
   if (a.getAttribute('href') === '/') smoothTo(0); else smoothTo(document.getElementById('about').offsetTop);
 });
 if (location.hash === '#about') setTimeout(() => smoothTo(document.getElementById('about').offsetTop), 300);
+
+// ---------------- image blocks: a slide holds 1–4 frames (full · duo · trio · quad) sharing one ratio (16:9 · 1:1 · 1:2) ----------------
+// a frame holds one item, or several = a cube carousel (turns up, one quarter per click; clicks queue). Items: image · video · lottie (.json),
+// each on an optional fill colour (for files that sit 'contain' inside a frame of another ratio). Media only plays while on screen.
+const Blocks = (() => {
+  let io = null, anims = [];
+  const kind = u => /\.(mp4|webm|mov|m4v)(\?|$)/i.test(u) ? 'video' : /\.json(\?|$)/i.test(u) ? 'lottie' : 'img';
+  const img = (u, w) => /a\.storyblok\.com/.test(u) && !/\.svg(\?|$)/i.test(u) ? `${u}/m/${w}x0` : u;
+  const esc = v => String(v || '').replace(/"/g, '&quot;');
+  const per = {full: 1, duo: 2, trio: 3, quad: 4};
+  const media = (it, px, alt) => { const t = kind(it.src);
+    return t === 'video' ? `<video data-src="${it.src}" muted loop playsinline preload="none"></video>`
+         : t === 'lottie' ? `<div class="f-lot" data-lottie="${it.src}"></div>`
+         : `<img src="${img(it.src, px)}" alt="${esc(it.alt || alt)}" loading="lazy">`; };
+  function html(sl){
+    const n = per[sl.b] || 1, px = Math.round(1800 / n), r = sl.r || '16/9';
+    return `<div class="s-row" style="--r:${r}">${(sl.f || []).slice(0, n).map((fr, fi) => {
+      const its = fr.items || []; if (!its.length) return `<div class="bf"></div>`;
+      const face = (cls, it) => `<div class="cc-face ${cls}" style="background:${it.bg || 'var(--bg)'}">${media(it, px, sl.t)}<i></i></div>`;
+      if (its.length === 1) return `<div class="bf"><div class="cc-face" style="background:${its[0].bg || 'var(--bg)'}">${media(its[0], px, sl.t)}</div></div>`;
+      return `<div class="bf cube-car" data-f="${fi}"><div class="cc-rig">${face('cc-a', its[0])}<div class="cc-face cc-b"><i></i></div></div>`
+        + `<span class="cc-nav"><button class="cc-btn fx ghost" data-d="-1" aria-label="Previous">↑</button><button class="cc-btn fx ghost" data-d="1" aria-label="Next">↓</button></span></div>`;
+    }).join('')}</div>`;
+  }
+  // start / stop what's in a face (video, lottie)
+  function wake(face, on){
+    if (!face) return;
+    const v = face.querySelector('video'); if (v){ if (on){ if (!v.src) v.src = v.dataset.src; v.play().catch(() => {}); } else if (v.src) v.pause(); }
+    const l = face.querySelector('.f-lot');
+    if (l){ if (on && !l._a && window.__lottie){ l._a = window.__lottie.loadAnimation({container: l, renderer: 'svg', loop: true, autoplay: true, path: l.dataset.lottie, rendererSettings: {preserveAspectRatio: 'xMidYMid meet'}}); anims.push(l._a); }
+      if (l._a) on ? l._a.play() : l._a.pause(); }
+  }
+  function cube(el, items, px, alt){
+    const rig = el.querySelector('.cc-rig'); let A = el.querySelector('.cc-a'), B = el.querySelector('.cc-b'), i = 0, busy = false; const queue = [];
+    const fill = (face, it) => { face.style.background = it.bg || 'var(--bg)'; face.innerHTML = media(it, px, alt) + '<i></i>'; };
+    const rest = () => { const hh = el.clientHeight / 2; rig.style.transform = `translateZ(${-hh}px)`; A.style.transform = `translateZ(${hh}px)`; };
+    // clicks queue up: each adds a quarter turn; queued turns chain without stopping, and run faster the more are waiting
+    const turn = (dir, chained = false) => {
+      if (busy && !chained){ if (queue.length < 6) queue.push(dir); return; } busy = true;
+      const k = (i + dir + items.length) % items.length, hh = el.clientHeight / 2;   // turns up: the next face rolls in from below
+      fill(B, items[k]); wake(B, true);
+      B.style.transform = `rotateX(${-90 * dir}deg) translateZ(${hh}px)`; A.style.transform = `translateZ(${hh}px)`;
+      const P = parseFloat(getComputedStyle(el).perspective) || 2400, shA = A.querySelector('i'), shB = B.querySelector('i'), t0 = performance.now();
+      const more = queue.length > 0, D = more ? Math.max(380, 900 / (1 + queue.length)) : (chained ? 650 : 900);
+      const cubic = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2, eIn = t => t * t, eOut = t => 1 - (1 - t) * (1 - t);
+      const ease = chained && more ? (t => t) : chained ? eOut : more ? eIn : cubic;
+      const step = now => {
+        const t = Math.min(1, (now - t0) / D), e = ease(t), th = e * Math.PI / 2;
+        // scaled every frame so the turning cube's outline always fits the frame (never bigger than its neighbours, no settle at the end)
+        const s0 = 1 / (Math.cos(th) + Math.sin(th)), zc = hh * (Math.SQRT2 * Math.cos(Math.PI / 4 - th) - 1), s = s0 * (P - s0 * zc) / P;
+        rig.style.transform = `scale3d(${s},${s},${s}) translateZ(${-hh}px) rotateX(${90 * dir * e}deg)`;
+        shA.style.opacity = .45 * e; shB.style.opacity = .45 * (1 - e);
+        if (t < 1) return requestAnimationFrame(step);
+        // the incoming face becomes the front one
+        wake(A, false); [A, B] = [B, A]; A.classList.replace('cc-b', 'cc-a'); B.classList.replace('cc-a', 'cc-b');
+        B.innerHTML = '<i></i>'; B.style.transform = ''; i = k; busy = false;
+        rest(); shA.style.opacity = 0;
+        if (queue.length) turn(queue.shift(), true);
+      };
+      requestAnimationFrame(step);
+    };
+    el.addEventListener('click', e => { const b = e.target.closest('.cc-btn'); turn(b ? +b.dataset.d : 1); });
+    rest(); el._rest = rest;
+  }
+  async function mount(root, C){
+    anims.forEach(a => a.destroy()); anims = []; if (io) io.disconnect();
+    const rows = root.querySelectorAll('.slide.is-block'); if (!rows.length) return;
+    if (root.querySelector('.f-lot') || C.chapters.some(ch => ch.slides.some(sl => (sl.f || []).some(fr => (fr.items || []).some(it => kind(it.src) === 'lottie')))))
+      if (!window.__lottie) window.__lottie = (await import('lottie-web/build/player/lottie_light')).default;
+    const slides = C.chapters.flatMap(ch => ch.slides);
+    rows.forEach(row => { const sl = slides[+row.dataset.k]; if (!sl || !sl.b) return; const px = Math.round(1800 / (per[sl.b] || 1));
+      row.querySelectorAll('.cube-car').forEach(el => cube(el, sl.f[+el.dataset.f].items, px, sl.t)); });
+    io = new IntersectionObserver(es => es.forEach(e => e.target.querySelectorAll('.bf > .cc-face, .cc-a').forEach(f => wake(f, e.isIntersecting))), {rootMargin: '10% 0px'});
+    rows.forEach(r => io.observe(r));
+  }
+  addEventListener('resize', () => document.querySelectorAll('.cube-car').forEach(el => el._rest && el._rest()));
+  return { html, mount };
+})();
 
 // slides: scale/fade toward the centre of the screen as you scroll the project page
 function slideFx(){

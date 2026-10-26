@@ -596,3 +596,25 @@ html[data-theme="dusk"] .site-foot{color:color-mix(in srgb,rgb(var(--sky-light))
 .slide.has-media .s-no,.slide.has-media .s-lbl{display:none}
 .slide.has-media .s-frame{background:none}
 .f-top.img{background-size:cover;background-position:center}
+
+/* ---- image blocks: 1–4 frames in a row, one ratio; a frame with several items is a cube carousel ---- */
+.s-row{display:grid;gap:16px}
+.b-duo .s-row{grid-template-columns:repeat(2,minmax(0,1fr))} .b-trio .s-row{grid-template-columns:repeat(3,minmax(0,1fr))} .b-quad .s-row{grid-template-columns:repeat(4,minmax(0,1fr))}
+.bf{position:relative;aspect-ratio:var(--r,16/9)}
+.cc-face{position:absolute;inset:0;border:1px solid var(--ink);overflow:hidden;backface-visibility:hidden}
+.cc-face img,.cc-face video,.cc-face .f-lot{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.f-lot svg{display:block}
+.cc-face > i{position:absolute;inset:0;background:#1b1b1b;opacity:0;pointer-events:none}
+.cube-car{perspective:2400px;cursor:pointer}
+.cc-rig{position:absolute;inset:0;transform-style:preserve-3d}
+.cc-nav{position:absolute;right:12px;bottom:12px;display:flex;z-index:3}
+.cc-btn{width:34px;height:34px;display:grid;place-items:center;justify-content:center;border:1px solid var(--ink);background:var(--bg);color:var(--ink);font:inherit;font-size:15px;line-height:1;cursor:pointer;padding:0}
+.cc-btn + .cc-btn{margin-left:-1px}
+.slide.is-block .s-cap{display:none}
+@media (max-width:800px){
+  .s-row{gap:10px}
+  .b-quad .s-row,.b-trio .s-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .b-trio .s-row .bf:first-child{grid-column:span 2}
+  .slide.is-block .s-cap{display:grid}
+  .cc-btn{width:30px;height:30px}
+}

@@ -11,9 +11,18 @@ const num = (v: any) => (v === '' || v == null || isNaN(+v)) ? null : +v;
 const md = (s: string) => (s || '').replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
 const asset = (a: any) => a?.filename ? { url: a.filename as string, alt: (a.alt || '') as string, video: /\.(mp4|webm|mov)$/i.test(a.filename) } : null;
 
+// image blocks: slide.block (full · duo · trio · quad) + ratio (16/9 · 1/1 · 1/2) + frames; a frame = files (Storyblok assets, then external
+// URLs one per line) on fill colours (comma list: one per item, or one for all). Several items in a frame = a cube carousel.
+const blocks = (sl: any) => { if (!sl.block || !(sl.frames || []).length) return {};
+  return { b: sl.block, r: sl.ratio || '16/9', f: sl.frames.map((fr: any) => {
+    const fills = (fr.fill || '').split(',').map((x: string) => x.trim()).filter(Boolean);
+    const srcs = [...(fr.media || []).filter((a: any) => a?.filename).map((a: any) => ({ src: a.filename, alt: a.alt || '' })),
+                  ...(fr.urls || '').split('\n').map((u: string) => u.trim()).filter(Boolean).map((u: string) => ({ src: u, alt: '' }))];
+    return { items: srcs.map((it: any, k: number) => ({ ...it, bg: fills.length > 1 ? fills[k] : fills[0] })) }; }) }; };
+
 export type Project = { id: string; name: string; industry: string; year: string; disciplines: string[]; lines: string[]; services: string[]; live: string | null;
   hasCase: boolean; heroOrder: number | null; moreOrder: number | null; about: string | null; outcome: { k: string; v: string } | null;
-  chapters: { key: string; label: string; slides: { t: string; p?: string; cont?: boolean; img?: any }[] }[]; hero: any; seo?: { title?: string; description?: string; image?: string } };
+  chapters: { key: string; label: string; slides: { t: string; p?: string; cont?: boolean; img?: any; b?: string; r?: string; f?: any[] }[] }[]; hero: any; seo?: { title?: string; description?: string; image?: string } };
 
 export async function getSettings(){
   if (!hasStoryblok) return settingsLocal;
@@ -36,7 +45,7 @@ export async function getProjects(): Promise<Project[]>{
       lines: (c.lines || '').split('\n').map((x: string) => x.trim()).filter(Boolean), services: (c.services || '').split(',').map((x: string) => x.trim()).filter(Boolean),
       live: c.live || null, hasCase: !!c.has_case, heroOrder: num(c.hero_order), moreOrder: num(c.more_order), about: c.about || null,
       outcome: c.outcome_title ? { k: c.outcome_title, v: c.outcome_text || '' } : null,
-      chapters: (c.chapters || []).map((ch: any, k: number) => ({ key: 'c' + k, label: ch.label || '', slides: (ch.slides || []).map((sl: any) => ({ t: sl.title || '', p: sl.caption || '', cont: !!sl.continued, img: asset(sl.image) })) })),
+      chapters: (c.chapters || []).map((ch: any, k: number) => ({ key: 'c' + k, label: ch.label || '', slides: (ch.slides || []).map((sl: any) => ({ t: sl.title || '', p: sl.caption || '', cont: !!sl.continued, img: asset(sl.image), ...blocks(sl) })) })),
       hero: asset(c.hero), seo: { title: c.seo_title, description: c.seo_description, image: c.og_image?.filename }, _i: i } as any;
   }).sort((a: any, b: any) => byYear(a, b) || a._i - b._i);
 }

@@ -4,7 +4,9 @@ import { defineCollection } from 'astro:content';
 import { file } from 'astro/loaders';
 import { z } from 'astro/zod';
 
-const slide = z.object({ t: z.string(), p: z.string().optional(), cont: z.boolean().optional() });
+// image blocks: b = full | duo | trio | quad, r = 16/9 | 1/1 | 1/2, f = frames, each [{ src, bg?, alt? }] (several = cube carousel)
+const frame = z.object({ items: z.array(z.object({ src: z.string(), bg: z.string().optional(), alt: z.string().optional() })) });
+const slide = z.object({ t: z.string(), p: z.string().optional(), cont: z.boolean().optional(), b: z.enum(['full', 'duo', 'trio', 'quad']).optional(), r: z.string().optional(), f: z.array(frame).optional() });
 
 const projects = defineCollection({
   loader: file('src/content/projects.json'),
