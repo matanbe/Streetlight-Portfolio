@@ -1266,7 +1266,12 @@ const Blocks = (() => {
     if (!face) return;
     const v = face.querySelector('video'); if (v){ if (on){ if (!v.src) v.src = v.dataset.src; v.play().catch(() => {}); } else if (v.src) v.pause(); }
     const l = face.querySelector('.f-lot');
-    if (l){ if (on && !l._a && window.__lottie){ l._a = window.__lottie.loadAnimation({container: l, renderer: 'svg', loop: true, autoplay: true, path: l.dataset.lottie, rendererSettings: {preserveAspectRatio: 'xMidYMid meet'}}); anims.push(l._a); }
+    if (l){ if (on && !l._a && window.__lottie){
+        // '#pause=3' at the end of the file's URL = play once, wait that many seconds, play again (instead of a straight loop)
+        const [src, frag] = l.dataset.lottie.split('#'), pause = +((/pause=([\d.]+)/.exec(frag || '') || [])[1] || 0);
+        const a = l._a = window.__lottie.loadAnimation({container: l, renderer: 'svg', loop: !pause, autoplay: true, path: src, rendererSettings: {preserveAspectRatio: 'xMidYMid meet'}});
+        if (pause) a.addEventListener('complete', () => { clearTimeout(l._t); l._t = setTimeout(() => { if (l.isConnected && !a.isPaused) a.goToAndPlay(0, true); }, pause * 1000); });
+        anims.push(a); }
       if (l._a) on ? l._a.play() : l._a.pause(); }
   }
   function cube(el, items, px, alt){
