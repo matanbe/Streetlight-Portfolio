@@ -1,5 +1,6 @@
 // Small Storyblok helper, run from the site folder (reads STORYBLOK_PAT from .env.local).
-//   node scripts/sb.mjs hero <project-slug> <file>     upload the file and set it as the project's hero (cover) — published
+//   node scripts/sb.mjs hero <project-slug> <file>              upload the file and set it as the project's hero (cover) — published
+//   node scripts/sb.mjs swap <project-slug> <old-name> <file>   replace an image in the case study (matched by part of its file name) — published
 import fs from 'node:fs'; import path from 'node:path';
 const env = Object.fromEntries(fs.readFileSync('.env.local', 'utf8').split('\n').filter(l => l.includes('=')).map(l => [l.slice(0, l.indexOf('=')).trim(), l.slice(l.indexOf('=') + 1).trim()]));
 const PAT = env.STORYBLOK_PAT; if (!PAT) throw new Error('STORYBLOK_PAT missing in .env.local');
@@ -28,4 +29,11 @@ if (cmd === 'hero'){
   const story = await project(slug), a = await upload(file, slug);
   story.content.hero = a; await api('PUT', `/stories/${story.id}`, { story: { content: story.content }, publish: 1 });
   console.log(`Done — ${slug}: hero set to ${a.filename} (published)`);
-} else console.log('usage: node scripts/sb.mjs hero <project-slug> <file>');
+} else if (cmd === 'swap'){
+  const [, , oldName, newFile] = process.argv.slice(2), story = await project(slug); let hit = 0, a = null;
+  for (const ch of story.content.chapters || []) for (const sl of ch.slides || []) for (const fr of sl.frames || []) for (let k = 0; k < (fr.media || []).length; k++)
+    if (fr.media[k].filename.toLowerCase().includes(oldName.toLowerCase())){ a = a || await upload(newFile, slug); fr.media[k] = a; if ((fr.media || []).length === 1) fr.fill = ''; hit++; }
+  if (!hit) throw new Error('no image matching ' + oldName);
+  await api('PUT', `/stories/${story.id}`, { story: { content: story.content }, publish: 1 });
+  console.log(`Done — ${slug}: ${hit} image(s) matching "${oldName}" replaced (published)`);
+} else console.log('usage: node scripts/sb.mjs hero <project-slug> <file>  |  swap <project-slug> <old-name> <file>');
