@@ -31,7 +31,8 @@ const full = title ? `${title} — Streetlight` : 'Streetlight — Digital asset
   <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)}>
   <meta name="theme-color" content="#f3f2ee">
   <!-- day / dusk before the first paint, so there's no flash -->
-  <script is:inline>try { if (sessionStorage.getItem('sl-theme') === 'dusk') document.documentElement.dataset.theme = 'dusk'; } catch(e){}</script>
+  <script is:inline>try { if (sessionStorage.getItem('sl-theme') === 'dusk') document.documentElement.dataset.theme = 'dusk'; } catch(e){}
+  if (location.pathname === '/' && /^#project\//.test(location.hash)) document.documentElement.classList.add('deep');   // a case study opened from a link: don't flash the home page first</script>
   <slot name="head" />
 </head>
 <body>

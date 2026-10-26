@@ -15,7 +15,8 @@ const N = SECTIONS.length;
 const Rolo = (() => {
 const T = window.__SL.testimonials;
 
-const ph = t => `<div class="ph"><i>${t.ini}</i></div>`;
+// avatar: a portrait (drawn as a mask, so it takes the card's ink colour) or the initials
+const ph = t => t.photo ? `<div class="ph has-img"><b style="--ph:url('${t.photo}')"></b></div>` : `<div class="ph"><i>${t.ini}</i></div>`;
 const RX = (() => {
   const VIEW = new DOMMatrix('rotateX(-35.264deg) rotateY(-45deg)');
   const nzOf = (y, z) => { const o = VIEW.transformPoint(new DOMPoint(0,0,0)), q = VIEW.transformPoint(new DOMPoint(0, y, z)); return q.z - o.z; };
@@ -247,7 +248,9 @@ function mount(g, start = 0, hl = -1){   // hl: the testimonial for this project
   build();
 }
 const FOR = {'Kayma Stories':'Kayma', 'Cognit':'Cognit', 'Showdigs':'Showdigs', 'Content Lab':'Content Lab'};
-return { mount, indexFor: name => T.findIndex(t => t.proj === FOR[name]) };
+const same = (a, b) => !!a && !!b && a.trim().toLowerCase() === b.trim().toLowerCase();
+// a testimonial can belong to several projects: "Science Museum, Young Scientists"
+return { mount, indexFor: name => T.findIndex(t => (t.proj || '').split(',').some(p => same(p, name) || same(p, FOR[name]))) };
 })();
 
 // ---------------- case studies: chapters + slides (texts from studiostreetlight.com) ----------------
@@ -1086,9 +1089,11 @@ async function bringCube(i){
   document.documentElement.style.scrollBehavior = smooth;
 }
 
-async function openProject(i, push = true){
+let directOpen = false;   // opened from a link (no cube flight): closes with a fade
+async function openProject(i, push = true, direct = false){
   if (busy || openIdx === i) return; busy = true;
-  if (!cubes[i]){   // not in the home scroll (past HERO_COUNT): no cube to fly from — the page fades in
+  directOpen = direct || !cubes[i];
+  if (directOpen){   // not in the home scroll (past HERO_COUNT): no cube to fly from — the page fades in
     buildProject(i); projEl.classList.add('open'); projTop();
     dock(makeFlyer(i, projEl.querySelector('.hero-slot').getBoundingClientRect()));
     document.body.classList.add('in-project'); projEl.classList.add('bg');
@@ -1123,7 +1128,7 @@ async function openProject(i, push = true){
 async function closeProject(){
   if (busy || openIdx < 0) return; busy = true;
   const i = openIdx;
-  if (!cubes[i]){   // no cube to fly back to — fade out
+  if (!cubes[i] || directOpen){   // no cube to fly back to (or it never flew) — fade out
     await projEl.animate([{opacity: 1}, {opacity: 0}], {duration: 380, easing: 'ease', fill: 'forwards'}).finished;
     projEl.classList.remove('shown', 'below', 'bg', 'open'); document.body.classList.remove('in-project');
     projEl.innerHTML = ''; projEl.getAnimations().forEach(a => a.cancel());
@@ -1220,9 +1225,9 @@ window.slOpenProject = name => { const i = PROJECTS.findIndex(p => p.name === na
 // deep link: #project/slug
 (function(){
   const m = location.hash.match(/^#project\/(.+)$/); if (!m) return;
-  const i = PROJECTS.findIndex(p => SLUG(p.name) === m[1]); if (i < 0) return;
+  const i = PROJECTS.findIndex(p => SLUG(p.name) === m[1]); if (i < 0){ document.documentElement.classList.remove('deep'); return; }
   hist('replaceState', {p: i}, '', '/work/' + m[1]);   // the shareable address
-  setTimeout(() => openProject(i, false), 400);
+  requestAnimationFrame(() => openProject(i, false, true).then(() => setTimeout(() => document.documentElement.classList.remove('deep'), 500)));   // once the page has faded in fully
 })();
 
 
@@ -1441,7 +1446,7 @@ function caseFx(){
   clearTimeout(CH.t); CH.t = setTimeout(() => {
     const C = caseOf(CH.idx);
     now.querySelector('.n-in').innerHTML = m ? `<h3>${m.t}</h3><p>${m.p}</p>`
-      : (CH.end && C.outcome) ? `<h3>${C.outcome.k}</h3><p>${C.outcome.v}</p>` : `<p>${C.about}</p>`;
+      : (CH.end && C.outcome) ? `<h3>${C.outcome.k}</h3><p>${C.outcome.v}</p>${C.outcome.u ? `<a class="p-out-link" href="${C.outcome.u}" target="_blank" rel="noopener">Read about it ↗</a>` : ''}` : `<p>${C.about}</p>`;
     now.classList.remove('swap');
   }, 220);
   MAP.ch = ci;

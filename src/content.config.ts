@@ -22,7 +22,7 @@ const projects = defineCollection({
     heroOrder: z.number().nullable().optional(),   // 1… = a card in the home page's main scroll
     moreOrder: z.number().nullable().optional(),   // 1… = a row in "More work" on the home page
     about: z.string().nullable().optional(),
-    outcome: z.object({ k: z.string(), v: z.string() }).nullable().optional(),
+    outcome: z.object({ k: z.string(), v: z.string(), u: z.string().optional() }).nullable().optional(),
     chapters: z.array(z.object({ key: z.string(), label: z.string(), slides: z.array(slide) })).default([]),
   }),
 });

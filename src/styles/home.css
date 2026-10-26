@@ -271,6 +271,8 @@ body.info-hold #info{opacity:0 !important;transition:none}
 .p-chap li.on{color:var(--ink)}
 .p-chap li.on::before{transform:none;background:var(--acc)}
 .p-now{position:fixed;left:24px;bottom:28px;width:calc((100vw - 80px) / 4);z-index:2}
+.p-out-link{display:inline-block;margin-top:10px;color:var(--ink);text-decoration:none;border-bottom:1px solid currentColor}
+.p-out-link:hover{color:var(--acc)}
 @media (max-width:800px){.p-now{position:static;width:auto}}
 .p-now h3{font-weight:400;font-size:15px;letter-spacing:-.01em;margin:0 0 6px}
 .p-now p{font-size:13px;line-height:1.55;color:var(--ink2);margin:0}

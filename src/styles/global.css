@@ -58,6 +58,8 @@ html[data-theme="dusk"] #top{background:transparent}
 #top .brand{display:flex;align-items:flex-start;gap:40px}
 #top .b-txt{display:flex;align-items:center;gap:14px}
 #top .tagline{font-size:11px;line-height:1.4;color:var(--tag);margin:0;position:relative;top:6px}
+html.deep body::before{content:'';position:fixed;inset:0;z-index:4899;background:var(--bg);animation:deepOff 0s 4s forwards}   /* safety: never cover the page for long */
+@keyframes deepOff{to{visibility:hidden}}
 #contact{position:relative;top:3px;margin-top:-6px;z-index:7000;border:1px solid var(--ink);padding:8px 18px;border-radius:999px;background:var(--ink);color:var(--bg) !important}
 #contact .l-txt{color:var(--bg)}
 #contact:hover{border-color:var(--acc)}
