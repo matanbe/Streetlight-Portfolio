@@ -4,7 +4,7 @@
 import fs from 'node:fs'; import path from 'node:path';
 const env = Object.fromEntries(fs.readFileSync('.env.local', 'utf8').split('\n').filter(l => l.includes('=')).map(l => [l.slice(0, l.indexOf('=')).trim(), l.slice(l.indexOf('=') + 1).trim()]));
 const PAT = env.STORYBLOK_PAT; if (!PAT) throw new Error('STORYBLOK_PAT missing in .env.local');
-const S = 'https://mapi.storyblok.com/v1/spaces/295313965919026', DIR = 'webflow-export/projects/kayma-stories', AWS = 'https://streetlight.s3.eu-north-1.amazonaws.com/';
+const S = 'https://mapi.storyblok.com/v1/spaces/295313965919026', DIR = 'webflow-export/projects/kayma-stories', AWS = 'https://d375a3v81h8eln.cloudfront.net/';
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const api = async (m, p, body) => { for (let i = 0; i < 5; i++){
   const r = await fetch(S + p, { method: m, headers: { Authorization: PAT, 'Content-Type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
