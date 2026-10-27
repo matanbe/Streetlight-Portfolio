@@ -46,7 +46,7 @@ export async function getProjects(): Promise<Project[]>{
       live: c.live || null, hasCase: !!c.has_case, heroOrder: num(c.hero_order), moreOrder: num(c.more_order), about: c.about || null,
       outcome: c.outcome_title ? { k: c.outcome_title, v: c.outcome_text || '', u: c.outcome_link || '' } : null,
       chapters: (c.chapters || []).map((ch: any, k: number) => ({ key: 'c' + k, label: ch.label || '', slides: (ch.slides || []).map((sl: any) => ({ t: sl.title || '', p: sl.caption || '', cont: !!sl.continued, img: asset(sl.image), ...blocks(sl) })) })),
-      hero: asset(c.hero), seo: { title: c.seo_title, description: c.seo_description, image: c.og_image?.filename }, _i: i } as any;
+      hero: c.hero_video ? { url: c.hero_video, video: true, poster: c.hero_poster || c.hero?.filename || '', alt: '' } : asset(c.hero), seo: { title: c.seo_title, description: c.seo_description, image: c.og_image?.filename }, _i: i } as any;
   }).sort((a: any, b: any) => byYear(a, b) || a._i - b._i);
 }
 

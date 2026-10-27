@@ -321,8 +321,17 @@ const cubes = SECTIONS.map((s,i)=>{
   return {wrap:w, cube:w.querySelector('.cube'), shadow:w.querySelector('.shadow')};
 });
 // the CMS hero image on the card's face (the flying hero picks it up from here too)
-cubes.forEach((c, i) => { const H = PROJECTS[i] && PROJECTS[i].hero; if (!H || H.video) return;
-  const top = c.wrap.querySelector('.f-top'); top.classList.add('img'); top.style.backgroundImage = `url('${H.url}/m/800x0')`; top.innerHTML = ''; });
+cubes.forEach((c, i) => { const H = PROJECTS[i] && PROJECTS[i].hero; if (!H) return;
+  const top = c.wrap.querySelector('.f-top'); top.classList.add('img'); top.innerHTML = '';
+  if (!H.video){ top.style.backgroundImage = `url('${H.url}/m/800x0')`; return; }
+  // a video hero: its poster (a frame) until the card is active — then it plays; inactive again = it just pauses where it is
+  if (H.poster) top.style.backgroundImage = `url('${H.poster}')`;
+  top.innerHTML = `<video class="cv" muted loop playsinline preload="none" data-src="${H.url}"${H.poster ? ` poster="${H.poster}"` : ''}></video>`; });
+// seek once the video knows its length (a seek before that is ignored); '#t=5' on the URL = start (and poster) at 5s
+const seekTo = (v, t) => { if (!(t > 0)) return; if (v.readyState >= 1) v.currentTime = t; else v.addEventListener('loadedmetadata', () => { v.currentTime = t; }, {once: true}); };
+const startAt = u => +((/#t=([\d.]+)/.exec(u || '') || [])[1] || 0);
+const cubeVid = (i, on) => { const v = i >= 0 && cubes[i] && cubes[i].wrap.querySelector('video.cv'); if (!v) return null;
+  if (on){ if (!v.src){ v.src = v.dataset.src; seekTo(v, startAt(v.dataset.src)); } v.play().catch(() => {}); } else v.pause(); return v; };
 
 // ---------- hairline figures on the front faces ----------
 const FIGS = ['vault','terrain','terrain','turntable','phone','phone','router','terminal'];
@@ -426,6 +435,7 @@ function render(){
   const onIdx = best > 0.98 ? active : -1;
   lastActive = active; lastBest = best;
   if (onIdx !== shownIdx){
+    if (openIdx < 0){ cubeVid(shownIdx, false); cubeVid(onIdx, true); }
     shownIdx = onIdx;
     figs.forEach((f,k)=>f && f.update({play: k === onIdx}));
     if (onIdx >= 0){
@@ -994,7 +1004,7 @@ var lastActive = -1, lastBest = 0;   // var: render() may run before this line
 function frontFace(i){ return cubes[i].wrap.querySelector(P.target === 'top' ? '.f-top' : '.f-front'); }
 function heroInner(i){
   const H = PROJECTS[i].hero;   // from the CMS
-  if (H) return H.video ? `<div class="hero-art"><video src="${H.url}" muted loop playsinline autoplay></video></div>` : `<div class="hero-art" style="background-image:url('${H.url}/m/1600x0')"></div>`;
+  if (H) return H.video ? `<div class="hero-art"><video src="${H.url}" muted loop playsinline${H.poster ? ` poster="${H.poster}"` : ''}></video></div>` : `<div class="hero-art" style="background-image:url('${H.url}/m/1600x0')"></div>`;
   const top = cubes[i] && cubes[i].wrap.querySelector('.f-top');   // projects past HERO_COUNT have no cube
   if (top && top.classList.contains('img'))
     return `<div class="hero-art" style="background-image:${getComputedStyle(top).backgroundImage.replace(/"/g, "'")}"></div>`;
@@ -1070,12 +1080,17 @@ function fly(el, from, to){
 }
 function makeFlyer(i, rect){
   const f = document.createElement('div'); f.className = 'flyer'; f.innerHTML = heroInner(i);
-  document.body.appendChild(f); rectStyle(f, rect); return f;
+  document.body.appendChild(f); rectStyle(f, rect);
+  // a video hero continues from the card's frame (no jump back to the start); the card's own video pauses behind it
+  const fv = f.querySelector('video'), cv = cubes[i] && cubes[i].wrap.querySelector('video.cv');
+  if (fv){ seekTo(fv, cv && cv.src ? cv.currentTime : startAt(fv.getAttribute('src'))); if (cv) cv.pause(); fv.play().catch(() => {}); }
+  return f;
 }
 function dock(f){
   f.getAnimations().forEach(a => a.cancel());
   f.removeAttribute('style'); f.classList.add('docked');
   projEl.querySelector('.hero-slot').appendChild(f);
+  f.querySelector('video')?.play().catch(() => {});   // moving a video in the DOM pauses it
 }
 const nextFrame = () => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
 const wait = ms => new Promise(r => setTimeout(r, ms));
@@ -1143,7 +1158,7 @@ async function closeProject(){
   await bringCube(i);
   const f = projEl.querySelector('.flyer'), from = f.getBoundingClientRect();
   const intro = projEl.querySelector('.p-intro');
-  f.classList.remove('docked'); document.body.appendChild(f); rectStyle(f, from);
+  f.classList.remove('docked'); document.body.appendChild(f); rectStyle(f, from); f.querySelector('video')?.play().catch(() => {});
   const to = frontFace(i).getBoundingClientRect();
   document.body.classList.add('info-hold');
   info.classList.add('show'); info.innerHTML = homeInfoHTML(i); shownIdx = i;
@@ -1155,8 +1170,10 @@ async function closeProject(){
   await Promise.all([fly(f, from, to), tf]);
   cubes[i].wrap.style.visibility = '';
   document.body.classList.remove('info-hold'); (await tf).remove();
+  { const fv = f.querySelector('video'), cv = cubes[i].wrap.querySelector('video.cv');
+    if (fv && cv){ if (!cv.src) cv.src = cv.dataset.src; seekTo(cv, fv.currentTime); } }
   f.remove(); projEl.classList.remove('open'); projEl.innerHTML = '';
-  openIdx = -1; busy = false;
+  openIdx = -1; busy = false; cubeVid(i, true);
 }
 
 // back to the top of the project page — Lenis too, or it glides back to its old target (the bottom of the last project)
@@ -1452,6 +1469,8 @@ function caseFx(){
   MAP.ch = ci;
 }
 projEl.addEventListener('scroll', () => requestAnimationFrame(caseFx), {passive:true});
+projEl.addEventListener('scroll', () => { const v = projEl.querySelector('.hero-slot video'); if (!v) return;
+  const r = v.getBoundingClientRect(), seen = r.bottom > 80 && r.top < innerHeight; if (seen && v.paused) v.play().catch(() => {}); else if (!seen && !v.paused) v.pause(); }, {passive:true});
 projEl.addEventListener('click', e => {
   const li = e.target.closest('.p-chap li'), lbl = e.target.closest('.p-chap .c-lbl');
   if (!li && !lbl) return;
