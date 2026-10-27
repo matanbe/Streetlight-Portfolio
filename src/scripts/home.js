@@ -3,6 +3,8 @@ import Lenis from 'lenis';
 import Hairline from '../vendor/hairline.js';
 import { initDuskLight } from './dusk-light.js';
 import { LampKit2 } from './lampkit.js';
+// Storyblok images get a resize suffix; anything else (CDN, /public) is used as is
+const sbm = (u, w) => /a\.storyblok\.com/.test(u) && !/\.svg(\?|$)/i.test(u) ? `${u}/m/${w}x0` : u;
 
 // the home scroll is built from this list — add / remove / reorder projects here only (any count works)
 const PROJECTS = window.__SL.projects;
@@ -323,7 +325,7 @@ const cubes = SECTIONS.map((s,i)=>{
 // the CMS hero image on the card's face (the flying hero picks it up from here too)
 cubes.forEach((c, i) => { const H = PROJECTS[i] && PROJECTS[i].hero; if (!H) return;
   const top = c.wrap.querySelector('.f-top'); top.classList.add('img'); top.innerHTML = '';
-  if (!H.video){ top.style.backgroundImage = `url('${H.url}/m/800x0')`; return; }
+  if (!H.video){ top.style.backgroundImage = `url('${sbm(H.url, 800)}')`; return; }
   // a video hero: its poster (a frame) until the card is active — then it plays; inactive again = it just pauses where it is
   if (H.poster) top.style.backgroundImage = `url('${H.poster}')`;
   top.innerHTML = `<video class="cv" muted loop playsinline preload="none" data-src="${H.url}"${H.poster ? ` poster="${H.poster}"` : ''}></video>`; });
@@ -1004,7 +1006,7 @@ var lastActive = -1, lastBest = 0;   // var: render() may run before this line
 function frontFace(i){ return cubes[i].wrap.querySelector(P.target === 'top' ? '.f-top' : '.f-front'); }
 function heroInner(i){
   const H = PROJECTS[i].hero;   // from the CMS
-  if (H) return H.video ? `<div class="hero-art"><video src="${H.url}" muted loop playsinline${H.poster ? ` poster="${H.poster}"` : ''}></video></div>` : `<div class="hero-art" style="background-image:url('${H.url}/m/1600x0')"></div>`;
+  if (H) return H.video ? `<div class="hero-art"><video src="${H.url}" muted loop playsinline${H.poster ? ` poster="${H.poster}"` : ''}></video></div>` : `<div class="hero-art" style="background-image:url('${sbm(H.url, 1600)}')"></div>`;
   const top = cubes[i] && cubes[i].wrap.querySelector('.f-top');   // projects past HERO_COUNT have no cube
   if (top && top.classList.contains('img'))
     return `<div class="hero-art" style="background-image:${getComputedStyle(top).backgroundImage.replace(/"/g, "'")}"></div>`;
@@ -1031,7 +1033,7 @@ function buildProject(i){
     return head + ch.slides.map((sl, si) => { const k = n++;
       const hs = sl.hs ? sl.hs.map((h, hi) => `<button class="hs" style="left:${h.x}%;top:${h.y}%;--k:${hi}" data-h="${hi}">${hi+1}</button>`).join('')
                          + `<svg class="hs-line" preserveAspectRatio="none"><path/></svg><div class="hs-card"></div><span class="hs-hint">Tap the numbers to explore</span>` : '';
-      const media = sl.img ? (sl.img.video ? `<video class="s-media" src="${sl.img.url}" muted loop playsinline autoplay></video>` : `<img class="s-media" src="${sl.img.url}/m/1800x0" alt="${(sl.img.alt || sl.t || '').replace(/"/g, '&quot;')}" loading="lazy">`) : '';
+      const media = sl.img ? (sl.img.video ? `<video class="s-media" src="${sl.img.url}" muted loop playsinline autoplay></video>` : `<img class="s-media" src="${sbm(sl.img.url, 1800)}" alt="${(sl.img.alt || sl.t || '').replace(/"/g, '&quot;')}" loading="lazy">`) : '';
       if (sl.b) return `<figure class="slide is-block b-${sl.b}" data-ch="${ci}" data-k="${k}">${Blocks.html(sl)}${(sl.t || sl.p) && !sl.cont ? `<figcaption class="s-cap">${sl.t ? `<b>${sl.t}</b>` : ''}${sl.p ? `<span>${sl.p}</span>` : ''}</figcaption>` : ''}</figure>`;
       return `<figure class="slide${sl.img ? ' has-media' : ''}" data-ch="${ci}" data-k="${k}"><div class="s-frame">${media}<span class="s-no">${String(k+1).padStart(2,'0')}</span><span class="s-lbl">slide ${String(k+1).padStart(2,'0')} / ${total}</span>${multi ? `<span class="s-tag">${ch.label}</span>` : ''}${hs}</div>${(sl.t || sl.p) && !sl.cont ? `<figcaption class="s-cap">${sl.t ? `<b>${sl.t}</b>` : ''}${sl.p ? `<span>${sl.p}</span>` : ''}</figcaption>` : ''}</figure>`; }).join('');
   }).join('');

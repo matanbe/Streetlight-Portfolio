@@ -31,7 +31,7 @@ const count = (t: string | null) => t ? projects.filter(p => p.disciplines.inclu
     <!-- hover preview: one fixed 16:9 window with each project's cover; moving between rows slides to the next one -->
     <div id="pv" aria-hidden="true"><div class="strip">
       {projects.map((p, i) => p.hero
-        ? <div class="it">{p.hero.video ? <video src={p.hero.url} muted loop playsinline autoplay preload="none"></video> : <img src={`${p.hero.url}/m/800x0`} alt="" loading="lazy">}</div>
+        ? <div class="it">{p.hero.video && !p.hero.poster ? <video src={p.hero.url} muted loop playsinline autoplay preload="none"></video> : <img src={p.hero.video ? p.hero.poster : /a\.storyblok\.com/.test(p.hero.url) ? `${p.hero.url}/m/800x0` : p.hero.url} alt="" loading="lazy">}</div>
         : <div class="it ph" style={`background:${['#1b1b1b', '#8c8c8c', '#d9d4c3', '#706d63'][i % 4]}`}>{p.name}</div>)}
     </div></div>
   </section>
