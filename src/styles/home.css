@@ -627,3 +627,4 @@ html[data-theme="dusk"] .site-foot{color:color-mix(in srgb,rgb(var(--sky-light))
   .slide.is-block .s-cap{display:grid}
   .cc-btn{width:30px;height:30px}
 }
+.n-in p,.s-cap span{white-space:pre-line}   /* a blank line in a caption = a new paragraph */
