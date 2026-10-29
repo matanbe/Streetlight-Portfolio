@@ -444,7 +444,7 @@ function render(){
       const pr = PROJECTS[onIdx];
       info.classList.remove('show');
       info.innerHTML = `<div class="idx">${String(onIdx+1).padStart(2,'0')} / ${String(N).padStart(2,'0')}</div>
-        <h2>${pr.name}</h2>${pr.lines.map(l=>`<p>${l}</p>`).join('')}<div class="meta">${pr.meta}</div><button class="view fx ghost" data-i="${onIdx}"><span class="l-txt">View project</span><span class="l-arr"><i>→</i><i>→</i></span></button>`;
+        <h2>${pr.name}</h2>${pr.lines.map(l=>`<p>${l}</p>`).join('')}<div class="meta">${pr.meta}</div><button class="view fx ghost" data-i="${onIdx}"><span class="l-txt">${pr.ext ? 'View live' : 'View project'}</span><span class="l-arr"><i>${pr.ext ? '↗' : '→'}</i><i>${pr.ext ? '↗' : '→'}</i></span></button>`;
       void info.offsetWidth;
       info.classList.add('show');
     } else info.classList.remove('show');
@@ -1108,6 +1108,7 @@ async function bringCube(i){
 
 let directOpen = false;   // opened from a link (no cube flight): closes with a fade
 async function openProject(i, push = true, direct = false){
+  if (PROJECTS[i]?.ext){ if (PROJECTS[i].live) window.open(PROJECTS[i].live, '_blank', 'noopener'); return; }   // no case → the live site
   if (busy || openIdx === i) return; busy = true;
   directOpen = direct || !cubes[i];
   if (directOpen){   // not in the home scroll (past HERO_COUNT): no cube to fly from — the page fades in
@@ -1584,6 +1585,7 @@ document.querySelectorAll('#more .m-row:not(.m-head)').forEach((r, i) => {
   if (L.live) acts.insertAdjacentHTML('beforeend', `<a class="m-btn" href="${L.live}" target="_blank" rel="noopener">View live ↗</a>`);
   if (L.case) acts.insertAdjacentHTML('beforeend', `<a class="m-btn${L.live ? ' solid' : ''}" href="${L.case}">View case</a>`);
   if (L.home) acts.insertAdjacentHTML('beforeend', `<button class="m-btn${L.live ? ' solid' : ''}" data-home>View case</button>`);
+  if (L.soon) acts.insertAdjacentHTML('beforeend', `<span class="m-soon">Coming soon</span>`);
   const hb = acts.querySelector('[data-home]'); if (hb) hb.addEventListener('click', () => openHome(L.home));
   r.appendChild(acts);
   r.style.cursor = (L.home || L.case || L.live) ? 'pointer' : '';
