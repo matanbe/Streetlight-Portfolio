@@ -1271,10 +1271,11 @@ const Blocks = (() => {
   const img = (u, w) => /a\.storyblok\.com/.test(u) && !/\.svg(\?|$)/i.test(u) ? `${u}/m/${w}x0` : u;
   const esc = v => String(v || '').replace(/"/g, '&quot;');
   const per = {full: 1, duo: 2, trio: 3, quad: 4};
-  const media = (it, px, alt) => { const t = kind(it.src);
-    return t === 'video' ? `<video data-src="${it.src}" muted loop playsinline preload="none"></video>`
-         : t === 'lottie' ? `<div class="f-lot" data-lottie="${it.src}"></div>`
-         : `<img src="${img(it.src, px)}" alt="${esc(it.alt || alt)}" loading="lazy">`; };
+  // '#pad=8' at the end of a file's URL = shrink it inside its frame (8% padding all round)
+  const media = (it, px, alt) => { const t = kind(it.src), pad = (/[#&]pad=([\d.]+)/.exec(it.src) || [])[1], ps = pad ? ` style="padding:${pad}%"` : '';
+    return t === 'video' ? `<video data-src="${it.src}" muted loop playsinline preload="none"${ps}></video>`
+         : t === 'lottie' ? `<div class="f-lot" data-lottie="${it.src}"${ps}></div>`
+         : `<img src="${img(it.src, px)}" alt="${esc(it.alt || alt)}" loading="lazy"${ps}>`; };
   function html(sl){
     const n = per[sl.b] || 1, px = Math.round(1800 / n), r = sl.r || '16/9';
     return `<div class="s-row" style="--r:${r}">${(sl.f || []).slice(0, n).map((fr, fi) => {
