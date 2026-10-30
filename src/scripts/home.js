@@ -1029,7 +1029,7 @@ function buildProject(i){
   const pr = PROJECTS[i], next = (i + 1) % PROJECTS.length, C = caseOf(i), multi = C.chapters.length > 1;
   let n = 0; const total = C.chapters.reduce((a, c) => a + c.slides.length, 0);
   const slidesHTML = C.chapters.map((ch, ci) => {
-    const head = multi ? `<div class="p-chdiv" data-ch="${ci}"><b>${String(ci+1).padStart(2,'0')}</b><span>${ch.label}</span><small>${ch.slides.length} frames</small></div>` : '';
+    const head = multi && ch.label ? `<div class="p-chdiv" data-ch="${ci}"><b>${String(ci+1).padStart(2,'0')}</b><span>${ch.label}</span><small>${ch.slides.length} frames</small></div>` : '';
     return head + ch.slides.map((sl, si) => { const k = n++;
       const hs = sl.hs ? sl.hs.map((h, hi) => `<button class="hs" style="left:${h.x}%;top:${h.y}%;--k:${hi}" data-h="${hi}">${hi+1}</button>`).join('')
                          + `<svg class="hs-line" preserveAspectRatio="none"><path/></svg><div class="hs-card"></div><span class="hs-hint">Tap the numbers to explore</span>` : '';
