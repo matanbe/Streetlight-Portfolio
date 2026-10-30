@@ -1012,13 +1012,12 @@ function heroInner(i){
     return `<div class="hero-art" style="background-image:${getComputedStyle(top).backgroundImage.replace(/"/g, "'")}"></div>`;
   return `<div class="hero-art ph"><span>${PROJECTS[i].name}</span><small>hero image ${String(i+1).padStart(2,'0')}</small></div>`;
 }
-function metaParts(i){ const parts = PROJECTS[i].meta.split(' · '); const year = /^\d/.test(parts[0]) ? parts.shift() : '—'; return {year, services: parts.filter(x => x !== 'Website').join(', ') || '—'}; }
+function metaParts(i){ const parts = PROJECTS[i].meta.split(' · '); const year = /^\d/.test(parts[0]) ? parts.shift() : '—'; return {year, services: PROJECTS[i].srv || '—'}; }
 function introHTML(i){
   const pr = PROJECTS[i], m = metaParts(i);
   return `<div class="idx">${String(i+1).padStart(2,'0')} / ${String(PROJECTS.length).padStart(2,'0')}</div>
     <h2>${pr.name}</h2>
-    ${pr.lines.map(l=>`<p>${l}</p>`).join('')}
-    <dl class="p-mini"><div><dt>Year</dt><dd>${m.year}</dd></div><div><dt>Services</dt><dd>${m.services}</dd></div></dl>`;
+    <dl class="p-mini"><div><dt>Year</dt><dd>${m.year}</dd></div><div><dt>Services</dt><dd>${m.services}</dd></div>${pr.credits?.length ? `<div class="p-cred"><dt>Credits</dt><dd>${pr.credits.join('<br>')}</dd></div>` : ''}</dl>`;
 }
 function homeInfoHTML(i){
   const pr = PROJECTS[i];

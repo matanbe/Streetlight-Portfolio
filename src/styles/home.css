@@ -632,3 +632,6 @@ html[data-theme="dusk"] .site-foot{color:color-mix(in srgb,rgb(var(--sky-light))
 #more .m-soon{color:var(--mute);font-size:12px;letter-spacing:.04em;text-transform:uppercase;align-self:center}
 @media (min-width:801px){ #info p{margin-right:40px} }   /* keep the text off the cube */
 .p-now h3{font-size:22px;color:var(--acc);margin-bottom:10px} .p-now p{animation:nowFade .7s .15s cubic-bezier(.2,.7,.1,1) both} @keyframes nowFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}   /* slide title in accent, its text fades in */
+
+.p-intro .idx,.p-side .p-div{display:none}   /* project page: no index number, no divider */
+.p-mini .p-cred{grid-column:1 / -1}
