@@ -1273,7 +1273,8 @@ const Blocks = (() => {
   const esc = v => String(v || '').replace(/"/g, '&quot;');
   const per = {full: 1, duo: 2, trio: 3, quad: 4};
   // '#pad=8' at the end of a file's URL = shrink it inside its frame (8% padding all round)
-  const media = (it, px, alt) => { const t = kind(it.src), pad = (/[#&]pad=([\d.]+)/.exec(it.src) || [])[1], ps = pad ? ` style="padding:${pad}%"` : '';
+  // 'ph:Some text' = a placeholder for a missing image — a hatched box with the text in the middle
+  const media = (it, px, alt) => { if (it.src.startsWith('ph:')) return `<div class="f-ph"><span>${esc(it.src.slice(3))}</span></div>`; const t = kind(it.src), pad = (/[#&]pad=([\d.]+)/.exec(it.src) || [])[1], ps = pad ? ` style="padding:${pad}%"` : '';
     return t === 'video' ? `<video data-src="${it.src}" muted loop playsinline preload="none"${ps}></video>`
          : t === 'lottie' ? `<div class="f-lot" data-lottie="${it.src}"${ps}></div>`
          : `<img src="${img(it.src, px)}" alt="${esc(it.alt || alt)}" loading="lazy"${ps}>`; };

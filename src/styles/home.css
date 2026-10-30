@@ -653,3 +653,6 @@ html[data-theme="dusk"] .rolo .card.proj .qq,html[data-theme="dusk"] .rolo .card
 /* the portrait on the black card: black hatching on an accent disc (inverted white read as a negative) */
 .rolo .card.proj .nm .ph.has-img,html[data-theme="dusk"] .rolo .card.proj .nm .ph.has-img{background:var(--acc) !important;color:#111 !important;border-color:var(--acc) !important}
 .rolo .card.proj .tg,html[data-theme="dusk"] .rolo .card.proj .tg{border-bottom-color:var(--acc) !important}   /* the divider on the project card */
+
+.f-ph{position:absolute;inset:0;display:grid;place-items:center;padding:24px;text-align:center;background:repeating-linear-gradient(45deg,transparent 0 9px,var(--soft) 9px 10px),var(--bg);outline:1px dashed var(--mute);outline-offset:-1px}
+.f-ph span{max-width:32ch;font-size:12px;line-height:1.5;color:var(--ink2);background:var(--bg);padding:4px 10px}
