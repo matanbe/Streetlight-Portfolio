@@ -20,7 +20,7 @@ const blocks = (sl: any) => { if (!sl.block || !(sl.frames || []).length) return
                   ...(fr.urls || '').split('\n').map((u: string) => u.trim()).filter(Boolean).map((u: string) => ({ src: u, alt: '' }))];
     return { items: srcs.map((it: any, k: number) => ({ ...it, bg: fills.length > 1 ? fills[k] : fills[0] })) }; }) }; };
 
-export type Project = { id: string; name: string; industry: string; year: string; disciplines: string[]; lines: string[]; services: string[]; credits?: string[]; live: string | null; soon?: boolean;
+export type Project = { id: string; name: string; industry: string; year: string; disciplines: string[]; lines: string[]; services: string[]; credits?: string[]; awards?: string[]; live: string | null; soon?: boolean;
   hasCase: boolean; heroOrder: number | null; moreOrder: number | null; about: string | null; outcome: { k: string; v: string; u?: string } | null;
   chapters: { key: string; label: string; slides: { t: string; p?: string; cont?: boolean; img?: any; b?: string; r?: string; f?: any[] }[] }[]; hero: any; seo?: { title?: string; description?: string; image?: string } };
 
@@ -42,7 +42,7 @@ export async function getProjects(): Promise<Project[]>{
   const list = await stories('projects');
   return list.map((s: any, i: number) => { const c = s.content;
     return { id: s.slug, name: c.name, industry: c.industry || '', year: c.year || '', disciplines: c.disciplines || [],
-      lines: (c.lines || '').split('\n').map((x: string) => x.trim()).filter(Boolean), services: (c.services || '').split(',').map((x: string) => x.trim()).filter(Boolean), credits: (c.credits || '').split('\n').map((x: string) => x.trim()).filter(Boolean),
+      lines: (c.lines || '').split('\n').map((x: string) => x.trim()).filter(Boolean), services: (c.services || '').split(',').map((x: string) => x.trim()).filter(Boolean), credits: (c.credits || '').split('\n').map((x: string) => x.trim()).filter(Boolean), awards: (c.awards || '').split('\n').map((x: string) => x.trim()).filter(Boolean),
       live: c.live && c.live.trim().toLowerCase() !== 'soon' ? c.live : null, soon: (c.live || '').trim().toLowerCase() === 'soon', hasCase: !!c.has_case, heroOrder: num(c.hero_order), moreOrder: num(c.more_order), about: c.about || null,
       outcome: c.outcome_title ? { k: c.outcome_title, v: c.outcome_text || '', u: c.outcome_link || '' } : null,
       chapters: (c.chapters || []).map((ch: any, k: number) => ({ key: 'c' + k, label: ch.label || '', slides: (ch.slides || []).map((sl: any) => ({ t: sl.title || '', p: sl.caption || '', cont: !!sl.continued, img: asset(sl.image), ...blocks(sl) })) })),

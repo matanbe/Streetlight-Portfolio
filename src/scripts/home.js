@@ -1018,7 +1018,7 @@ function introHTML(i){
   return `<div class="idx">${String(i+1).padStart(2,'0')} / ${String(PROJECTS.length).padStart(2,'0')}</div>
     <h2>${pr.name}</h2>
     ${caseOf(i).about ? `<p class="p-desc">${caseOf(i).about}</p>` : ''}
-    <dl class="p-mini"><div><dt>Year</dt><dd>${m.year}</dd></div><div><dt>Services</dt><dd>${m.services}</dd></div>${pr.credits?.length ? `<div class="p-cred"><dt>Credits</dt><dd>${pr.credits.join('<br>')}</dd></div>` : ''}</dl>`;
+    <dl class="p-mini"><div><dt>Year</dt><dd>${m.year}</dd></div><div><dt>Services</dt><dd>${m.services}</dd></div>${pr.credits?.length ? `<div class="p-cred"><dt>Credits</dt><dd>${pr.credits.join('<br>')}</dd></div>` : ''}${pr.awards?.length ? `<div class="p-cred"><dt>Awards</dt><dd>${pr.awards.join('<br>')}</dd></div>` : ''}</dl>`;
 }
 function homeInfoHTML(i){
   const pr = PROJECTS[i];
