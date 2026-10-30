@@ -181,3 +181,8 @@ html[data-theme="dusk"] .site-foot{background:transparent}
   .page h1{font-size:30px}
   .m-row{column-gap:16px}
 }
+
+/* logo hover: the tagline turns red letter by letter (a wave, like the scroll reveal) */
+#top .tagline .tw{white-space:nowrap}
+#top .tagline .tc{transition:color .35s ease calc(var(--i) * 14ms)}
+#top .b-txt:has(.logo:hover) .tagline .tc{color:var(--acc)}

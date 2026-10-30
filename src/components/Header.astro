@@ -11,6 +11,10 @@ const LINKS = [
 ];
 const cur = (h: string) => (h !== '/#about' && (path === h || path.startsWith(h + '/'))) ? 'page' : undefined;
 const [t1, t2] = tagline.split(' be ');
+// the tagline letter by letter (words kept whole), so a logo hover can sweep them to red one after another
+let li = 0;
+const letters = (s: string) => s.split(/(\s+)/).map(w => /^\s+$/.test(w) || !w ? w : `<span class="tw">${[...w].map(c => `<span class="tc" style="--i:${li++}">${c}</span>`).join('')}</span>`).join('');
+const tagHTML = `${letters(t1)}<br>${letters('be ' + t2)}`;
 ---
 <div id="mnav" aria-hidden="true">
   <ul class="mn-links">
@@ -29,6 +33,6 @@ const [t1, t2] = tagline.split(' be ');
   <button id="burger" aria-label="Menu" aria-expanded="false" aria-controls="mnav"><i></i><i></i></button>
   <div class="brand"><div class="b-txt">
     <a class="logo" href="/" aria-label="Streetlight — home"><span class="lt-logo" data-logo aria-hidden="true"></span></a>
-    <p class="tagline">{t1}<br>be {t2}</p>
+    <p class="tagline" aria-label={tagline} set:html={tagHTML}></p>
   </div><slot name="brand" /></div>
 </header>
