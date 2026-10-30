@@ -641,3 +641,5 @@ html[data-theme="dusk"] .site-foot{color:color-mix(in srgb,rgb(var(--sky-light))
 .p-mini > div{display:grid;grid-template-columns:84px 1fr;gap:16px;align-items:baseline}
 .p-mini dt{margin:0}
 .p-mini dd{line-height:1.5}
+
+.p-intro .p-desc{font-size:14px;line-height:1.55;color:var(--ink2);margin:0 0 4px;max-width:46ch;white-space:pre-line}

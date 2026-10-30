@@ -1017,6 +1017,7 @@ function introHTML(i){
   const pr = PROJECTS[i], m = metaParts(i);
   return `<div class="idx">${String(i+1).padStart(2,'0')} / ${String(PROJECTS.length).padStart(2,'0')}</div>
     <h2>${pr.name}</h2>
+    ${caseOf(i).about ? `<p class="p-desc">${caseOf(i).about}</p>` : ''}
     <dl class="p-mini"><div><dt>Year</dt><dd>${m.year}</dd></div><div><dt>Services</dt><dd>${m.services}</dd></div>${pr.credits?.length ? `<div class="p-cred"><dt>Credits</dt><dd>${pr.credits.join('<br>')}</dd></div>` : ''}</dl>`;
 }
 function homeInfoHTML(i){
@@ -1044,7 +1045,7 @@ function buildProject(i){
         <div class="p-intro">${introHTML(i)}</div>
         ${pr.live ? `<a class="p-live fx solid reveal" style="--d:1" href="${pr.live}" target="_blank" rel="noopener"><span class="l-txt">View live site</span><span class="l-arr"><i>↗</i><i>↗</i></span></a>` : ''}
         <div class="p-div reveal" style="--d:2"></div>
-        <div class="p-now reveal" style="--d:3"><div class="n-in"><p>${C.about}</p></div></div>
+        <div class="p-now reveal" style="--d:3"><div class="n-in"></div></div>
       </aside>
       <div class="p-map" aria-hidden="true"><svg></svg><span class="p-mtag"></span></div>
       <div class="p-main">
@@ -1466,7 +1467,7 @@ function caseFx(){
   clearTimeout(CH.t); CH.t = setTimeout(() => {
     const C = caseOf(CH.idx);
     now.querySelector('.n-in').innerHTML = m ? `<h3>${m.t}</h3><p>${m.p}</p>`
-      : (CH.end && C.outcome) ? `<h3>${C.outcome.k}</h3><p>${C.outcome.v}</p>${C.outcome.u ? `<a class="p-out-link" href="${C.outcome.u}" target="_blank" rel="noopener">Read about it ↗</a>` : ''}` : `<p>${C.about}</p>`;
+      : (CH.end && C.outcome) ? `<h3>${C.outcome.k}</h3><p>${C.outcome.v}</p>${C.outcome.u ? `<a class="p-out-link" href="${C.outcome.u}" target="_blank" rel="noopener">Read about it ↗</a>` : ''}` : '';   // the description sits under the project name now
     now.classList.remove('swap');
   }, 220);
   MAP.ch = ci;
