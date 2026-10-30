@@ -484,7 +484,7 @@ body.in-about #stage{opacity:0}
 .f-front{color:var(--acc)}
 .wrap.on .f-front{border-color:var(--acc)}
 .top-target .wrap.on .f-front{border-color:var(--ink)}
-.top-target .wrap.on .f-top{border-color:var(--acc);color:var(--acc)}
+.top-target .wrap.on .f-top{border-color:var(--ink);color:var(--ink)}
 .shadow{position:absolute;left:0;top:0;width:var(--W);height:max(1px,var(--D));margin:calc(var(--D)/-2) calc(var(--W)/-2);
           border:1px dashed var(--mute);transform-origin:center}
 #about .ab-cta{margin-top:72px}
