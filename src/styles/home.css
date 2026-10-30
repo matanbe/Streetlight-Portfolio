@@ -630,3 +630,4 @@ html[data-theme="dusk"] .site-foot{color:color-mix(in srgb,rgb(var(--sky-light))
 .n-in p,.s-cap span{white-space:pre-line}   /* a blank line in a caption = a new paragraph */
 
 #more .m-soon{color:var(--mute);font-size:12px;letter-spacing:.04em;text-transform:uppercase;align-self:center}
+@media (min-width:801px){ #info p{margin-right:40px} }   /* keep the text off the cube */
