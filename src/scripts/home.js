@@ -1061,7 +1061,7 @@ function buildProject(i){
     </div>`;
   { const k = Rolo.indexFor(pr.name); Rolo.mount(projEl.querySelector('.rolo'), Math.max(0, k), k); }
   Blocks.mount(projEl, C);
-  CH.cur = -2; CH.idx = i; caseFx(); if (typeof NX !== 'undefined'){ NX.p = 0; }
+  CH.cur = -2; CH.key = null; CH.idx = i; caseFx(); if (typeof NX !== 'undefined'){ NX.p = 0; }
 }
 // text flyer: the home-page project text travels into the left column
 function textFlight(i, fromRect, toEl, reverse){
@@ -1464,6 +1464,8 @@ function caseFx(){
   projEl.querySelectorAll('.p-chap .c-grp').forEach(g => g.classList.toggle('on', +g.dataset.ch === ci));
   projEl.querySelectorAll('.p-chap li').forEach(li => li.classList.toggle('on', !!m && li.dataset.t === m.t && +li.closest('.c-grp').dataset.ch === ci));
   if (!now || innerWidth <= 800) return;   // phones: captions sit under each image instead
+  const key = m ? 'm:' + m.t + '|' + m.p : (CH.end ? 'end' : '');   // same text (a continued slide) → leave it as it is
+  if (key === CH.key) return; CH.key = key;
   now.classList.add('swap');
   clearTimeout(CH.t); CH.t = setTimeout(() => {
     const C = caseOf(CH.idx);
