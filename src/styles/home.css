@@ -650,3 +650,5 @@ html[data-theme="dusk"] .site-foot{color:color-mix(in srgb,rgb(var(--sky-light))
 html[data-theme="dusk"] .rolo .card.proj .qq,html[data-theme="dusk"] .rolo .card.proj .qq b,html[data-theme="dusk"] .rolo .card.proj .nm span,html[data-theme="dusk"] .rolo .card.proj .tg,html[data-theme="dusk"] .rolo .card.proj .tg b{color:#fff !important}
 .rolo .card.proj .nm strong,html[data-theme="dusk"] .rolo .card.proj .nm strong{color:var(--acc) !important}
 .rolo .card.proj .nm .ph,.rolo .card.proj .ph.has-img,html[data-theme="dusk"] .rolo .card.proj .nm .ph{border-color:#fff;color:#fff}
+/* the portrait on the black card: black hatching on an accent disc (inverted white read as a negative) */
+.rolo .card.proj .nm .ph.has-img,html[data-theme="dusk"] .rolo .card.proj .nm .ph.has-img{background:var(--acc) !important;color:#111 !important;border-color:var(--acc) !important}
