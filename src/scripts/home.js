@@ -1447,7 +1447,8 @@ addEventListener('resize', () => requestAnimationFrame(drawMap));
 
 // ---------------- case chapters: left column follows the slide at screen centre ----------------
 const CH = { cur:-2, idx:-1 };
-function slideMeta(k){ const C = caseOf(CH.idx); let n = 0; for (const ch of C.chapters) for (const s of ch.slides){ if (n++ === k) return s; } return null; }
+// a 'continued' slide keeps the title + text of the slide it continues
+function slideMeta(k){ const C = caseOf(CH.idx); let n = 0; for (const ch of C.chapters){ let last = null; for (const s of ch.slides){ if (!s.cont || s.t || s.p) last = s; if (n++ === k) return last || s; } } return null; }
 function caseFx(){
   if (!projEl.classList.contains('open')) return;
   const slides = [...projEl.querySelectorAll('.slide')]; if (!slides.length) return;
