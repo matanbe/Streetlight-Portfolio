@@ -1028,14 +1028,16 @@ function homeInfoHTML(i){
 function buildProject(i){
   const pr = PROJECTS[i], next = (i + 1) % PROJECTS.length, C = caseOf(i), multi = C.chapters.length > 1;
   let n = 0; const total = C.chapters.reduce((a, c) => a + c.slides.length, 0);
+  SEC.list = [];
   const slidesHTML = C.chapters.map((ch, ci) => {
     const head = multi && ch.label ? `<div class="p-chdiv" data-ch="${ci}"><b>${String(ci+1).padStart(2,'0')}</b><span>${ch.label}</span><small>${ch.slides.length} frames</small></div>` : '';
     return head + ch.slides.map((sl, si) => { const k = n++;
       const hs = sl.hs ? sl.hs.map((h, hi) => `<button class="hs" style="left:${h.x}%;top:${h.y}%;--k:${hi}" data-h="${hi}">${hi+1}</button>`).join('')
                          + `<svg class="hs-line" preserveAspectRatio="none"><path/></svg><div class="hs-card"></div><span class="hs-hint">Tap the numbers to explore</span>` : '';
       const media = sl.img ? (sl.img.video ? `<video class="s-media" src="${sl.img.url}" muted loop playsinline autoplay></video>` : `<img class="s-media" src="${sbm(sl.img.url, 1800)}" alt="${(sl.img.alt || sl.t || '').replace(/"/g, '&quot;')}" loading="lazy">`) : '';
-      if (sl.b) return `<figure class="slide is-block b-${sl.b}" data-ch="${ci}" data-k="${k}">${Blocks.html(sl)}${(sl.t || sl.p) && !sl.cont ? `<figcaption class="s-cap">${sl.t ? `<b>${sl.t}</b>` : ''}${sl.p ? `<span>${sl.p}</span>` : ''}</figcaption>` : ''}</figure>`;
-      return `<figure class="slide${sl.img ? ' has-media' : ''}" data-ch="${ci}" data-k="${k}"><div class="s-frame">${media}<span class="s-no">${String(k+1).padStart(2,'0')}</span><span class="s-lbl">slide ${String(k+1).padStart(2,'0')} / ${total}</span>${multi ? `<span class="s-tag">${ch.label}</span>` : ''}${hs}</div>${(sl.t || sl.p) && !sl.cont ? `<figcaption class="s-cap">${sl.t ? `<b>${sl.t}</b>` : ''}${sl.p ? `<span>${sl.p}</span>` : ''}</figcaption>` : ''}</figure>`; }).join('');
+      const sec = sl.t && !sl.cont ? ` data-sec="${SEC.list.push({t: sl.t, p: sl.p || ''}) - 1}"` : '';
+      if (sl.b) return `<figure class="slide is-block b-${sl.b}" data-ch="${ci}" data-k="${k}"${sec}>${Blocks.html(sl)}${(sl.t || sl.p) && !sl.cont ? `<figcaption class="s-cap">${sl.t ? `<b>${sl.t}</b>` : ''}${sl.p ? `<span>${sl.p}</span>` : ''}</figcaption>` : ''}</figure>`;
+      return `<figure class="slide${sl.img ? ' has-media' : ''}" data-ch="${ci}" data-k="${k}"${sec}><div class="s-frame">${media}<span class="s-no">${String(k+1).padStart(2,'0')}</span><span class="s-lbl">slide ${String(k+1).padStart(2,'0')} / ${total}</span>${multi ? `<span class="s-tag">${ch.label}</span>` : ''}${hs}</div>${(sl.t || sl.p) && !sl.cont ? `<figcaption class="s-cap">${sl.t ? `<b>${sl.t}</b>` : ''}${sl.p ? `<span>${sl.p}</span>` : ''}</figcaption>` : ''}</figure>`; }).join('');
   }).join('');
   const navHTML = multi ? `<nav class="p-chap reveal" style="--d:4">${C.chapters.map((ch, ci) => `<div class="c-grp" data-ch="${ci}"><span class="c-lbl"><b>${String(ci+1).padStart(2,'0')}</b>${ch.label}</span><ol>${
       ch.slides.filter(s => !s.cont).map(s => `<li data-t="${s.t}">${s.t}</li>`).join('')}</ol></div>`).join('')}</nav>` : '';
@@ -1044,9 +1046,9 @@ function buildProject(i){
       <aside class="p-side">
         <div class="p-intro">${introHTML(i)}</div>
         ${pr.live ? `<a class="p-live fx solid reveal" style="--d:1" href="${pr.live}" target="_blank" rel="noopener"><span class="l-txt">View live site</span><span class="l-arr"><i>↗</i><i>↗</i></span></a>` : ''}
-        <div class="p-div reveal" style="--d:2"></div>
-        <div class="p-now reveal" style="--d:3"><div class="n-in"></div></div>
       </aside>
+      <div class="p-top"><b class="p-top-name" title="Back to top">${pr.name}</b>${pr.live ? `<a href="${pr.live}" target="_blank" rel="noopener">View live ↗</a>` : ''}</div>
+      <nav class="p-secs" aria-label="Sections">${SEC.html(C)}</nav>
       <div class="p-map" aria-hidden="true"><svg></svg><span class="p-mtag"></span></div>
       <div class="p-main">
         <div class="hero-slot"></div>
@@ -1061,8 +1063,51 @@ function buildProject(i){
     </div>`;
   { const k = Rolo.indexFor(pr.name); Rolo.mount(projEl.querySelector('.rolo'), Math.max(0, k), k); }
   Blocks.mount(projEl, C);
-  CH.cur = -2; CH.key = null; CH.idx = i; caseFx(); if (typeof NX !== 'undefined'){ NX.p = 0; }
+  CH.cur = -2; CH.key = null; CH.idx = i; caseFx(); SEC.mount(); if (typeof NX !== 'undefined'){ NX.p = 0; }
 }
+// ---------------- sections navigation (left column) ----------------
+const SEC = { list: [], cur: -2,
+  html(C){
+    const out = C.outcome ? [{t: C.outcome.k, p: C.outcome.v, u: C.outcome.u, out: true}] : [];
+    this.all = [...this.list, ...out];
+    return this.all.map((s, i) => `<div class="p-sec" data-i="${i}"><div class="in"><div class="hd">${s.t}</div><div class="bd"><p>${s.p}</p>${s.u ? `<a href="${s.u}" target="_blank" rel="noopener">Read about it ↗</a>` : ''}</div></div></div>`).join('');
+  },
+  target(i){ return this.all[i].out ? projEl.querySelector('.p-rolo') : projEl.querySelector(`.slide[data-sec="${i}"]`); },
+  mount(){
+    this.cur = -2; this.place(); let n = 0; const run = () => { this.tick(true); if (++n < 90) requestAnimationFrame(run); }; requestAnimationFrame(run);
+    projEl.querySelectorAll('.p-slides img, .p-slides video').forEach(m => m.addEventListener(m.tagName === 'IMG' ? 'load' : 'loadedmetadata', () => this.tick(), {once: true}));
+  },
+  place(){   // the fixed layer sits exactly over the left column
+    const side = projEl.querySelector('.p-side'); if (!side) return; const r = side.getBoundingClientRect();
+    projEl.querySelectorAll('.p-secs, .p-top').forEach(e => { e.style.left = r.left + 'px'; e.style.width = r.width + 'px'; });
+    this.tick(true);
+  },
+  tick(force){
+    const nav = projEl.querySelector('.p-secs'); if (!nav || innerWidth <= 800) return;
+    const sr = projEl.querySelector('.p-side').getBoundingClientRect();   // the layer sits over the left column (built while hidden, so measure here)
+    if (sr.width && (nav._w !== sr.width || nav._l !== sr.left)){ nav._w = sr.width; nav._l = sr.left; projEl.querySelectorAll('.p-secs, .p-top').forEach(e => { e.style.left = sr.left + 'px'; e.style.width = sr.width + 'px'; }); }
+    const intro = projEl.querySelector('.p-intro'), top = 84, mh = 44, hh = 31;
+    const pinned = (projEl.querySelector('.p-live') || intro).getBoundingClientRect().bottom < top + mh;
+    projEl.classList.toggle('p-pinned', pinned);
+    const items = [...nav.children], n = items.length, H = innerHeight;
+    items.forEach((it, i) => {
+      const t = this.target(i); if (!t) return;
+      const f = t.getBoundingClientRect().top, lo = top + mh + i * hh, hi = H - (n - i) * hh;
+      it.style.transform = `translateY(${Math.min(Math.max(f, lo), hi)}px)`;   // rides on its frames, clamped into its slot
+    });
+    const mid = H * .5; let a = -1;
+    items.forEach((it, i) => { const t = this.target(i); if (t && t.getBoundingClientRect().top < mid) a = i; });
+    if (a === this.cur && !force) return; this.cur = a;
+    items.forEach((it, i) => { it.classList.toggle('on', i === a); it.classList.toggle('done', i < a); });
+  },
+  go(i){ const t = this.target(i); if (t) projEl.scrollTo({top: projEl.scrollTop + t.getBoundingClientRect().top - innerHeight * .45, behavior: 'smooth'}); }
+};
+projEl.addEventListener('scroll', () => SEC.tick(), {passive: true});
+addEventListener('resize', () => SEC.place());
+projEl.addEventListener('click', e => {
+  const s = e.target.closest('.p-sec'); if (s) { SEC.go(+s.dataset.i); return; }
+  if (e.target.closest('.p-top-name')) projEl.scrollTo({top: 0, behavior: 'smooth'});
+});
 // text flyer: the home-page project text travels into the left column
 function textFlight(i, fromRect, toEl, reverse){
   const t = document.createElement('div'); t.className = 'p-intro text-fly'; t.innerHTML = introHTML(i);

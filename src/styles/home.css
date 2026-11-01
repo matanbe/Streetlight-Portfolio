@@ -656,3 +656,29 @@ html[data-theme="dusk"] .rolo .card.proj .qq,html[data-theme="dusk"] .rolo .card
 
 .f-ph{position:absolute;inset:0;display:grid;place-items:center;padding:24px;text-align:center;background:repeating-linear-gradient(45deg,transparent 0 9px,var(--soft) 9px 10px),var(--bg);outline:1px dashed var(--mute);outline-offset:-1px}
 .f-ph span{max-width:32ch;font-size:12px;line-height:1.5;color:var(--ink2);background:var(--bg);padding:4px 10px}
+
+/* ---- project page: the left column. The intro scrolls away with the page; the sections live on a fixed layer ---- */
+.p-side{position:static !important;max-height:none !important;overflow:visible !important;align-self:start}
+.p-top{position:fixed;top:84px;z-index:6;height:44px;display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--bg);opacity:0;pointer-events:none;transition:opacity .35s}
+#project.p-pinned .p-top{opacity:1;pointer-events:auto}
+.p-top b{font-weight:400;font-size:18px;letter-spacing:-.02em;cursor:pointer}
+.p-top b:hover{color:var(--acc)}
+.p-top a{font-size:11px;color:var(--ink);text-decoration:none;border:1px solid var(--ink);border-radius:999px;padding:3px 10px;white-space:nowrap}
+.p-top a:hover{background:var(--ink);color:var(--bg)}
+.p-secs{position:fixed;top:0;height:100vh;z-index:5;pointer-events:none;overflow:hidden;transition:opacity .5s}
+#project:not(.shown) .p-secs,#project:not(.shown) .p-top{opacity:0}
+.p-sec{position:absolute;left:0;right:0;top:0;height:31px;will-change:transform;pointer-events:auto}
+.p-sec .in{position:absolute;left:0;right:0;top:0;background:var(--bg);border-top:1px solid var(--ink)}
+.p-sec .in::after{content:"";position:absolute;left:0;right:0;top:100%;height:100vh;background:var(--bg)}   /* each row covers what's under it — the next one slides over the text above */
+.p-sec .hd{padding:8px 0 7px;cursor:pointer;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .3s}
+.p-sec .hd:hover,.p-sec.done .hd{color:var(--ink)}
+.p-sec.on .hd{color:var(--acc);white-space:normal}
+.p-sec .bd p{font-size:13px;line-height:1.6;color:var(--ink2);max-width:44ch;white-space:pre-line;padding:2px 0 12px;margin:0}
+.p-sec .bd a{font-size:12px;color:var(--ink)}
+html[data-theme="dusk"] .p-sec .in,html[data-theme="dusk"] .p-sec .in::after,html[data-theme="dusk"] .p-top{background:var(--bg)}
+/* phones: no side layer — each section's title + text sits above its images */
+@media (max-width:800px){
+  .p-secs,.p-top{display:none}
+  .slide{display:flex;flex-direction:column}
+  .slide .s-cap{order:-1;margin:0 0 12px}
+}
