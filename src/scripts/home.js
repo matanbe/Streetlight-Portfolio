@@ -1103,6 +1103,10 @@ const SEC = { list: [], cur: -2,
   go(i){ const t = this.target(i); if (t) projEl.scrollTo({top: projEl.scrollTop + t.getBoundingClientRect().top - innerHeight * .45, behavior: 'smooth'}); }
 };
 projEl.addEventListener('scroll', () => SEC.tick(), {passive: true});
+projEl.addEventListener('wheel', e => {
+  if (window.lenisProj || !e.target.closest('.p-secs, .p-top')) return;   // Lenis takes the bubbled event itself
+  e.preventDefault(); projEl.scrollBy(0, e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? innerHeight : 1));
+}, {passive: false});
 addEventListener('resize', () => SEC.place());
 projEl.addEventListener('click', e => {
   const s = e.target.closest('.p-sec'); if (s) { SEC.go(+s.dataset.i); return; }

@@ -682,3 +682,6 @@ html[data-theme="dusk"] .p-sec .in,html[data-theme="dusk"] .p-sec .in::after,htm
   .slide{display:flex;flex-direction:column}
   .slide .s-cap{order:-1;margin:0 0 12px}
 }
+
+.p-sec .in{border-top-color:var(--soft);transition:border-color .3s}   /* coming rows: a light line; passed + active: ink */
+.p-sec.on .in,.p-sec.done .in{border-top-color:var(--ink)}
