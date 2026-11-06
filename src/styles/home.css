@@ -685,3 +685,13 @@ html[data-theme="dusk"] .p-sec .in,html[data-theme="dusk"] .p-sec .in::after,htm
 
 .p-sec .in{border-top-color:var(--soft);transition:border-color .3s}   /* coming rows: a light line; passed + active: ink */
 .p-sec.on .in,.p-sec.done .in{border-top-color:var(--ink)}
+
+/* past projects: hover preview window, same as /work */
+#mpv{position:fixed;right:max(24px,calc((100vw - 1200px) / 2 + 220px));top:50%;width:min(400px,30vw);aspect-ratio:16/9;border:1px solid var(--ink);z-index:9500;pointer-events:none;overflow:hidden;
+     transform:translateY(-50%) scale(0);transition:transform .4s cubic-bezier(.32,0,.67,0)}
+#mpv.on{transform:translateY(-50%) scale(1);transition:transform .4s cubic-bezier(.76,0,.24,1)}
+#mpv .strip{position:absolute;inset:0;transition:transform .5s cubic-bezier(.76,0,.24,1)}
+#mpv .it{height:100%;display:grid;place-items:center;overflow:hidden}
+#mpv .it img,#mpv .it video{width:100%;height:100%;object-fit:cover;display:block}
+#mpv .it.ph{color:#f3f2ee;font-size:20px;letter-spacing:-.02em;text-align:center;padding:24px}
+@media (max-width:800px), (hover:none){ #mpv{display:none} }

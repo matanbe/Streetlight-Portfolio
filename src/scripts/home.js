@@ -275,7 +275,7 @@ page.innerHTML =
   `<section class="intro"><div class="tag"><small>scroll ↓</small>Intro</div></section>` +
   SECTIONS.map((s,i)=>`<section data-i="${i}"><div class="tag"><small>section ${String(i+1).padStart(2,'0')}</small>${s}</div></section>`).join('') +
   `<section class="outro"></section>` +
-  `<section id="more"><div class="m-in"><div class="m-top"><div><div class="idx">More work</div><h2>Past projects.</h2></div><a class="fx solid m-all" href="/work"><span class="l-txt">All projects</span><span class="l-arr"><i>→</i><i>→</i></span></a></div><div class="m-table" role="table"><div class="m-row m-head" role="row"><span>Project</span><span>Industry</span><span>Year</span><span></span></div>${window.__SL.moreRows}</div></div></div></section>` +
+  `<section id="more"><div class="m-in"><div class="m-top"><div><div class="idx">More work</div><h2>Past projects.</h2></div><a class="fx solid m-all" href="/work"><span class="l-txt">All projects</span><span class="l-arr"><i>→</i><i>→</i></span></a></div><div class="m-table" role="table"><div class="m-row m-head" role="row"><span>Project</span><span>Industry</span><span>Year</span><span></span></div>${window.__SL.moreRows}</div></div><div id="mpv" aria-hidden="true"><div class="strip">${window.__SL.morePv || ''}</div></div></div></section>` +
   `<section id="about">
      <div class="ab-in">
        <div class="rv idx">About</div>
@@ -1630,6 +1630,13 @@ addEventListener('keydown', e => { if (openIdx >= 0 && ['ArrowDown','PageDown','
   fit(); addEventListener('resize', fit); document.fonts && document.fonts.ready.then(fit);
 })();
 const PAST_LINKS = window.__SL.moreLinks;
+// hover preview (same as /work): scales in over the list, slides to the hovered project's cover
+(() => {
+  const pv = document.getElementById('mpv'), tb = document.querySelector('#more .m-table'); if (!pv || !tb) return;
+  document.body.appendChild(pv); const strip = pv.querySelector('.strip'); let off;
+  tb.querySelectorAll('.m-row:not(.m-head)').forEach((r, i) => r.addEventListener('mouseenter', () => { clearTimeout(off); strip.style.transform = `translateY(${-100 * i}%)`; pv.classList.add('on'); }));
+  tb.addEventListener('mouseleave', () => { off = setTimeout(() => pv.classList.remove('on'), 60); });
+})();
 const openHome = name => { const k = PROJECTS.findIndex(p => p.name === name); if (k >= 0) openProject(k); };
 document.querySelectorAll('#more .m-row:not(.m-head)').forEach((r, i) => {
   const L = PAST_LINKS[i] || {};

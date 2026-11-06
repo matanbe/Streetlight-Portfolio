@@ -15,9 +15,13 @@ const projects = withCase.map(p => ({ name: p.name, lines: p.lines.length ? p.li
 const cases = Object.fromEntries(withCase.filter(p => p.chapters.length).map(p => [p.name, { about: p.about, outcome: p.outcome ?? undefined, chapters: p.chapters }]));
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
 const moreRows = more.map((p, i) => `<div class="m-row" role="row" style="--d:${i}"><span>${esc(p.name)}</span><span>${esc(p.industry)}</span><span>${p.year}</span><span class="go"><span class="l-arr"><i>→</i><i>→</i></span></span></div>`).join('');
+const pvCol = ['#1b1b1b', '#8c8c8c', '#d9d4c3', '#706d63'];
+const morePv = more.map((p, i) => p.hero
+  ? `<div class="it">${p.hero.video && !p.hero.poster ? `<video src="${p.hero.url}" muted loop playsinline autoplay preload="none"></video>` : `<img src="${p.hero.video ? p.hero.poster : /a\.storyblok\.com/.test(p.hero.url) ? `${p.hero.url}/m/800x0` : p.hero.url}" alt="" loading="lazy">`}</div>`
+  : `<div class="it ph" style="background:${pvCol[i % 4]}">${esc(p.name)}</div>`).join('');
 const moreLinks = more.map(p => ({ ...(p.hasCase ? { home: p.name } : {}), ...(p.live ? { live: p.live } : {}), ...(p.soon && !p.hasCase && !p.live ? { soon: true } : {}) }));
 const testimonials = (await getTestimonials()).map(({ id, order, ...t }) => t);
-const SL = { projects, cases, heroCount: hero.length, testimonials, clients: (await getSettings()).clients, moreRows, moreLinks };
+const SL = { projects, cases, heroCount: hero.length, testimonials, clients: (await getSettings()).clients, moreRows, morePv, moreLinks };
 ---
 <Base bare footer={false}>
   <Reel slot="brand" />
