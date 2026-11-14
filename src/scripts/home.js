@@ -1231,8 +1231,7 @@ function projTop(){ projEl.scrollTop = 0;
   [200, 700, 1500].forEach(t => setTimeout(() => { try { L() && L().resize(); } catch(e){} }, t)); }
 async function toNextProject(j, frameEl, push = true){
   if (busy) return; busy = true;
-  const i = openIdx, from = frameEl.getBoundingClientRect();
-  const f = makeFlyer(j, from); frameEl.style.visibility = 'hidden';
+  const i = openIdx; frameEl.style.visibility = 'hidden';
   projEl.classList.remove('shown', 'below');
   projEl.querySelector('.hero-slot .flyer')?.animate([{opacity:1},{opacity:0}], {duration: 350, fill: 'forwards'});
   await wait(380);
@@ -1241,8 +1240,10 @@ async function toNextProject(j, frameEl, push = true){
   const to = projEl.querySelector('.hero-slot').getBoundingClientRect();
   if (push) hist('pushState', {p: j, ours: true}, '', '/work/' + SLUG(PROJECTS[j].name));
   if (cubes[i]) cubes[i].wrap.style.visibility = ''; if (cubes[j]) cubes[j].wrap.style.visibility = 'hidden';
+  // the next hero starts fully closed in its own slot, then opens from the top down
+  const f = makeFlyer(j, to); f.style.clipPath = 'inset(0 0 100% 0)';
   setTimeout(() => projEl.classList.add('below'), DUR - 300);
-  await fly(f, from, to);
+  await f.animate([{clipPath: 'inset(0 0 100% 0)'}, {clipPath: 'inset(0 0 0% 0)'}], {duration: DUR, easing: EASE, fill: 'forwards'}).finished;
   dock(f);
   projEl.classList.add('shown'); MAP.intro = performance.now(); drawMap(); CH.cur = -2; caseFx();
   openIdx = j; busy = false;
