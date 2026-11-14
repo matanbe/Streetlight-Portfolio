@@ -41,7 +41,7 @@ const full = title ? `${title} — Streetlight` : 'Streetlight — Digital asset
   <script is:inline>
     // arriving from another page of the site: the header is carried over as is (cross-document view transition), so it doesn't blink
     try { if (document.referrer && new URL(document.referrer).origin === location.origin){ const R = document.documentElement; R.classList.add('sl-nav');
-      const off = () => R.classList.remove('sl-nav'); addEventListener('pagereveal', e => { if (e.viewTransition) e.viewTransition.finished.finally(off); else off(); }); setTimeout(off, 1500); } } catch(e){}
+      const off = () => R.classList.remove('sl-nav'); addEventListener('pagereveal', e => { if (e.viewTransition) e.viewTransition.finished.then(off, off); else off(); }); setTimeout(off, 1500); } } catch(e){}
   </script>
   <slot name="head" />
 </head>

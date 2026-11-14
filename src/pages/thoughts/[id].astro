@@ -10,7 +10,7 @@ const html = post.html;
 const description = post.description;
 const others = all.filter(p => p.id !== post.id);
 ---
-<Base title={post.title} description={description} lang="he">
+<Base title={post.title} description={description} lang="he" enter>
   <section class="post" dir="rtl" lang="he">
     <div class="a-head">
       <a class="back" href="/thoughts"><span>→</span> חזרה</a>
@@ -35,8 +35,8 @@ const others = all.filter(p => p.id !== post.id);
   .back{display:inline-flex;gap:8px;color:var(--mute);text-decoration:none;margin-bottom:28px;transition:color .2s}
   .back:hover{color:var(--acc)}
   .back span{transition:transform .3s var(--ease)} .back:hover span{transform:translateX(4px)}
-  h1{font-size:60px;font-weight:400;letter-spacing:-.03em;line-height:1.05}
-  article{max-width:var(--col);margin-top:56px;font-size:16px;line-height:1.75}
+  h1{font-size:44px;font-weight:400;letter-spacing:-.03em;line-height:1.1}
+  article{max-width:var(--col);margin-top:56px;font-size:16px;line-height:1.75;letter-spacing:-.035em}   /* Simpler Pro runs a little wide at this size */
   article :global(h2){font-size:24px;font-weight:400;letter-spacing:-.02em;line-height:1.2;margin:56px 0 16px}
   article :global(p){margin-bottom:20px}
   article :global(mark){background:var(--acc);color:#fff;padding:.08em .25em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
@@ -58,7 +58,7 @@ const others = all.filter(p => p.id !== post.id);
   .more :global(li.h a span){transform:translateX(-12px);color:var(--bg)} .more :global(li.h a i){color:var(--bg)}
   @media (max-width:800px){
     .post{padding:110px var(--gut) 60px}
-    h1{font-size:clamp(34px,10vw,48px)}
+    h1{font-size:clamp(30px,8.5vw,38px)}
     article{margin-top:40px}
     .more{margin-top:72px}
     .more :global(a){flex-direction:column;align-items:flex-start;gap:4px;padding:16px 0}
@@ -74,4 +74,14 @@ const others = all.filter(p => p.id !== post.id);
   const others = JSON.parse(ul.dataset.others!).sort(() => Math.random() - .5).slice(0, 3);
   ul.innerHTML = others.map((o: any) => `<li><a href="/thoughts/${o.id}"><span></span><i></i></a></li>`).join('');
   ul.querySelectorAll('li').forEach((li, k) => { li.querySelector('span')!.textContent = others[k].title; li.querySelector('i')!.textContent = others[k].date; li.querySelector('a')!.href = '/thoughts/' + others[k].id; rowHover(li); });
+</script>
+<script>
+  import { articleEnter } from '../../scripts/enter.js';
+  // the same Filament entrance as the tables: title first, then the text (each paragraph when it scrolls in), then the other posts
+  articleEnter([
+    {els: [...document.querySelectorAll('.a-head .idx, .a-head h1')], at: 0},
+    {els: [...document.querySelectorAll('.a-head .a-date')], at: 160},
+    {els: [...document.querySelectorAll('.post article > *')], at: 300, step: 70},
+    {els: [...document.querySelectorAll('.more h2, .more li')], at: 0, step: 50},
+  ]);
 </script>

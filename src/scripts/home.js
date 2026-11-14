@@ -1,5 +1,6 @@
 // The home page: cubes along the street, the lamp + its light, More work, About, the project overlay. Ported from the prototype.
 import { slFilament } from './filament.js';
+import { previewFollow } from './site.js';
 import Lenis from 'lenis';
 import Hairline from '../vendor/hairline.js';
 import { initDuskLight } from './dusk-light.js';
@@ -403,7 +404,8 @@ function render(){
 
   let active = -1, best = 0;
   cubes.forEach((c,i)=>{
-    const d = (i - L) * P.gap;                 // >0 = upcoming (up-right), <0 = passed (down-left)
+    // >0 = upcoming (up-right), <0 = passed (down-left); before the first section the upcoming cubes wait a bit further out, so none peeks in at the top
+    const d = (i - L) * P.gap + (L < 0 && i >= L ? -L * P.gap * .45 : 0);
     const x = fx + dx*d, y = fy + dy*d;
     const e = 1 - smooth(clamp(Math.abs(L - i) / P.rad));   // 0 = iso, 1 = frontal
     if (e > best){ best = e; active = i; }
@@ -1628,8 +1630,7 @@ const PAST_LINKS = window.__SL.moreLinks;
 (() => {
   const pv = document.getElementById('mpv'), tb = document.querySelector('#more .m-table'); if (!pv || !tb) return;
   document.body.appendChild(pv); const strip = pv.querySelector('.strip'); let off;
-  tb.querySelectorAll('.m-row:not(.m-head)').forEach((r, i) => r.addEventListener('mouseenter', () => { clearTimeout(off); strip.style.transform = `translateY(${-100 * i}%)`; pv.classList.add('on'); }));
-  tb.addEventListener('mouseleave', () => { off = setTimeout(() => pv.classList.remove('on'), 60); });
+  previewFollow(pv, strip, [...tb.querySelectorAll('.m-row:not(.m-head)')], tb);
 })();
 const openHome = name => { const k = PROJECTS.findIndex(p => p.name === name); if (k >= 0) openProject(k); };
 document.querySelectorAll('#more .m-row:not(.m-head)').forEach((r, i) => {

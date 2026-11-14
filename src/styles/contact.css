@@ -2,7 +2,7 @@
 #contactPop{--bg:#ff4d1a;--ink:#1b1b1b}
 #contactPop{filter:drop-shadow(0 14px 28px rgba(27,27,27,.18)) drop-shadow(0 2px 4px rgba(27,27,27,.12))}
 #contactPop input::selection,#contactPop textarea::selection{background:#1b1b1b;color:#fff}
-#contactPop{position:fixed;right:16px;top:0;width:min(428px,calc(100vw - 32px));z-index:7100;transform:translateY(calc(-100% - 20px));
+#contactPop{position:fixed;right:16px;top:0;width:min(428px,calc(100vw - 32px));z-index:7100;transform:translateY(calc(-100% - 110px));   /* far enough that its drop shadow never peeks under the header */
               transition:transform .7s cubic-bezier(.7,0,.2,1);pointer-events:none;font-size:13px}
 #contactPop.on{transform:none;pointer-events:auto}
 #contactPop .cf-body{background:var(--bg);border:0;padding:22px 20px 16px;position:relative;align-content:start;display:grid;gap:14px}

@@ -61,6 +61,7 @@ const count = (t: string | null) => t ? projects.filter(p => p.disciplines.inclu
 </style>
 
 <script>
+  import { previewFollow } from '../../scripts/site.js';
   const table = document.querySelector('.work-table') as HTMLElement, rows = [...table.querySelectorAll<HTMLElement>('.m-row:not(.m-head)')];
   // "View live" on a row that also has a case: opens the live site instead of the row's case link
   table.addEventListener('click', e => { const b = (e.target as HTMLElement).closest<HTMLElement>('[data-live]'); if (!b) return; e.preventDefault(); window.open(b.dataset.live, '_blank', 'noopener'); });
@@ -86,9 +87,8 @@ const count = (t: string | null) => t ? projects.filter(p => p.disciplines.inclu
   filters.addEventListener('click', e => { const b = (e.target as HTMLElement).closest('button'); if (b) apply(b.dataset.t!); });
   const h = location.hash.slice(1); const pre = [...filters.querySelectorAll('button')].find(b => b.dataset.t!.toLowerCase() === h); if (pre) apply(pre.dataset.t!);
   // hover preview: scales in over the list, slides to the hovered project's cover
-  const pv = document.getElementById('pv')!, strip = pv.querySelector('.strip') as HTMLElement; let pvOff: number;
-  rows.forEach((r, i) => r.addEventListener('mouseenter', () => { clearTimeout(pvOff); strip.style.transform = `translateY(${-100 * i}%)`; pv.classList.add('on'); }));
-  table.addEventListener('mouseleave', () => { pvOff = window.setTimeout(() => pv.classList.remove('on'), 60); });
+  const pv = document.getElementById('pv')!, strip = pv.querySelector('.strip') as HTMLElement;
+  previewFollow(pv, strip, rows, table);   // beside the hovered row, moving with it
   // columns hug their content
   const fit = () => { [1, 2, 3].forEach(c => { let w = 0;
     table.querySelectorAll(`.m-row > span:nth-child(${c})`).forEach(sp => { const r = document.createRange(); r.selectNodeContents(sp); w = Math.max(w, r.getBoundingClientRect().width); });

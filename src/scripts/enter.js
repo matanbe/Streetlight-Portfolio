@@ -30,3 +30,15 @@ export function tableEnter({title, chips, table}){
   slFilament([...head.flatMap(r => [...r.children]), ...rows], el => el.closest('.m-head') ? 260 : 364 + Math.min(rows.indexOf(el), 16) * 40);
   slReady();   // everything is in its first frame now: show the page
 }
+
+// a text page (an article): everything is hidden letter by letter at once; each part plays when it scrolls in —
+// the ones already on screen keep their order (at + step × index), later ones start as they arrive
+export function articleEnter(groups){
+  if (still()){ slReady(); return; }
+  const all = []; groups.forEach(g => g.els.forEach((el, i) => { el._at = g.at + (g.step || 0) * Math.min(i, 12); all.push(el); }));
+  slFilament.prepare(all); slReady();
+  const t0 = performance.now();
+  const io = new IntersectionObserver(es => es.forEach(en => { if (!en.isIntersecting) return; io.unobserve(en.target);
+    const el = en.target, wait = Math.max(0, el._at - (performance.now() - t0)); slFilament([el], () => wait); }), {threshold: .15});
+  all.forEach(el => io.observe(el));
+}

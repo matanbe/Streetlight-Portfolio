@@ -188,11 +188,12 @@ html[data-theme="dusk"] .site-foot{background:transparent}
 #top .b-txt:has(.logo:hover) .tagline .tc{color:var(--acc)}
 
 /* leaving a page (site.js): everything but the header turns the accent colour at once, then fades out */
-html.sl-red body > :not(#top):not(#mnav):not(#contactPop):not(script):not(style),html.sl-red body > :not(#top):not(#mnav):not(#contactPop):not(script):not(style) *{color:var(--acc) !important;border-color:var(--acc) !important;transition:color .22s ease,border-color .22s ease}
-html.sl-red body > :not(#top):not(#mnav):not(#contactPop):not(script):not(style) img,html.sl-red body > :not(#top):not(#mnav):not(#contactPop):not(script):not(style) video,html.sl-red body > :not(#top):not(#mnav):not(#contactPop):not(script):not(style) canvas{filter:grayscale(1) sepia(1) saturate(9) hue-rotate(-28deg);transition:filter .22s ease}
+html.sl-red body > :not(#top):not(#mnav):not(#contactPop):not(#sky):not(script):not(style),html.sl-red body > :not(#top):not(#mnav):not(#contactPop):not(#sky):not(script):not(style) *{color:var(--acc) !important;border-color:var(--acc) !important;transition:color .22s ease,border-color .22s ease}
+html.sl-red body > :not(#top):not(#mnav):not(#contactPop):not(#sky):not(script):not(style) img,html.sl-red body > :not(#top):not(#mnav):not(#contactPop):not(#sky):not(script):not(style) video{filter:grayscale(1) sepia(1) saturate(9) hue-rotate(-28deg);transition:filter .22s ease}
+html.sl-red[data-theme="dusk"] body > :not(#top):not(#mnav):not(#contactPop):not(#sky):not(script):not(style) img,html.sl-red[data-theme="dusk"] body > :not(#top):not(#mnav):not(#contactPop):not(#sky):not(script):not(style) video{filter:grayscale(1) sepia(1) saturate(5) hue-rotate(-8deg) brightness(1.05)}   /* dusk: the orange accent, not red */
 html.sl-red #lamp *,html.sl-red .lamp *{stroke:var(--acc) !important} html.sl-red #lamp [class="f"],html.sl-red .lamp [class="f"],html.sl-red .lamp [style*="fill:url"]{stroke:none !important}
 html.sl-red .ab-btn.solid{background:var(--acc) !important;color:var(--bg) !important}
-html.sl-fade body > :not(#top):not(#mnav):not(#contactPop):not(script):not(style){opacity:0 !important;transition:opacity .45s ease}
+html.sl-fade body > :not(#top):not(#mnav):not(#contactPop):not(#sky):not(script):not(style){opacity:0 !important;transition:opacity .45s ease}
 
 /* pages with an entrance: hidden until the entrance has set its first frame (Base enter + the page's script) */
 html.sl-enter main,html.sl-enter .site-foot{opacity:0}

@@ -95,3 +95,19 @@ document.querySelectorAll('.m-row:not(.m-head)').forEach(rowHover);
 if (!document.getElementById('lamp') && !document.getElementById('world')) initDuskLight();
 
 document.querySelectorAll('.ft-y').forEach(e => e.textContent = new Date().getFullYear());
+
+// ---------- project hover preview (Work, home "Past projects"): the window sits beside the hovered row and stays with it while scrolling ----------
+export function previewFollow(pv, strip, rows, table){
+  let cur = null, off = 0, raf = 0;
+  const place = () => {   // top isn't transitioned: the window simply stays level with its row
+    if (!cur) return; const r = cur.getBoundingClientRect(), h = pv.offsetHeight || 225;
+    pv.style.top = Math.max(h / 2 + 76, Math.min(innerHeight - h / 2 - 16, r.top + r.height / 2)) + 'px';
+  };
+  const loop = () => { place(); raf = requestAnimationFrame(loop); };
+  rows.forEach((r, i) => r.addEventListener('mouseenter', () => {
+    clearTimeout(off); const was = pv.classList.contains('on'); cur = r;
+    strip.style.transform = `translateY(${-100 * i}%)`;
+    if (!was){ place(); pv.classList.add('on'); cancelAnimationFrame(raf); raf = requestAnimationFrame(loop); }
+  }));
+  table.addEventListener('mouseleave', () => { off = setTimeout(() => { pv.classList.remove('on'); cancelAnimationFrame(raf); raf = 0; }, 60); });
+}
