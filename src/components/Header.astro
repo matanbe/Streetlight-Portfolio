@@ -5,11 +5,11 @@ const { tagline, email } = await getSettings();
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const LINKS = [
   { href: '/work', label: 'Work' },
-  { href: '/#about', label: 'About' },
+  { href: '/about', label: 'About' },
   { href: '/playground', label: 'Playground' },
   { href: '/thoughts', label: 'Thoughts' },
 ];
-const cur = (h: string) => (h !== '/#about' && (path === h || path.startsWith(h + '/'))) ? 'page' : undefined;
+const cur = (h: string) => (path === h || path.startsWith(h + '/')) ? 'page' : undefined;
 const [t1, t2] = tagline.split(' be ');
 // the tagline letter by letter (words kept whole), so a logo hover can sweep them to red one after another
 let li = 0;

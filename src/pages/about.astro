@@ -1,0 +1,93 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="About" description="Streetlight is a one-man design studio run by Matan Ben David — product, web, brand and art direction.">
+<section class="ab-page"><div class="ab-art"><svg class="lamp" id="art"></svg></div><div class="ab-in">
+  <div class="idx">About</div>
+  <h1>Hey there, I’m Matan, and I run Streetlight.</h1>
+  <p class="sub">12 years of designing, directing and building digital products with a mix of creativity, fun and professional attitude. I take pride in my work, and so do my clients.</p>
+  <p class="sub">I bring a rare combination of strong product thinking and the eye and taste of an art director. Years of shaping real products, flows and systems taught me what makes a product work, and I care just as much about the craft.</p>
+  <p class="sub">Streetlight is a one-man show. I’ve stayed hands-on all these years. From the first call to launch day, I do it all myself. Nothing gets lost in translation, nothing is outsourced, and you only pay for design, not for agency overhead.</p>
+  <p class="sub">I collaborate with individuals, startups, and organizations that understand the value of good design and strive to make a positive impact in the world.</p>
+  <div class="blk"><div class="lbl">—&nbsp;&nbsp;&nbsp;Services</div><div class="svc-line svc-list"><p>Art Direction</p><p>Product Design</p><p>Websites</p><p>Branding</p><p>Motion</p><p>Illustration</p><p>Pitch Decks</p><p>Marketing</p><small>From the first idea to the shipped product.</small></div></div>
+  <div class="blk"><div class="lbl">—&nbsp;&nbsp;&nbsp;Awards &amp; recognition</div><div class="svc-line aw-line"><p>Awwwards<sup>(3)</sup>, CSS Design Awards<sup>(3)</sup>, CSS Winner<sup>(1)</sup>.</p></div></div>
+  <div class="blk"><div class="lbl cl-head"><span>—&nbsp;&nbsp;&nbsp;Past &amp; current clients</span><button class="cl-all" type="button" aria-expanded="false" aria-controls="clList">All <i>▾</i></button></div><div class="cl-box" id="clBox"><div class="cl-a"><div class="strip"><div class="slot"><span class="lg">Amazon</span></div><div class="slot"><span class="lg">Taboola</span></div><div class="slot"><span class="lg">Aisap</span></div><div class="slot"><span class="lg">Second Nature</span></div><div class="slot"><span class="lg">Kovrr</span></div></div></div><div class="cl-list" id="clList"><ul><li>Aisap</li><li>Amazon</li><li>B-summit</li><li>Bloomfield Science Museum</li><li>Buildin</li><li>Chiral Energy</li><li>Cognit</li><li>Commcrete</li><li>Content Lab</li><li>Cyber-Ridge</li><li>Davidson Institute</li><li>Ecsite</li><li>Kayma</li><li>Kovrr</li><li>N1 Agency</li><li>National Library of Israel</li><li>Second Nature</li><li>Showdigs</li><li>SpaceIL</li><li>SPNI</li><li>Superwise</li><li>Taboola</li><li>TALI Foundation</li><li>Traffilog</li></ul></div></div></div>
+  <div class="cta"><a class="ab-btn fx solid" href="mailto:matan@studiostreetlight.com?subject=Hey%20Streetlight"><span class="l-txt">Let’s Collab</span><span class="l-arr"><i>→</i><i>→</i></span></a><a class="ab-btn fx ghost" href="/work"><span class="l-txt">See the work</span><span class="l-arr"><i>→</i><i>→</i></span></a></div>
+</div></section>
+  <script>import '../scripts/about.js';</script>
+</Base>
+
+<style is:global>
+  .ab-page{display:grid;grid-template-columns:5fr 7fr;align-items:start}
+  .ab-art{position:sticky;top:0;height:100vh;display:grid;place-items:center;padding:90px 24px 24px}
+  .ab-art svg{width:min(88%,560px);height:auto;max-height:78vh;overflow:visible}
+  .ab-in{padding:150px 48px 80px 24px}
+  .ab-in h1,.ab-in .sub{max-width:620px}
+  /* lamp + bench drawing */
+  .lamp path,.lamp line,.lamp circle,.lamp polygon,.lamp polyline{fill:none;stroke-width:.9;vector-effect:non-scaling-stroke;stroke-linejoin:round;stroke-linecap:round}
+  .lamp .f{fill:var(--bg)}
+  .lamp .hi{stroke:#1b1b1b} .lamp .edge{stroke:#6f6c65} .lamp .mid{stroke:#a9a69e} .lamp .lo{stroke:#d6d3cb}
+  .lamp .ray{stroke:var(--acc);stroke-opacity:.45;stroke-dasharray:1.5 3.5}
+  .lamp .bulb{fill:var(--acc);stroke:none} .lamp .rim{stroke:var(--acc);stroke-width:1.6}
+  .ab-page .idx{color:var(--acc);margin-bottom:24px}
+  .ab-page h1{font-size:22px;font-weight:400;line-height:1.4;margin-bottom:28px}
+  .ab-page .sub{font-size:16px;line-height:1.55;margin-bottom:20px}
+  .ab-page .blk{margin-top:96px}
+  .ab-page .lbl{color:var(--acc);margin-bottom:16px}
+  .ab-page .svc{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px dashed var(--soft)}
+  .ab-page .svc > div{padding:18px 18px 20px 0} .ab-page .svc > div + div{padding-left:18px;border-left:1px dashed var(--soft)}
+  .ab-page .svc h3{font-size:16px;font-weight:400;margin:0 0 14px}
+  .ab-page .svc ul{list-style:none;color:var(--ink2);line-height:1.8}
+  .ab-page .svc-line{border-top:1px dashed var(--soft);border-bottom:1px dashed var(--soft);padding:22px 0}
+  .ab-page .svc-line p{font-size:22px;line-height:1.4;max-width:720px}
+  .ab-page .svc-line small{display:block;margin-top:10px;color:var(--mute);font-size:14px}
+  .ab-page .svc-line sup{font-size:.58em;vertical-align:.8em;margin-left:2px;color:var(--acc);font-weight:500;letter-spacing:0}
+  .ab-page .svc-line sup .fl{color:inherit}
+  .ab-page .aw{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px dashed var(--soft);border-bottom:1px dashed var(--soft)}
+  .ab-page .aw > div{padding:18px 24px 18px 0;display:grid;gap:4px} .ab-page .aw > div + div{padding-left:24px;border-left:1px dashed var(--soft)}
+  .ab-page .aw b{font-weight:400} .ab-page .aw span{color:var(--ink2)}
+  .ab-page .strip{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+  .ab-page .slot{position:relative;height:72px;overflow:hidden;border-left:1px solid var(--line)} .ab-page .slot:first-child{border-left:0}
+  .ab-page .lg{position:absolute;inset:0;display:grid;place-items:center;text-align:left;padding:0 8px;font-size:14px;line-height:1.15;transition:transform .6s cubic-bezier(.7,0,.2,1),opacity .6s}
+  .ab-page .lg.out{transform:translateY(-100%);opacity:0} .ab-page .lg.in{transform:translateY(100%);opacity:0}
+  .ab-page .cta{margin-top:72px;display:flex;flex-wrap:wrap;gap:12px}
+  .ab-btn{background:var(--ink);color:var(--bg);border:1px solid var(--ink);border-radius:999px;padding:14px 26px;font-size:16px;text-decoration:none}
+  .ab-btn.ghost{background:none;color:var(--ink)}
+  /* day: the bulb is marked with the home page's crosshair instead of a red dot */
+  html[data-theme="dusk"] .lamp .glow .bulb{opacity:0}   /* at dusk the light itself shows the bulb, as on the home page */
+  .ab-art.pre #art > g{opacity:0}
+  .ab-art .lit-c,.ab-art .moths,.ab-art .ab-aim{transition:opacity .6s ease}
+  .ab-art.pre .lit-c,.ab-art.pre .moths,.ab-art.pre .ab-aim,.ab-art.dropping .lit-c,.ab-art.dropping .moths,.ab-art.dropping .ab-aim{opacity:0}
+  .ab-page .svc-list p{margin:0} .ab-page .svc-list p + p{margin-top:2px} .ab-page .svc-list small{display:block;margin-top:14px}
+  .ab-aim{position:absolute;width:28px;height:28px;margin:-14px 0 0 -14px;pointer-events:none;z-index:3}
+  .ab-aim svg{display:block;overflow:visible} .ab-aim circle,.ab-aim line{fill:none;stroke:var(--acc);stroke-width:1.5}
+  html:not([data-theme="dusk"]) #art .glow .bulb{opacity:0} html[data-theme="dusk"] .ab-aim{display:none}
+  @media (max-width:800px){ .ab-page{grid-template-columns:1fr} .ab-art{position:relative;height:auto;order:2;padding:8px 24px 56px} .ab-art svg{max-height:70vh} .ab-in{order:1;padding-bottom:16px} .ab-page .svc,.ab-page .aw{grid-template-columns:1fr} .ab-page .svc > div + div,.ab-page .aw > div + div{padding-left:0;border-left:0;border-top:1px dashed var(--soft)}
+    .ab-page .strip{grid-template-columns:repeat(3,1fr)} .ab-page .slot:nth-child(n+4){display:none} .ab-page .sub{font-size:18px} }
+  /* dusk: the site's dark palette */
+  html[data-theme="dusk"] .lamp .hi{stroke:#35425f} html[data-theme="dusk"] .lamp .edge{stroke:#323f4e} html[data-theme="dusk"] .lamp .mid{stroke:#384557} html[data-theme="dusk"] .lamp .lo{stroke:#04070c} html[data-theme="dusk"] .lamp .f{fill:#0a152e}
+  html[data-theme="dusk"] .lamp .ray{stroke:#ffa82e} html[data-theme="dusk"] .lamp .bulb{fill:#ffffff}
+  html[data-theme="dusk"] .ab-btn{background:var(--ink);color:var(--bg)} html[data-theme="dusk"] .ab-btn.ghost{background:none;color:var(--ink);border-color:var(--ink)}
+  .ab-page .cl-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px}
+  .ab-page .cl-all{font:inherit;font-size:13px;color:var(--ink);background:none;border:1px solid var(--line);border-radius:999px;padding:3px 12px;cursor:pointer}
+  .ab-page .cl-all i{font-style:normal;display:inline-block;transition:transform .35s}
+  .ab-page .cl-all:hover{border-color:var(--ink)} .ab-page .cl-all[aria-expanded="true"] i{transform:rotate(180deg)}
+  .ab-page .cl-box{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);overflow:hidden}
+  .ab-page .cl-box .strip{border:0}
+  .ab-page .cl-list{display:none}
+  .ab-page .cl-list ul{list-style:none;columns:3;column-gap:24px;padding:18px 0 14px;line-height:1.9}
+  .ab-page .cl-list li{break-inside:avoid}
+  @media (max-width:800px){ .ab-page .cl-list ul{columns:2} }
+  .lamp .pk-o > *,.lamp .pk-f > *{fill:var(--bg);vector-effect:non-scaling-stroke}
+  .lamp .pk-o > *{stroke-width:calc(var(--sw, .9) * 2);stroke-linejoin:round}
+  .lamp .pk-f > *{stroke:none} .lamp .pk-l > *{fill:inherit;stroke:none}
+  .moths{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:4}
+  #art .tx-perf{fill:#cfccc4} #art .tx-gr{fill:#c4c1b9}
+  html[data-theme="dusk"] #art .tx-perf{fill:#050b1a} html[data-theme="dusk"] #art .tx-gr{fill:#1e2d66}
+  .ab-art .lit-c{position:absolute;pointer-events:none}
+  .ab-art svg{position:relative;z-index:1}
+  html[data-theme="dusk"] #art .ray,html[data-theme="dusk"] #art .pool{visibility:hidden}
+  #lampHit{pointer-events:bounding-box} #lampHit:hover .bulb{stroke:var(--acc)}
+  .lamp polygon.f{stroke:none}
+  .ab-page .fl{display:inline}
+</style>
