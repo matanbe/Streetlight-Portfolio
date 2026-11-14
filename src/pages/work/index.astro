@@ -36,6 +36,7 @@ const count = (t: string | null) => t ? projects.filter(p => p.disciplines.inclu
         : <div class="it ph" style={`background:${['#1b1b1b', '#8c8c8c', '#d9d4c3', '#706d63'][i % 4]}`}>{p.name}</div>)}
     </div></div>
   </section>
+  <script>import { tableEnter } from '../../scripts/enter.js'; tableEnter({title: document.querySelector('.page h1'), chips: document.getElementById('filters'), table: document.querySelector('.work-table')});</script>
 </Base>
 
 <style>

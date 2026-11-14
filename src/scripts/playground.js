@@ -421,11 +421,12 @@ function frame(now){
       }
       const def = L.def;
       L.el.setAttribute('width', def.w*sc); L.el.setAttribute('height', def.h*sc);
-      const tx = cx + def.minX*sc, ty = cy + def.minY*sc;
+      const [lDrop, lA] = dropIn(L, cy);   // lamps land like the tiles
+      const tx = cx + def.minX*sc, ty = cy + def.minY*sc - lDrop;
       L.el.style.transform = `translate(${tx}px,${ty}px)`;
       lampLight(L, spot, tx, ty, sc, la);
       L.el.style.zIndex = Math.round(cy + 2000 + 1);
-      L.el.style.opacity = la;
+      L.el.style.opacity = la * lA;
       const d = Math.hypot(px - cx, py - (cy - 60*sc));
       L.on += ((isDusk() ? 1 : 1 - clamp((d - 40) / 260)) - L.on) * .08;   // dusk: every lamp is on
       L.glow.style.opacity = .12 + .88*L.on*(.92 + Math.random()*.08);
@@ -436,7 +437,17 @@ function frame(now){
   requestAnimationFrame(frame);
 }
 
+// entrance: every tile falls into place from 100–200px above while it fades in, the ones higher on screen first (the lamps too)
+const IN0 = performance.now(), IN_ON = (() => { try { return !matchMedia('(prefers-reduced-motion: reduce)').matches; } catch(e){ return true; } })();
+function dropIn(o, y){
+  if (!IN_ON || o._inDone) return [0, 1];
+  if (o._inD === undefined){ o._inD = 100 + Math.random() * 100; o._inDel = Math.max(0, Math.min(900, y * .6)) + Math.random() * 180; }
+  const p = Math.min(1, Math.max(0, (performance.now() - IN0 - o._inDel) / 750)), e = 1 - Math.pow(1 - p, 3);
+  if (p >= 1) o._inDone = true;
+  return [o._inD * (1 - e), Math.min(1, p * 1.6)];
+}
 function place(tile, x, y, lift, alpha){
+  const [dropY, dropA] = dropIn(tile, y); y -= dropY; alpha *= dropA;
   tile.e += ((tile.hover ? 1 : 0) - tile.e) * 0.14;
   const e = ease(clamp(tile.e));
   tile.x = x; tile.y = y;

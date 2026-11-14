@@ -23,7 +23,7 @@ export const slFilament = (() => {
           const ws = document.createElement('span'); ws.style.whiteSpace = 'nowrap';
           for (const ch of w){ const s = document.createElement('span'); s.className = 'fl'; s.textContent = ch; ws.append(s); chars.push(s); } f.append(ws); });
         c.replaceWith(f); }
-      else if (c.nodeType === 1 && c.tagName !== 'BUTTON') walk(c); });
+      else if (c.nodeType === 1 && !/^(BUTTON|SELECT|OPTION|SVG|IMG|VIDEO|CANVAS)$/i.test(c.tagName)) walk(c); });
     walk(el); return chars; };
   const lines = chars => { const L = []; let top = null; chars.forEach(c => { const y = Math.round(c.getBoundingClientRect().top);
       if (top === null || Math.abs(y - top) > 4){ L.push([]); top = y; } L[L.length - 1].push(c); }); return L; };

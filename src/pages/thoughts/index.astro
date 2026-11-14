@@ -7,7 +7,6 @@ const count = (t: string | null) => t ? posts.filter(p => p.topic === t).length 
 ---
 <Base title="Thoughts" description="מחשבות על עיצוב, קריירה ותעשייה — מאת מתן בן דוד.">
   <section class="page thoughts" dir="rtl" lang="he">
-    <h1>עיצוב, קריירה ודלפ״ים <span class="t-soon" dir="ltr" lang="en">(English may come soon)</span></h1>
     <nav class="chips" id="filters" aria-label="סינון לפי נושא">
       {[null, ...topics].map(t => <button data-t={t ?? ''} class={t ? '' : 'on'}>{t ?? 'הכל'}<span>{count(t)}</span></button>)}
     </nav>
@@ -21,6 +20,7 @@ const count = (t: string | null) => t ? posts.filter(p => p.topic === t).length 
       ))}
     </div>
   </section>
+  <script>import { tableEnter } from '../../scripts/enter.js'; tableEnter({chips: document.getElementById('filters'), table: document.querySelector('.t-table')});</script>
 </Base>
 
 <style>
