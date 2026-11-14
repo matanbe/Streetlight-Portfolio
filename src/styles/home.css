@@ -695,3 +695,9 @@ html[data-theme="dusk"] .p-sec .in,html[data-theme="dusk"] .p-sec .in::after,htm
 #mpv .it img,#mpv .it video{width:100%;height:100%;object-fit:cover;display:block}
 #mpv .it.ph{color:#f3f2ee;font-size:20px;letter-spacing:-.02em;text-align:center;padding:24px}
 @media (max-width:800px), (hover:none){ #mpv{display:none} }
+
+/* About (short): two buttons — Let’s Collab, and Read more (outline, fills black on hover) to /about */
+#about .ab-cta{display:flex;gap:12px;flex-wrap:wrap}
+#about .ab-btn.ab-more{background:none;color:var(--ink);border:1px solid var(--ink)}
+#about .ab-btn.ab-more:hover{color:var(--bg);border-color:var(--ink)}
+#about .ab-btn.ab-more::before{background:var(--ink)}

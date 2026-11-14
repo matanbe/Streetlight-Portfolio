@@ -1,4 +1,5 @@
 // The home page: cubes along the street, the lamp + its light, More work, About, the project overlay. Ported from the prototype.
+import { slFilament } from './filament.js';
 import Lenis from 'lenis';
 import Hairline from '../vendor/hairline.js';
 import { initDuskLight } from './dusk-light.js';
@@ -278,17 +279,10 @@ page.innerHTML =
   `<section id="more"><div class="m-in"><div class="m-top"><div><div class="idx">More work</div><h2>Past projects.</h2></div><a class="fx solid m-all" href="/work"><span class="l-txt">All projects</span><span class="l-arr"><i>→</i><i>→</i></span></a></div><div class="m-table" role="table"><div class="m-row m-head" role="row"><span>Project</span><span>Industry</span><span>Year</span><span></span></div>${window.__SL.moreRows}</div></div><div id="mpv" aria-hidden="true"><div class="strip">${window.__SL.morePv || ''}</div></div></div></section>` +
   `<section id="about">
      <div class="ab-in">
-       <div class="rv idx">About</div>
-       <h2 class="rv tr tr--clear">Hey there, I’m Matan, and I run Streetlight.</h2>
-       <p class="rv sub tr tr--gray">12 years of designing, directing and building digital products with a mix of creativity, fun and professional attitude. I take pride in my work, and so do my clients.</p>
-       <p class="rv sub tr tr--gray">I collaborate with individuals, startups, and organizations that understand the value of good design and strive to make a positive impact in the world.</p>
-       <div class="services rv"><div class="lbl">—&nbsp;&nbsp;&nbsp;Services</div>
-         <div class="cols"><div><h3>Product Design</h3><ul><li>UX/UI</li><li>Prototyping</li><li>Design systems</li><li>Wireframes</li><li>Journey maps</li><li>Research</li><li>Icon design</li><li>Micro-interactions</li><li>Information architecture</li><li>Product audits</li><li>Dev support</li></ul></div><div><h3>Web Design &amp; Development</h3><ul><li>Website design</li><li>Art direction</li><li>UX/UI</li><li>Development</li><li>Interactions</li><li>Storytelling</li><li>Web animations</li><li>Support &amp; maintenance</li></ul></div><div><h3>Brand &amp; Marketing</h3><ul><li>Concept development</li><li>Brand identity</li><li>Brand guidelines</li><li>Illustration</li><li>Motion design</li><li>Infographics</li><li>Marketing assets</li></ul></div></div></div>
-       <div class="awards rv"><div class="lbl">—&nbsp;&nbsp;&nbsp;Awards &amp; recognition</div>
-         <div class="aw"><div><b>Awwwards</b><span>3 Awards</span></div><div><b>CSS Design Awards</b><span>3 Awards</span></div><div><b>CSS Winner</b><span>1 Award</span></div></div></div>
-       <div class="clients rv"><div class="lbl">—&nbsp;&nbsp;&nbsp;Past &amp; current clients</div>
-         <div class="strip"><div class="slot"><span class="lg"></span></div><div class="slot"><span class="lg"></span></div><div class="slot"><span class="lg"></span></div><div class="slot"><span class="lg"></span></div><div class="slot"><span class="lg"></span></div></div></div>
-       <div class="ab-cta rv"><a class="fx solid ab-btn" href="#contact" data-nav="contact"><span class="l-txt">Let’s Collab</span><span class="l-arr"><i>→</i><i>→</i></span></a></div>
+       <div class="rv idx fil">About</div>
+       <h2 class="rv fil">Hey there, I’m Matan, and I run Streetlight.</h2>
+       <p class="rv sub fil">12 years of designing, directing and building digital products with a mix of creativity, fun and professional attitude. I take pride in my work, and so do my clients.</p>
+       <div class="ab-cta rv"><a class="fx solid ab-btn" href="#contact" data-nav="contact"><span class="l-txt">Let’s Collab</span><span class="l-arr"><i>→</i><i>→</i></span></a><a class="fx ghost ab-btn ab-more" href="/about"><span class="l-txt">Read more</span><span class="l-arr"><i>→</i><i>→</i></span></a></div>
      </div>
    </section>
    <footer id="foot" class="site-foot">
@@ -2059,3 +2053,11 @@ html[data-theme="dusk"] .wrap.on .hl{--hairline-hi:${P.acc}}`;
   });
   write();
 })();
+
+// ---------- home About (short): the Filament entrance when it scrolls in — label + title, then the text ----------
+{
+  const parts = [...document.querySelectorAll('#about .fil')];
+  if (parts.length){ let seen = false; const io = new IntersectionObserver(es => { if (seen || !es.some(e => e.isIntersecting)) return; seen = true; io.disconnect();
+      slFilament(parts, el => el.matches('p') ? 260 : 0); }, {threshold: .35});
+    io.observe(document.getElementById('about')); }
+}
