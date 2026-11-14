@@ -73,6 +73,24 @@ document.querySelectorAll('.m-row:not(.m-head)').forEach(rowHover);
   }
 }
 
+// ---------- leaving a page: everything (but the header) turns the accent colour at once, then fades; then the next page loads ----------
+{
+  const still = () => { try { return matchMedia('(prefers-reduced-motion: reduce)').matches; } catch(e){ return false; } };
+  document.addEventListener('click', e => {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    const a = e.target.closest('a[href]'); if (!a || a.target === '_blank' || a.hasAttribute('download') || a.dataset.nav) return;
+    const u = new URL(a.href, location.href);
+    if (u.origin !== location.origin || !/^https?:$/.test(u.protocol)) return;
+    if (u.pathname === location.pathname && u.search === location.search) return;   // same page (anchors, hash links): the page handles it
+    if (still() || root.classList.contains('sl-red')) return;
+    e.preventDefault();
+    root.classList.add('sl-red'); setTimeout(() => root.classList.add('sl-fade'), 260);
+    setTimeout(() => { location.href = u.href; }, 710);
+  });
+  // back / forward from the cache: show the page as it was
+  addEventListener('pageshow', e => { if (e.persisted) root.classList.remove('sl-red', 'sl-fade'); });
+}
+
 // dusk sky (gradient + vignette + grain) — the same canvas on every page; the home page and the playground start it themselves
 if (!document.getElementById('lamp') && !document.getElementById('world')) initDuskLight();
 

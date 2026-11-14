@@ -186,3 +186,10 @@ html[data-theme="dusk"] .site-foot{background:transparent}
 #top .tagline .tw{white-space:nowrap}
 #top .tagline .tc{transition:color .35s ease calc(var(--i) * 14ms)}
 #top .b-txt:has(.logo:hover) .tagline .tc{color:var(--acc)}
+
+/* leaving a page (site.js): everything but the header turns the accent colour at once, then fades out */
+html.sl-red body > :not(#top):not(#mnav):not(#contactPop):not(script):not(style),html.sl-red body > :not(#top):not(#mnav):not(#contactPop):not(script):not(style) *{color:var(--acc) !important;border-color:var(--acc) !important;transition:color .22s ease,border-color .22s ease}
+html.sl-red body > :not(#top):not(#mnav):not(#contactPop):not(script):not(style) img,html.sl-red body > :not(#top):not(#mnav):not(#contactPop):not(script):not(style) video,html.sl-red body > :not(#top):not(#mnav):not(#contactPop):not(script):not(style) canvas{filter:grayscale(1) sepia(1) saturate(9) hue-rotate(-28deg);transition:filter .22s ease}
+html.sl-red #lamp *,html.sl-red .lamp *{stroke:var(--acc) !important} html.sl-red #lamp [class="f"],html.sl-red .lamp [class="f"],html.sl-red .lamp [style*="fill:url"]{stroke:none !important}
+html.sl-red .ab-btn.solid{background:var(--acc) !important;color:var(--bg) !important}
+html.sl-fade body > :not(#top):not(#mnav):not(#contactPop):not(script):not(style){opacity:0 !important;transition:opacity .45s ease}
