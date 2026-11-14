@@ -7,8 +7,8 @@ import '../styles/dusk.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Contact from '../components/Contact.astro';
-interface Props { title?: string; description?: string; lang?: string; footer?: boolean; bare?: boolean }
-const { title, description = 'Streetlight is a creative design studio run by Matan Ben David — brand, web & product.', lang = 'en', footer = true, bare = false } = Astro.props;
+interface Props { title?: string; description?: string; lang?: string; footer?: boolean; bare?: boolean; enter?: boolean }
+const { title, description = 'Streetlight is a creative design studio run by Matan Ben David — brand, web & product.', lang = 'en', footer = true, bare = false, enter = false } = Astro.props;
 const full = title ? `${title} — Streetlight` : 'Streetlight — Digital assets you’ll be proud to own';
 ---
 <!doctype html>
@@ -33,6 +33,11 @@ const full = title ? `${title} — Streetlight` : 'Streetlight — Digital asset
   <!-- day / dusk before the first paint, so there's no flash -->
   <script is:inline>try { if (sessionStorage.getItem('sl-theme') === 'dusk') document.documentElement.dataset.theme = 'dusk'; } catch(e){}
   if (location.pathname === '/' && /^#project\//.test(location.hash)) document.documentElement.classList.add('deep');   // a case study opened from a link: don't flash the home page first</script>
+  {enter && <script is:inline>
+    // this page plays an entrance: keep its content out of sight until the entrance script has set its first frame
+    // (it removes the class itself; this is only a safety net if the script never runs)
+    try { if (!matchMedia('(prefers-reduced-motion: reduce)').matches){ document.documentElement.classList.add('sl-enter'); setTimeout(() => document.documentElement.classList.remove('sl-enter'), 2500); } } catch(e){}
+  </script>}
   <slot name="head" />
 </head>
 <body>

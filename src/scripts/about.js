@@ -684,7 +684,7 @@ if (document.fonts) document.fonts.ready.then(relight); addEventListener('load',
 }
 // "Filament" (after Codrops Text Character Animations #16), with the values tuned in filament-tuner.html
 (() => {
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches){ document.documentElement.classList.remove('sl-enter'); return; }
   const P = {"timing": {"dur": 600, "letter": 10, "line": 0, "order": "lines", "textGap": 0}, "heat": {"hot": 0.68, "cool": 0.4, "redAt": 0.84, "gStart": 0, "gEnd": 0.02, "bStart": 0, "bEnd": 0.11, "gMax": 0, "bMax": 0}, "halo": {"halo": 0.1, "inner": 0.45, "outer": 0.7, "innerA": 0.32, "outerA": 0.7}, "flicker": {"share": 0.57, "depthMin": 0.55, "depthMax": 0.85, "dips": 3}};
   const SEL = '.ab-in .idx, .ab-in h1, .ab-in .sub, .ab-in .lbl, .svc-line p, .svc-line small';
   const ss = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a || 1e-6))); return t * t * (3 - 2 * t); };
@@ -727,6 +727,7 @@ if (document.fonts) document.fonts.ready.then(relight); addEventListener('load',
     free = now + t0 + L.length * T.line + T.textGap; };
   const els = [...document.querySelectorAll(SEL)];
   els.forEach((el, n) => { el._n = n; el._chars = wrap(el); el._chars.forEach(c => c.style.color = 'transparent'); });
+  document.documentElement.classList.remove('sl-enter');   // the text is hidden letter by letter now: show the page
   const io = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return; io.unobserve(e.target); play(e.target); }), {threshold: .2});
   els.forEach(el => io.observe(el));
 })();

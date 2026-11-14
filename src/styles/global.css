@@ -193,3 +193,6 @@ html.sl-red body > :not(#top):not(#mnav):not(#contactPop):not(script):not(style)
 html.sl-red #lamp *,html.sl-red .lamp *{stroke:var(--acc) !important} html.sl-red #lamp [class="f"],html.sl-red .lamp [class="f"],html.sl-red .lamp [style*="fill:url"]{stroke:none !important}
 html.sl-red .ab-btn.solid{background:var(--acc) !important;color:var(--bg) !important}
 html.sl-fade body > :not(#top):not(#mnav):not(#contactPop):not(script):not(style){opacity:0 !important;transition:opacity .45s ease}
+
+/* pages with an entrance: hidden until the entrance has set its first frame (Base enter + the page's script) */
+html.sl-enter main,html.sl-enter .site-foot{opacity:0}

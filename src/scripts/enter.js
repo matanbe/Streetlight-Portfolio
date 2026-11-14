@@ -20,11 +20,13 @@ export function slRowsIn(rows, o = {}){
 }
 
 // a table page: title (Filament) → chips (fade) → column heads → rows, each with its line
+export const slReady = () => document.documentElement.classList.remove('sl-enter');
 export function tableEnter({title, chips, table}){
-  if (still()) return;
+  if (still()){ slReady(); return; }
   const head = [...table.querySelectorAll('.m-head')], rows = [...table.querySelectorAll('.m-row:not(.m-head)')].filter(r => r.offsetParent !== null);
   if (title) slFilament([title], () => 0);
   if (chips) chips.animate([{opacity: 0}, {opacity: 1}], {duration: 520, delay: 180, fill: 'backwards', easing: 'ease'});
   slRowsIn(head, {base: 260}); slRowsIn(rows, {base: 364, step: 40});
   slFilament([...head.flatMap(r => [...r.children]), ...rows], el => el.closest('.m-head') ? 260 : 364 + Math.min(rows.indexOf(el), 16) * 40);
+  slReady();   // everything is in its first frame now: show the page
 }

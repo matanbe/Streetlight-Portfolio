@@ -583,4 +583,4 @@ layout = makeLayout(list);
 geom();
 ALL.forEach(it => tiles.set(it.id, makeTile(it)));
 renderFilters();
-requestAnimationFrame(frame);
+requestAnimationFrame(t => { frame(t); document.documentElement.classList.remove('sl-enter'); });   // first frame placed (tiles still above, invisible): show the page

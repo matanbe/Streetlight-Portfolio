@@ -28,7 +28,8 @@ export const slFilament = (() => {
   const lines = chars => { const L = []; let top = null; chars.forEach(c => { const y = Math.round(c.getBoundingClientRect().top);
       if (top === null || Math.abs(y - top) > 4){ L.push([]); top = y; } L[L.length - 1].push(c); }); return L; };
   let N = 0;
-  return (els, delayOf) => {
+  const prep = els => els.forEach(el => { if (!el._chars || !el._chars.length || !el.contains(el._chars[0])){ el._chars = wrap(el); el._n = N++; } el._chars.forEach(c => c.style.color = 'transparent'); });
+  const run = (els, delayOf) => {
     try { if (matchMedia('(prefers-reduced-motion: reduce)').matches) return; } catch(e){}
     els.forEach(el => {
       if (!el._chars || !el._chars.length || !el.contains(el._chars[0])){ el._chars = wrap(el); el._n = N++; }
@@ -42,4 +43,6 @@ export const slFilament = (() => {
         c.animate(frames(own, flick), {duration: T.dur, delay: t0 + li * T.line + i * T.letter, fill: 'both'}).finished.then(() => { c.getAnimations().forEach(a => a.cancel()); c.style.color = ''; }).catch(() => {});
       })); });
   };
+  run.prepare = els => { try { if (matchMedia('(prefers-reduced-motion: reduce)').matches) return; } catch(e){} prep(els); };
+  return run;
 })();

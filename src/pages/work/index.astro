@@ -5,7 +5,7 @@ const projects = await getProjects();
 const DISC = ['Product', 'Website', 'Branding', 'Marketing'];
 const count = (t: string | null) => t ? projects.filter(p => p.disciplines.includes(t)).length : projects.length;
 ---
-<Base title="All projects" description="Selected brand, web and product work by Streetlight.">
+<Base title="All projects" enter description="Selected brand, web and product work by Streetlight.">
   <section class="page">
     <h1>All projects <em id="count">({projects.length})</em></h1>
     <nav class="chips" id="filters" aria-label="Filter by discipline">

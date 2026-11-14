@@ -2057,7 +2057,7 @@ html[data-theme="dusk"] .wrap.on .hl{--hairline-hi:${P.acc}}`;
 // ---------- home About (short): the Filament entrance when it scrolls in — label + title, then the text ----------
 {
   const parts = [...document.querySelectorAll('#about .fil')];
-  if (parts.length){ let seen = false; const io = new IntersectionObserver(es => { if (seen || !es.some(e => e.isIntersecting)) return; seen = true; io.disconnect();
+  if (parts.length){ slFilament.prepare(parts); let seen = false; const io = new IntersectionObserver(es => { if (seen || !es.some(e => e.isIntersecting)) return; seen = true; io.disconnect();
       slFilament(parts, el => el.matches('p') ? 260 : 0); }, {threshold: .35});
     io.observe(document.getElementById('about')); }
 }

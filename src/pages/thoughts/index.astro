@@ -5,7 +5,7 @@ const posts = await getPosts();
 const topics = [...new Set(posts.map(p => p.topic))];
 const count = (t: string | null) => t ? posts.filter(p => p.topic === t).length : posts.length;
 ---
-<Base title="Thoughts" description="מחשבות על עיצוב, קריירה ותעשייה — מאת מתן בן דוד.">
+<Base title="Thoughts" enter description="מחשבות על עיצוב, קריירה ותעשייה — מאת מתן בן דוד.">
   <section class="page thoughts" dir="rtl" lang="he">
     <nav class="chips" id="filters" aria-label="סינון לפי נושא">
       {[null, ...topics].map(t => <button data-t={t ?? ''} class={t ? '' : 'on'}>{t ?? 'הכל'}<span>{count(t)}</span></button>)}
