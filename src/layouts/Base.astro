@@ -38,6 +38,11 @@ const full = title ? `${title} — Streetlight` : 'Streetlight — Digital asset
     // (it removes the class itself; this is only a safety net if the script never runs)
     try { if (!matchMedia('(prefers-reduced-motion: reduce)').matches){ document.documentElement.classList.add('sl-enter'); setTimeout(() => document.documentElement.classList.remove('sl-enter'), 2500); } } catch(e){}
   </script>}
+  <script is:inline>
+    // arriving from another page of the site: the header is carried over as is (cross-document view transition), so it doesn't blink
+    try { if (document.referrer && new URL(document.referrer).origin === location.origin){ const R = document.documentElement; R.classList.add('sl-nav');
+      const off = () => R.classList.remove('sl-nav'); addEventListener('pagereveal', e => { if (e.viewTransition) e.viewTransition.finished.finally(off); else off(); }); setTimeout(off, 1500); } } catch(e){}
+  </script>
   <slot name="head" />
 </head>
 <body>

@@ -196,3 +196,8 @@ html.sl-fade body > :not(#top):not(#mnav):not(#contactPop):not(script):not(style
 
 /* pages with an entrance: hidden until the entrance has set its first frame (Base enter + the page's script) */
 html.sl-enter main,html.sl-enter .site-foot{opacity:0}
+
+/* page to page: the header stays put (same-origin view transition); only while navigating, so the day/dusk circle isn't affected */
+@view-transition{navigation:auto}
+html.sl-red #top,html.sl-nav #top{view-transition-name:site-top}
+::view-transition-group(site-top),::view-transition-old(site-top),::view-transition-new(site-top){animation:none}

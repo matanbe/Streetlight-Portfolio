@@ -27,7 +27,7 @@ window.slSetTheme = (dusk, x = innerWidth / 2, y = innerHeight / 2) => {
 document.querySelectorAll('[data-logo]').forEach(el => {
   const a = lottie.loadAnimation({container: el, renderer: 'svg', loop: false, autoplay: false,
     animationData: JSON.parse(JSON.stringify(LOGO)), rendererSettings: {preserveAspectRatio: 'xMidYMid meet'}});
-  a.addEventListener('DOMLoaded', () => a.goToAndStop(0, true));
+  a.addEventListener('DOMLoaded', () => { a.goToAndStop(0, true); el.querySelectorAll('.lt-static').forEach(x => x.remove()); });
   const host = el.closest('a') || el;
   host.addEventListener('pointerenter', () => { a.setDirection(1); a.play(); });
   host.addEventListener('pointerleave', () => { a.setDirection(-1); a.play(); });

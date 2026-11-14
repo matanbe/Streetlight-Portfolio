@@ -1,6 +1,7 @@
 ---
 // the navbar: wordmark + tagline, links, Contact; on mobile a burger opens a full-screen menu
 import { getSettings } from '../lib/cms';
+import logoStatic from '../assets/logo-static.svg?raw';   // the wordmark's first frame, so it's there on the first paint (the animated one replaces it)
 const { tagline, email } = await getSettings();
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const LINKS = [
@@ -32,7 +33,7 @@ const tagHTML = `${letters(t1)}<br>${letters('be ' + t2)}`;
   </nav>
   <button id="burger" aria-label="Menu" aria-expanded="false" aria-controls="mnav"><i></i><i></i></button>
   <div class="brand"><div class="b-txt">
-    <a class="logo" href="/" aria-label="Streetlight — home"><span class="lt-logo" data-logo aria-hidden="true"></span></a>
+    <a class="logo" href="/" aria-label="Streetlight — home"><span class="lt-logo" data-logo aria-hidden="true" set:html={logoStatic}></span></a>
     <p class="tagline" aria-label={tagline} set:html={tagHTML}></p>
   </div><slot name="brand" /></div>
 </header>
