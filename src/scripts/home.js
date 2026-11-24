@@ -1314,7 +1314,7 @@ if (location.hash === '#about') setTimeout(() => smoothTo(document.getElementByI
 // each on an optional fill colour (for files that sit 'contain' inside a frame of another ratio). Media only plays while on screen.
 const Blocks = (() => {
   let io = null, anims = [];
-  const kind = u => /\.(mp4|webm|mov|m4v)([?#]|$)/i.test(u) ? 'video' : /\.json([?#]|$)/i.test(u) ? 'lottie' : 'img';   // a #pause=N may follow
+  const kind = u => /\.(mp4|webm|mov|m4v)([?#]|$)/i.test(u) ? 'video' : /\.json([?#]|$)/i.test(u) ? 'lottie' : /\.html([?#]|$)/i.test(u) ? 'html' : 'img';   // .html = a live embed (iframe)   // a #pause=N may follow
   const img = (u, w) => /a\.storyblok\.com/.test(u) && !/\.svg(\?|$)/i.test(u) ? `${u}/m/${w}x0` : u;
   const esc = v => String(v || '').replace(/"/g, '&quot;');
   const per = {full: 1, duo: 2, trio: 3, quad: 4};
@@ -1323,6 +1323,7 @@ const Blocks = (() => {
   const media = (it, px, alt) => { if (it.src.startsWith('ph:')) return `<div class="f-ph"><span>${esc(it.src.slice(3))}</span></div>`; const t = kind(it.src), pad = (/[#&]pad=([\d.]+)/.exec(it.src) || [])[1], ps = pad ? ` style="padding:${pad}%"` : '';
     return t === 'video' ? `<video data-src="${it.src}" muted loop playsinline preload="none"${ps}></video>`
          : t === 'lottie' ? `<div class="f-lot" data-lottie="${it.src}"${ps}></div>`
+         : t === 'html' ? `<iframe class="f-html" data-src="${it.src}" title="${esc(it.alt || alt)}" loading="lazy"${ps}></iframe>`
          : `<img src="${img(it.src, px)}" alt="${esc(it.alt || alt)}" loading="lazy"${ps}>`; };
   function html(sl){
     const n = per[sl.b] || 1, px = Math.round(1800 / n), r = sl.r || '16/9';
@@ -1337,6 +1338,7 @@ const Blocks = (() => {
   // start / stop what's in a face (video, lottie)
   function wake(face, on){
     if (!face) return;
+    const fr = face.querySelector('iframe.f-html'); if (fr && on && !fr.src) fr.src = fr.dataset.src;   // load the embed the first time it's seen
     const v = face.querySelector('video'); if (v){ if (on){ if (!v.src) v.src = v.dataset.src; v.play().catch(() => {}); } else if (v.src) v.pause(); }
     const l = face.querySelector('.f-lot');
     if (l){ l._on = on; if (on && !l._a && window.__lottie){

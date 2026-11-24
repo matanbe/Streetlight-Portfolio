@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>aisap Loader</title>
+<style>
+  :root { --bg: #101015; --fg: #f4f4f6; --muted: #8a949d; }
+  html, body { margin: 0; height: 100%; background: var(--bg); }
+  body { display: grid; place-items: center; font-family: Inter, system-ui, sans-serif; }
+  #stage { position: relative; width: 240px; height: 240px; cursor: pointer; }
+  #letter { position: absolute; left: 50%; top: 50%; width: 56.6px; height: 61.2px; margin: -30.6px 0 0 -28.3px; will-change: transform, filter; }
+  #trail, #dot { position: absolute; left: 50%; top: 50%; }
+  /* the trail is a ring segment with a conic gradient, rotated to follow the square */
+  #trail {
+    width: var(--d); height: var(--d); margin: calc(var(--d) / -2) 0 0 calc(var(--d) / -2);
+    border-radius: 50%;
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--w)), #000 calc(100% - var(--w) + 0.5px));
+            mask: radial-gradient(farthest-side, transparent calc(100% - var(--w)), #000 calc(100% - var(--w) + 0.5px));
+  }
+  #dot { width: var(--s); height: var(--s); margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2); background: var(--fg); border-radius: 3px; }
+  .hint { position: fixed; bottom: 20px; left: 0; right: 0; text-align: center; color: var(--muted); font-size: 13px; }
+  body.capture .hint { display: none; }
+</style>
+<style>.hint{display:none!important}</style></head>
+<body>
+<div id="stage">
+  <svg id="letter" viewBox="0 5.3 14.16 15.3" fill="var(--fg)">
+    <path d="M14.1534 5.93967C14.156 5.71042 14.0476 5.59432 13.8205 5.59358C12.8779 5.59138 11.9357 5.59138 10.993 5.59358C10.7752 5.59432 10.6587 5.71813 10.6688 5.92828C10.6807 6.17848 10.6978 6.42868 10.7108 6.67925C10.7227 6.90888 10.732 7.13887 10.7425 7.3685C10.7302 7.37144 10.7183 7.37401 10.706 7.37695C10.6643 7.32404 10.6222 7.2715 10.5805 7.2186C10.0083 6.49849 9.29018 5.97494 8.41903 5.65751C7.90974 5.47197 7.38295 5.37057 6.84277 5.32869C5.9087 5.25594 4.99845 5.35845 4.12209 5.69462C2.87865 6.1715 1.94272 7.00881 1.25138 8.11983C0.442776 9.41786 0.0909645 10.8496 0.0146456 12.3556C-0.0177434 12.9912 0.003477 13.6264 0.0794236 14.2602C0.189993 15.1824 0.40927 16.0759 0.797938 16.9242C1.24505 17.9004 1.87013 18.7425 2.76548 19.3641C4.15671 20.33 5.7125 20.5663 7.35727 20.2933C8.72766 20.0659 9.81846 19.3649 10.6453 18.2641C10.6684 18.2333 10.6989 18.2072 10.7417 18.1627C10.7417 18.2502 10.7436 18.3097 10.7417 18.3692C10.7261 18.8274 10.7079 19.2855 10.6948 19.744C10.6874 20.0016 10.7994 20.1155 11.063 20.1158C11.9744 20.118 12.8861 20.118 13.7975 20.1158C14.048 20.1151 14.1567 19.9986 14.1537 19.7514C14.1307 17.9294 14.0945 16.1079 14.0882 14.2859C14.0819 12.5128 14.1039 10.7398 14.1176 8.96669C14.1254 7.95781 14.1422 6.94929 14.1537 5.94041L14.1534 5.93967ZM10.837 13.032C10.8188 13.8348 10.741 14.6298 10.502 15.4021C10.3304 15.9569 10.0832 16.4731 9.69858 16.9183C9.16621 17.5345 8.4812 17.8644 7.67483 17.9658C7.13948 18.033 6.60971 18.0048 6.09223 17.8501C5.33277 17.623 4.76987 17.1483 4.36184 16.4859C4.01599 15.9245 3.81607 15.3099 3.69545 14.6695C3.4959 13.6103 3.46649 12.5441 3.58711 11.4746C3.66157 10.8155 3.81272 10.174 4.10608 9.57217C4.46236 8.84104 4.98356 8.26642 5.76164 7.96552C6.6421 7.62494 7.54118 7.60731 8.43355 7.91997C9.18631 8.18413 9.7198 8.70657 10.1033 9.387C10.4357 9.97704 10.6159 10.6163 10.7216 11.278C10.8143 11.8589 10.8478 12.4445 10.837 13.0323V13.032Z"/>
+  </svg>
+  <div id="trail"></div>
+  <div id="dot"></div>
+</div>
+<div class="hint">Click to restart</div>
+
+<script>
+/* aisap loader: the dot orbits the "a" twice, leaving a gradient trail, and lands back in place; the "a" blurs while it moves.
+   Geometry comes from the logo: the dot starts exactly where it sits next to the "a". */
+const U = 4;                                   // px per logo unit (the "a" is ~15 units tall)
+const S = 3.3 * U;                             // dot size
+const A_C = { x: 7.08, y: 12.95 };             // centre of the "a"
+const D_C = { x: 16.44, y: 1.69 };             // centre of the dot in the logo
+const R = Math.hypot(D_C.x - A_C.x, D_C.y - A_C.y) * U;          // orbit radius (≈58px)
+const TH0 = (Math.atan2(D_C.y - A_C.y, D_C.x - A_C.x) * 180) / Math.PI; // start angle (up-right)
+const W = 240;                                 // deg / s once up to speed (1.5s per turn)
+const TA = 0.7;                                // ramp up / down time
+const TRAIL = 150;                             // trail length at full speed (deg)
+
+const stage = document.getElementById("stage"), letter = document.getElementById("letter");
+const trail = document.getElementById("trail"), dot = document.getElementById("dot");
+stage.style.setProperty("--s", `${S}px`);
+trail.style.setProperty("--d", `${2 * R + S}px`);
+trail.style.setProperty("--w", `${S}px`);
+
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+
+/* angle travelled after t seconds of a run that lasts `move` seconds (accelerate, cruise, decelerate) */
+function travel(t, move) {
+  t = clamp(t, 0, move);
+  const a = Math.min(t, TA) ** 2 / (2 * TA);                      // accel part
+  const c = Math.max(0, Math.min(t, move - TA) - TA);             // cruise
+  const dTail = Math.max(0, t - (move - TA));
+  const d = dTail - dTail ** 2 / (2 * TA);                        // decel part
+  return W * (a + c + d);
+}
+function speedAt(t, move) {
+  if (t <= 0 || t >= move) return 0;
+  if (t < TA) return t / TA;
+  if (t > move - TA) return (move - t) / TA;
+  return 1;
+}
+
+function draw(angleDeg, speed, settle) {
+
+  // the "a" goes out of focus while the dot is moving, and sharpens as it stops
+  const k = ease(speed);
+  letter.style.filter = `blur(${(2.4 * k).toFixed(2)}px)`;
+  letter.style.transform = `scale(${(1 - 0.18 * k).toFixed(3)})`;
+  letter.style.opacity = (1 - 0.25 * k).toFixed(3); // 75% while spinning
+
+  const rad = (angleDeg * Math.PI) / 180;
+  const x = (A_C.x - 7.08) * U + R * Math.cos(rad), y = R * Math.sin(rad);
+  dot.style.transform = `translate(${x}px, ${y}px) rotate(${angleDeg - TH0}deg)`;
+
+  // trail: conic gradient ending at the dot, length grows with speed
+  const len = TRAIL * speed;
+  const from = angleDeg + 90 - len; // conic 0deg = up, clockwise
+  trail.style.background = len > 0.5
+    ? `conic-gradient(from ${from}deg, rgba(244,244,246,0) 0deg, rgba(244,244,246,.18) ${len * 0.55}deg, rgba(244,244,246,.7) ${len}deg, rgba(244,244,246,0) ${len + 0.01}deg)`
+    : "none";
+}
+
+/* full sequence used by the video: still → loading (3 turns) → back to the logo */
+const PRE = 0.4, TURNS = 3, MOVE = TA + TURNS * (360 / W), POST = 0.6;
+const DURATION = PRE + MOVE + POST;
+function renderAt(t) {
+  const m = t - PRE;
+  const angle = TH0 + travel(m, MOVE);
+  const settle = clamp(m / 0.5) * (1 - clamp((m - (MOVE - 0.45)) / 0.5));
+  draw(angle, speedAt(m, MOVE), settle);
+}
+window.renderAt = renderAt;
+window.DURATION = DURATION;
+renderAt(0);
+
+/* in the page: loop the loading state forever; click plays the whole sequence again */
+const capture = location.search.includes("capture");
+if (capture) document.body.classList.add("capture");
+let t0 = performance.now();
+// in the page: the full sequence (2 turns, back to place) repeats with a short pause
+function loop(now) {
+  const t = ((now - t0) / 1000) % (DURATION + 0.6);
+  renderAt(Math.min(t, DURATION));
+  requestAnimationFrame(loop);
+}
+if (!capture) requestAnimationFrame(loop);
+stage.addEventListener("click", () => (t0 = performance.now()));
+</script>
+</body>
+</html>
