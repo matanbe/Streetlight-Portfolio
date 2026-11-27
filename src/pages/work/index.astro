@@ -3,6 +3,14 @@ import Base from '../../layouts/Base.astro';
 import { getProjects } from '../../lib/cms';
 const projects = await getProjects();
 const DISC = ['Product', 'Website', 'Branding', 'Marketing'];
+// every image / video frame of a project (Lottie and live embeds stay out), for the row's accordion
+const isMedia = (u: string) => !!u && !u.startsWith('ph:') && !/\.(json|html)([?#]|$)/i.test(u);
+const thumb = (u: string) => /a\.storyblok\.com/.test(u) && !/\.svg(\?|$)/i.test(u) ? `${u}/m/640x0` : u;
+const framesOf = (p: any) => { const out: string[] = [];
+  (p.chapters || []).forEach((ch: any) => ch.slides.forEach((sl: any) => {
+    if (sl.img?.url) out.push(sl.img.url);
+    (sl.f || []).forEach((fr: any) => (fr.items || []).forEach((it: any) => out.push(it.src))); }));
+  return [...new Set(out.filter(isMedia).map(u => u.split('#')[0]))].map(thumb); };
 const count = (t: string | null) => t ? projects.filter(p => p.disciplines.includes(t)).length : projects.length;
 ---
 <Base title="All projects" enter description="Selected brand, web and product work by Streetlight.">
@@ -17,24 +25,18 @@ const count = (t: string | null) => t ? projects.filter(p => p.disciplines.inclu
         const href = p.hasCase ? `/#project/${p.id}` : (p.live ?? undefined);   // case pages open over the home page (the cube flies in)
         const ext = !p.hasCase && p.live;
         return (
-          <a class="m-row" role="row" href={href} target={ext ? '_blank' : undefined} rel={ext ? 'noopener' : undefined} data-tags={p.disciplines.join(',')}>
-            <span>{p.name}<span class="st" title="Status (temporary)" data-id={p.id} data-def={p.chapters?.length ? 'review' : 'empty'}><b></b><i>▾</i><select aria-label="Status"><option value="empty">Empty</option><option value="review">Review</option><option value="done">Done</option></select></span></span><span class="c2">{p.industry}</span><span class="c3">{p.year}</span>
+          <a class="m-row" role="row" href={href} target={ext ? '_blank' : undefined} rel={ext ? 'noopener' : undefined} data-tags={p.disciplines.join(',')} data-frames={JSON.stringify(framesOf(p))}>
+            <span><span class="st" title="Status (temporary)" data-id={p.id} data-def={p.chapters?.length ? 'review' : 'empty'}><select aria-label="Status"><option value="empty">Empty</option><option value="review">Review</option><option value="done">Done</option></select></span>{p.name}{(!p.hasCase && !p.live && p.soon) && <span class="soon">Coming soon</span>}</span><span class="c2">{p.industry}</span><span class="c3">{p.year}</span>
             {ext ? <span class="go ext" aria-label="opens the live site">↗</span> : <span class="go"><span class="l-arr"><i>→</i><i>→</i></span></span>}
             {(p.hasCase && p.live) && <span class="m-acts">
               <span class="m-btn" data-live={p.live}>View live ↗</span><span class="m-btn solid">View case</span>
             </span>}
             {(!p.hasCase && p.live) && <span class="m-acts"><span class="m-btn">View live ↗</span></span>}
-            {(!p.hasCase && !p.live && p.soon) && <span class="soon">Coming soon</span>}
+            <span class="fr" aria-hidden="true"></span>
           </a>
         );
       })}
     </div>
-    <!-- hover preview: one fixed 16:9 window with each project's cover; moving between rows slides to the next one -->
-    <div id="pv" aria-hidden="true"><div class="strip">
-      {projects.map((p, i) => p.hero
-        ? <div class="it">{p.hero.video && !p.hero.poster ? <video src={p.hero.url} muted loop playsinline autoplay preload="none"></video> : <img src={p.hero.video ? p.hero.poster : /a\.storyblok\.com/.test(p.hero.url) ? `${p.hero.url}/m/800x0` : p.hero.url} alt="" loading="lazy">}</div>
-        : <div class="it ph" style={`background:${['#1b1b1b', '#8c8c8c', '#d9d4c3', '#706d63'][i % 4]}`}>{p.name}</div>)}
-    </div></div>
   </section>
   <script>import { tableEnter } from '../../scripts/enter.js'; tableEnter({title: document.querySelector('.page h1'), chips: document.getElementById('filters'), table: document.querySelector('.work-table')});</script>
 </Base>
@@ -42,27 +44,32 @@ const count = (t: string | null) => t ? projects.filter(p => p.disciplines.inclu
 <style>
   .work-table{--cols:var(--c1,280px) var(--c2,160px) var(--c3,90px) 1fr 28px}
   .go.ext{justify-content:flex-end;color:var(--mute)}
-  .work-table .soon{grid-column:4 / -1;justify-self:end;align-self:center;color:var(--mute);font-size:12px;letter-spacing:.04em;text-transform:uppercase}
-  .work-table .m-row:has(.soon) .go{display:none}
-  #pv{position:fixed;right:max(24px,calc((100vw - 1200px) / 2 + 220px));top:50%;width:min(400px,30vw);aspect-ratio:16/9;border:1px solid var(--ink);z-index:30;pointer-events:none;overflow:hidden;
-      transform:translateY(-50%) scale(0);transition:transform .4s cubic-bezier(.32,0,.67,0)}
-  #pv.on{transform:translateY(-50%) scale(1);transition:transform .4s cubic-bezier(.76,0,.24,1)}
-  #pv .strip{position:absolute;inset:0;transition:transform .5s cubic-bezier(.76,0,.24,1)}
-  #pv .it{height:100%;display:grid;place-items:center;overflow:hidden}
-  #pv .it img,#pv .it video{width:100%;height:100%;object-fit:cover;display:block}
-  #pv .it.ph{color:#f3f2ee;font-size:20px;letter-spacing:-.02em;text-align:center;padding:24px}
-  @media (max-width:800px), (hover:none){ #pv{display:none} }
-  /* TEMPORARY: content status per project (stored in this browser only) */
-  .st{position:relative;display:inline-flex;align-items:center;gap:5px;vertical-align:middle;margin-left:10px;padding:1px 7px;border-radius:999px;font-size:10px;letter-spacing:.04em;text-transform:uppercase;line-height:1.5;color:#111;cursor:pointer;user-select:none}
-  .st b{font-weight:400} .st i{font-style:normal;font-size:9px;opacity:.7} .st select{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;font-size:16px}
+  /* coming soon: an outlined tag beside the name */
+  .work-table .soon{display:inline-block;vertical-align:middle;margin-left:12px;padding:2px 7px;border:1px solid var(--acc);color:var(--acc);font-size:10px;letter-spacing:.06em;text-transform:uppercase;line-height:1.4}
+  /* TEMPORARY: content status per project, a dot before the name (stored in this browser only) */
+  .st{position:relative;display:inline-block;vertical-align:middle;width:8px;height:8px;border-radius:50%;margin:0 12px 2px 0;cursor:pointer}
+  .st select{position:absolute;inset:-6px;opacity:0;cursor:pointer;font-size:16px}
   .st[data-s="empty"]{background:#ff6b5a} .st[data-s="review"]{background:#f6cf45} .st[data-s="done"]{background:#5bc77a}
+  /* hover: the row opens like an accordion and shows three of the project's frames */
+  .work-table .m-row:not(.m-head){max-height:none;transition:height .55s cubic-bezier(.76,0,.24,1),opacity .35s ease,border-color .35s}
+  .work-table .m-row.out{height:0 !important}
+  .work-table .m-row::before{display:none}
+  .work-table .m-row{align-items:start}
+  .work-table .m-row.h > span{color:inherit !important}
+  .work-table .m-row.h > .c2{color:var(--ink2) !important} .work-table .m-row.h > .c3{color:var(--mute) !important}
+  .work-table .fr{position:absolute !important;top:14px;right:0;left:var(--frl,60%);display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:0 !important;pointer-events:none}
+  .work-table .fr > :global(div){aspect-ratio:16/9;background:var(--soft);overflow:hidden;opacity:0;transform:translateY(14px);transition:opacity .35s ease,transform .5s cubic-bezier(.2,.7,.2,1)}
+  .work-table .fr :global(img),.work-table .fr :global(video){width:100%;height:100%;object-fit:cover;display:block}
+  .work-table .m-row.open .fr > :global(div){opacity:1;transform:none}
+  .work-table .m-row.open .fr > :global(div:nth-child(2)){transition-delay:.06s} .work-table .m-row.open .fr > :global(div:nth-child(3)){transition-delay:.12s}
+  .work-table .m-row.open .go,.work-table .m-row.open .m-acts{opacity:0 !important}
+  @media (max-width:800px), (hover:none){ .work-table .fr{display:none} }
   /* phones: project + year (+ ↗ when it opens a live site) */
   @media (max-width:800px){ .work-table{--cols:1fr auto 16px} .work-table .m-row > span:nth-child(2){display:none} .work-table .m-row > .go:not(.ext){visibility:hidden} }
 </style>
 
 <script>
-  import { previewFollow } from '../../scripts/site.js';
-  const table = document.querySelector('.work-table') as HTMLElement, rows = [...table.querySelectorAll<HTMLElement>('.m-row:not(.m-head)')];
+    const table = document.querySelector('.work-table') as HTMLElement, rows = [...table.querySelectorAll<HTMLElement>('.m-row:not(.m-head)')];
   // "View live" on a row that also has a case: opens the live site instead of the row's case link
   table.addEventListener('click', e => { const b = (e.target as HTMLElement).closest<HTMLElement>('[data-live]'); if (!b) return; e.preventDefault(); window.open(b.dataset.live, '_blank', 'noopener'); });
   // TEMPORARY: status tag per project — the ▾ opens a picker (empty / review / done); saved in this browser
@@ -70,7 +77,7 @@ const count = (t: string | null) => t ? projects.filter(p => p.disciplines.inclu
   let ST: Record<string, string> = {}; try { ST = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch(e){}
   // one-time: these are signed off
   try { if (!localStorage.getItem(KEY + '-v2')){ ['napoleon-journeys', 'kayma-stories', 'the-traffic-report', 'spni'].forEach(id => ST[id] = 'done'); localStorage.setItem(KEY, JSON.stringify(ST)); localStorage.setItem(KEY + '-v2', '1'); } } catch(e){}
-  const paint = (el: HTMLElement) => { const s = ST[el.dataset.id!] || el.dataset.def!; el.dataset.s = s; el.querySelector('b')!.textContent = s; el.querySelector('select')!.value = s; };
+  const paint = (el: HTMLElement) => { const s = ST[el.dataset.id!] || el.dataset.def!; el.dataset.s = s; el.title = 'Status: ' + s; el.querySelector('select')!.value = s; };
   table.querySelectorAll<HTMLElement>('.st').forEach(paint);
   table.addEventListener('click', e => { if ((e.target as HTMLElement).closest('.st')){ e.preventDefault(); e.stopPropagation(); } }, true);   // the row link stays put
   table.addEventListener('change', e => { const sel = e.target as HTMLSelectElement, el = sel.closest<HTMLElement>('.st'); if (!el) return;
@@ -86,12 +93,32 @@ const count = (t: string | null) => t ? projects.filter(p => p.disciplines.inclu
   }
   filters.addEventListener('click', e => { const b = (e.target as HTMLElement).closest('button'); if (b) apply(b.dataset.t!); });
   const h = location.hash.slice(1); const pre = [...filters.querySelectorAll('button')].find(b => b.dataset.t!.toLowerCase() === h); if (pre) apply(pre.dataset.t!);
-  // hover preview: scales in over the list, slides to the hovered project's cover
-  const pv = document.getElementById('pv')!, strip = pv.querySelector('.strip') as HTMLElement;
-  previewFollow(pv, strip, rows, table);   // beside the hovered row, moving with it
+  // hover: the row opens like an accordion with three random frames of the project (picked once per visit)
+  const canHover = matchMedia('(hover:hover) and (min-width:801px)').matches;
+  const pick = (a: string[]) => { a = [...a]; for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a.slice(0, 3); };
+  const isVid = (u: string) => /\.(mp4|webm|mov|m4v)(\?|$)/i.test(u);
+  function build(r: HTMLElement){
+    if (r.dataset.built) return; r.dataset.built = '1';
+    const fr = r.querySelector('.fr') as HTMLElement, list = pick(JSON.parse(r.dataset.frames || '[]'));
+    fr.innerHTML = [0, 1, 2].map(i => { const u = list[i]; if (!u) return '<div></div>';
+      return isVid(u) ? `<div><video data-src="${u}" muted loop playsinline preload="none"></video></div>` : `<div><img src="${u}" alt="" decoding="async"></div>`; }).join('');
+  }
+  const baseH = (r: HTMLElement) => r._h || (r._h = r.getBoundingClientRect().height);
+  function open(r: HTMLElement, on: boolean){
+    const fr = r.querySelector('.fr') as HTMLElement;
+    if (on){ build(r); const h0 = baseH(r); r.style.height = h0 + 'px'; void r.offsetWidth;
+      r.style.height = Math.max(h0, fr.getBoundingClientRect().height + 28) + 'px'; r.classList.add('open');
+      fr.querySelectorAll('video').forEach(v => { if (!v.src) v.src = (v as HTMLVideoElement).dataset.src!; (v as HTMLVideoElement).play().catch(() => {}); }); }
+    else { r.style.height = baseH(r) + 'px'; r.classList.remove('open'); fr.querySelectorAll('video').forEach(v => (v as HTMLVideoElement).pause()); }
+  }
+  if (canHover) rows.forEach(r => { r.addEventListener('mouseenter', () => open(r, true)); r.addEventListener('mouseleave', () => open(r, false)); });
+  // the frames start where the 4th column starts
+  const place = () => { const r = rows[0]; if (!r) return; const c = r.children[3] as HTMLElement; if (!c) return;
+    table.style.setProperty('--frl', (c.getBoundingClientRect().left - r.getBoundingClientRect().left) + 'px'); };
   // columns hug their content
   const fit = () => { [1, 2, 3].forEach(c => { let w = 0;
     table.querySelectorAll(`.m-row > span:nth-child(${c})`).forEach(sp => { const r = document.createRange(); r.selectNodeContents(sp); w = Math.max(w, r.getBoundingClientRect().width); });
     table.style.setProperty('--c' + c, Math.ceil(w + 14) + 'px'); }); };
-  fit(); addEventListener('resize', fit); document.fonts?.ready.then(fit);
+  const lay = () => { fit(); place(); rows.forEach(r => { r._h = 0; }); };
+  lay(); addEventListener('resize', lay); document.fonts?.ready.then(lay);
 </script>
