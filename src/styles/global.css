@@ -202,3 +202,17 @@ html.sl-enter main,html.sl-enter .site-foot{opacity:0}
 @view-transition{navigation:auto}
 html.sl-red #top,html.sl-nav #top{view-transition-name:site-top}
 ::view-transition-group(site-top),::view-transition-old(site-top),::view-transition-new(site-top){animation:none}
+
+/* footer socials: a deck of slanted cards (Li, X, In) that fans out on hover */
+.site-foot .ft-r{gap:22px}
+.soc{--w:34px;--h:44px;--step:12px;--gap:6px;display:inline-flex;align-items:center;height:calc(var(--h) + var(--w) * .58)}
+.site-foot .soc a{position:relative;width:var(--w);height:var(--h);margin-left:calc(var(--step) - var(--w));display:grid;place-items:center;color:var(--ink);text-decoration:none;font-size:13px;
+  transition:margin .55s cubic-bezier(.76,0,.24,1),transform .55s cubic-bezier(.76,0,.24,1),color .25s}
+.site-foot .soc a:first-child{margin-left:0}
+.site-foot .soc a::before{content:"";position:absolute;inset:0;background:var(--bg);border:1px solid var(--ink);transform:skewY(30deg);transform-origin:0 0;transition:background .25s,border-color .25s;z-index:-1}
+.site-foot .soc a span{position:relative;transform:translateY(calc(var(--w) * .29))}
+.site-foot .soc:hover a,.site-foot .soc:focus-within a{margin-left:var(--gap)}
+.site-foot .soc:hover a:first-child,.site-foot .soc:focus-within a:first-child{margin-left:0}
+.site-foot .soc a:hover{color:var(--bg);transform:translateY(-3px)}
+.site-foot .soc a:hover::before{background:var(--acc);border-color:var(--acc)}
+.site-foot .soc{isolation:isolate}

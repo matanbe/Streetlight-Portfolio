@@ -24,14 +24,16 @@ window.slSetTheme = (dusk, x = innerWidth / 2, y = innerHeight / 2) => {
 };
 
 // ---------- the wordmark: plays forward on hover, back on leave ----------
-document.querySelectorAll('[data-logo]').forEach(el => {
+export function initLogo(el){
+  if (el._lt) return; el._lt = true;
   const a = lottie.loadAnimation({container: el, renderer: 'svg', loop: false, autoplay: false,
     animationData: JSON.parse(JSON.stringify(LOGO)), rendererSettings: {preserveAspectRatio: 'xMidYMid meet'}});
   a.addEventListener('DOMLoaded', () => { a.goToAndStop(0, true); el.querySelectorAll('.lt-static').forEach(x => x.remove()); });
   const host = el.closest('a') || el;
   host.addEventListener('pointerenter', () => { a.setDirection(1); a.play(); });
   host.addEventListener('pointerleave', () => { a.setDirection(-1); a.play(); });
-});
+}
+document.querySelectorAll('[data-logo]').forEach(initLogo);
 
 // ---------- buttons + chips: the fill enters from the side the pointer came in, leaves toward where it goes ----------
 {

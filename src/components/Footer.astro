@@ -1,12 +1,17 @@
 ---
 import { getSettings } from '../lib/cms';
 const { email, socials } = await getSettings();
+// social links as a little deck of cards (Li, X, In), they fan out on hover
+const NAMES: Record<string, [string, string]> = { LI: ['Li', 'LinkedIn'], X: ['X', 'X'], IN: ['In', 'Instagram'] };
+const ORDER = ['LI', 'X', 'IN'];
+const SOC = [...socials].sort((a, b) => ORDER.indexOf(a.label.toUpperCase()) - ORDER.indexOf(b.label.toUpperCase()))
+  .map(s => ({ url: s.url, short: (NAMES[s.label.toUpperCase()] || [s.label])[0], title: (NAMES[s.label.toUpperCase()] || [, s.label])[1] }));
 ---
 <footer class="site-foot">
   <div class="ft-l"><span>© <span class="ft-y"></span> Streetlight Studio</span></div>
   <a class="ft-logo" href="/" aria-label="Streetlight — home"><span class="lt-logo" data-logo aria-hidden="true"></span></a>
   <div class="ft-r">
     <a href={`mailto:${email}?subject=Hey%20Streetlight`} title={email}>Email</a>
-    {socials.map(s => <><i class="ft-div"></i><a href={s.url} target="_blank" rel="noopener">{s.label}</a></>)}
+    <nav class="soc" aria-label="Social">{SOC.map(s => <a href={s.url} target="_blank" rel="noopener" title={s.title}><span>{s.short}</span></a>)}</nav>
   </div>
 </footer>

@@ -1,6 +1,6 @@
 // The home page: cubes along the street, the lamp + its light, More work, About, the project overlay. Ported from the prototype.
 import { slFilament } from './filament.js';
-import { previewFollow } from './site.js';
+import { previewFollow, initLogo } from './site.js';
 import Lenis from 'lenis';
 import Hairline from '../vendor/hairline.js';
 import { initDuskLight } from './dusk-light.js';
@@ -290,10 +290,8 @@ page.innerHTML =
      <div class="ft-l"><span>© <span class="ft-y"></span> Streetlight Studio</span></div>
      <a class="ft-logo" href="/" aria-label="Streetlight — back to top"><span class="lt-logo" data-logo aria-hidden="true"></span></a>
      <div class="ft-r">
-       <a href="mailto:matan@studiostreetlight.com?subject=Hey%20Streetlight" title="matan@studiostreetlight.com">Email</a><i class="ft-div"></i>
-       <a href="https://www.linkedin.com/in/mbd1/" target="_blank" rel="noopener" title="LinkedIn">LI</a><i class="ft-div"></i>
-       <a href="https://www.instagram.com/studio.streetlight/" target="_blank" rel="noopener" title="Instagram">IN</a><i class="ft-div"></i>
-       <a href="https://x.com/matanbendavid_" target="_blank" rel="noopener" title="X">X</a>
+       <a href="mailto:matan@studiostreetlight.com?subject=Hey%20Streetlight" title="matan@studiostreetlight.com">Email</a>
+       <nav class="soc" aria-label="Social"><a href="https://www.linkedin.com/in/mbd1/" target="_blank" rel="noopener" title="LinkedIn"><span>Li</span></a><a href="https://x.com/matanbendavid_" target="_blank" rel="noopener" title="X"><span>X</span></a><a href="https://www.instagram.com/studio.streetlight/" target="_blank" rel="noopener" title="Instagram"><span>In</span></a></nav>
      </div>
    </footer>`;
 const secEls = [...page.querySelectorAll('section[data-i]')];
@@ -1058,7 +1056,7 @@ function buildProject(i){
       </div>
     </div>`;
   // the site footer closes every project page too (a copy of the home page's)
-  { const ft = document.getElementById('foot'); if (ft){ const c = ft.cloneNode(true); c.removeAttribute('id'); c.classList.add('p-foot'); projEl.appendChild(c); } }
+  { const ft = document.getElementById('foot'); if (ft){ const c = ft.cloneNode(true); c.removeAttribute('id'); c.classList.add('p-foot'); projEl.appendChild(c); c.querySelectorAll('[data-logo]').forEach(l => { l.innerHTML = ''; initLogo(l); }); } }
   { const k = Rolo.indexFor(pr.name); Rolo.mount(projEl.querySelector('.rolo'), Math.max(0, k), k); }
   Blocks.mount(projEl, C);
   CH.cur = -2; CH.key = null; CH.idx = i; caseFx(); SEC.mount(); if (typeof NX !== 'undefined'){ NX.p = 0; }
@@ -1942,6 +1940,7 @@ readParams();
 (() => { const b = document.getElementById('guidesOn'); const f = () => document.body.classList.toggle('guides', b.checked); b.addEventListener('change', f); f(); })();
 
 document.querySelectorAll('.ft-y').forEach(e => e.textContent = new Date().getFullYear());
+document.querySelectorAll('#foot [data-logo]').forEach(initLogo);   // the footer is built here, after site.js set up the wordmarks
 
 // H toggles the dev tools (test pages in the nav, the controls panel) — not while typing in a field
 addEventListener('keydown', e => {
