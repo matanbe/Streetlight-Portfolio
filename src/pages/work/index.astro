@@ -3,11 +3,13 @@ import Base from '../../layouts/Base.astro';
 import { getProjects } from '../../lib/cms';
 const projects = await getProjects();
 const DISC = ['Product', 'Website', 'Branding', 'Marketing'];
-// every image / video frame of a project (Lottie and live embeds stay out), for the row's accordion
+// every image / video frame of a project in order (Lottie and live embeds stay out), for the row's accordion
 const isMedia = (u: string) => !!u && !u.startsWith('ph:') && !/\.(json|html)([?#]|$)/i.test(u);
 const thumb = (u: string) => /a\.storyblok\.com/.test(u) && !/\.svg(\?|$)/i.test(u) ? `${u}/m/640x0` : u;
-const framesOf = (p: any) => { const out: string[] = [];
-  (p.chapters || []).forEach((ch: any) => ch.slides.forEach((sl: any) => {
+// the site / product screens first: brand, marketing and illustration chapters stay out (unless that's all there is)
+const SCREENS = (ch: any) => !/brand|marketing|illustration/i.test(ch.label || '');
+const framesOf = (p: any) => { const out: string[] = [], chs = (p.chapters || []).filter(SCREENS);
+  (chs.length ? chs : p.chapters || []).forEach((ch: any) => ch.slides.forEach((sl: any) => {
     if (sl.img?.url) out.push(sl.img.url);
     (sl.f || []).forEach((fr: any) => (fr.items || []).forEach((it: any) => out.push(it.src))); }));
   return [...new Set(out.filter(isMedia).map(u => u.split('#')[0]))].map(thumb); };
@@ -69,7 +71,7 @@ const count = (t: string | null) => t ? projects.filter(p => p.disciplines.inclu
 </style>
 
 <script>
-    const table = document.querySelector('.work-table') as HTMLElement, rows = [...table.querySelectorAll<HTMLElement>('.m-row:not(.m-head)')];
+  const table = document.querySelector('.work-table') as HTMLElement, rows = [...table.querySelectorAll<HTMLElement>('.m-row:not(.m-head)')];
   // "View live" on a row that also has a case: opens the live site instead of the row's case link
   table.addEventListener('click', e => { const b = (e.target as HTMLElement).closest<HTMLElement>('[data-live]'); if (!b) return; e.preventDefault(); window.open(b.dataset.live, '_blank', 'noopener'); });
   // TEMPORARY: status tag per project — the ▾ opens a picker (empty / review / done); saved in this browser
@@ -93,9 +95,9 @@ const count = (t: string | null) => t ? projects.filter(p => p.disciplines.inclu
   }
   filters.addEventListener('click', e => { const b = (e.target as HTMLElement).closest('button'); if (b) apply(b.dataset.t!); });
   const h = location.hash.slice(1); const pre = [...filters.querySelectorAll('button')].find(b => b.dataset.t!.toLowerCase() === h); if (pre) apply(pre.dataset.t!);
-  // hover: the row opens like an accordion with three random frames of the project (picked once per visit)
+  // hover: the row opens like an accordion with the project's first three site / product screens
   const canHover = matchMedia('(hover:hover) and (min-width:801px)').matches;
-  const pick = (a: string[]) => { a = [...a]; for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a.slice(0, 3); };
+  const pick = (a: string[]) => a.slice(0, 3);   // the first three screens, in the project's own order
   const isVid = (u: string) => /\.(mp4|webm|mov|m4v)(\?|$)/i.test(u);
   function build(r: HTMLElement){
     if (r.dataset.built) return; r.dataset.built = '1';
