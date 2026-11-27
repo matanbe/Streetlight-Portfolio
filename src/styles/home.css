@@ -702,3 +702,6 @@ html[data-theme="dusk"] .p-sec .in,html[data-theme="dusk"] .p-sec .in::after,htm
 #about .ab-btn.ab-more{background:none;color:var(--ink);border:1px solid var(--ink)}
 #about .ab-btn.ab-more:hover{color:var(--bg);border-color:var(--ink)}
 #about .ab-btn.ab-more::before{background:var(--ink)}
+
+/* project pages: the footer right under the next-project link */
+#project .p-foot{margin-top:0}

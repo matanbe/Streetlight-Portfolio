@@ -1057,6 +1057,8 @@ function buildProject(i){
         <div class="nx-pad"></div>
       </div>
     </div>`;
+  // the site footer closes every project page too (a copy of the home page's)
+  { const ft = document.getElementById('foot'); if (ft){ const c = ft.cloneNode(true); c.removeAttribute('id'); c.classList.add('p-foot'); projEl.appendChild(c); } }
   { const k = Rolo.indexFor(pr.name); Rolo.mount(projEl.querySelector('.rolo'), Math.max(0, k), k); }
   Blocks.mount(projEl, C);
   CH.cur = -2; CH.key = null; CH.idx = i; caseFx(); SEC.mount(); if (typeof NX !== 'undefined'){ NX.p = 0; }
