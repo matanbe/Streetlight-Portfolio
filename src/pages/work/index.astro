@@ -27,7 +27,7 @@ const count = (t: string | null) => t ? projects.filter(p => p.disciplines.inclu
         const href = p.hasCase ? `/#project/${p.id}` : (p.live ?? undefined);   // case pages open over the home page (the cube flies in)
         const ext = !p.hasCase && p.live;
         return (
-          <a class="m-row" role="row" href={href} target={ext ? '_blank' : undefined} rel={ext ? 'noopener' : undefined} data-tags={p.disciplines.join(',')} data-frames={JSON.stringify(framesOf(p))}>
+          <a class="m-row" role="row" href={href} target={ext ? '_blank' : undefined} rel={ext ? 'noopener' : undefined} data-tags={p.disciplines.join(',')} data-frames={JSON.stringify(framesOf(p))} data-soon={(!p.hasCase && !p.live && p.soon) ? '' : undefined}>
             <span><span class="st" title="Status (temporary)" data-id={p.id} data-def={p.chapters?.length ? 'review' : 'empty'}><select aria-label="Status"><option value="empty">Empty</option><option value="review">Review</option><option value="done">Done</option></select></span>{p.name}{(!p.hasCase && !p.live && p.soon) && <span class="soon">Coming soon</span>}</span><span class="c2">{p.industry}</span><span class="c3">{p.year}</span>
             {ext ? <span class="go ext" aria-label="opens the live site">↗</span> : <span class="go"><span class="l-arr"><i>→</i><i>→</i></span></span>}
             {(p.hasCase && p.live) && <span class="m-acts">
@@ -113,7 +113,8 @@ const count = (t: string | null) => t ? projects.filter(p => p.disciplines.inclu
       fr.querySelectorAll('video').forEach(v => { if (!v.src) v.src = (v as HTMLVideoElement).dataset.src!; (v as HTMLVideoElement).play().catch(() => {}); }); }
     else { r.style.height = baseH(r) + 'px'; r.classList.remove('open'); fr.querySelectorAll('video').forEach(v => (v as HTMLVideoElement).pause()); }
   }
-  if (canHover) rows.forEach(r => { r.addEventListener('mouseenter', () => open(r, true)); r.addEventListener('mouseleave', () => open(r, false)); });
+  // coming soon: nothing to show yet, the row stays closed
+  if (canHover) rows.filter(r => !('soon' in r.dataset)).forEach(r => { r.addEventListener('mouseenter', () => open(r, true)); r.addEventListener('mouseleave', () => open(r, false)); });
   // the frames start where the 4th column starts
   const place = () => { const r = rows[0]; if (!r) return; const c = r.children[3] as HTMLElement; if (!c) return;
     table.style.setProperty('--frl', (c.getBoundingClientRect().left - r.getBoundingClientRect().left) + 'px'); };
